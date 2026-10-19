@@ -1,0 +1,46 @@
+// src/components/DsCardGrid/DsCardGrid.scss
+
+@layer ds.components {
+  .ds-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--ds-card-grid-min-col, 18rem)), 1fr));
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    inline-size: 100%;
+    box-sizing: border-box;
+
+    &--gap-xs {
+      gap: var(--ds-space-2);
+    }
+
+    &--gap-sm {
+      gap: var(--ds-space-3);
+    }
+
+    &--gap-md {
+      gap: var(--ds-space-4);
+    }
+
+    &--gap-lg {
+      gap: var(--ds-space-6);
+    }
+
+    &--gap-xl {
+      gap: var(--ds-space-8);
+    }
+
+    &--dense {
+      grid-auto-flow: dense;
+    }
+
+    &__item {
+      display: flex;
+      flex-direction: column;
+      list-style: none;
+      min-inline-size: 0; // Prevent content blowout in CSS grid
+      margin: 0;
+      padding: 0;
+    }
+  }
+}
