@@ -117,4 +117,51 @@ This document tracks the phased implementation, quality gates, and verification 
 | 1 | `npm run build` in `portal` | `vue-tsc && vite build` | **PASS** (0 type errors, clean production bundle) |
 | 2 | Component integration | `DsButton` & `DsIcon` in `FallbackError` | **PASS** (Zero API friction, semantic markup verified) |
 
+---
+
+## Phase 3: Composite & Overlay Widgets
+
+**Status:** Completed & Verified  
+**Date:** 2026-10-19  
+
+### Summary of Work Delivered
+1. **Accessibility Composables (`src/composables/a11y/`, `TEST-03`, `A11Y-14`):**
+   - **`useRovingFocus`:** Keyboard navigation across composite item collections (horizontal, vertical, or bidirectional grids), Home/End jump support, cyclic wrapping, disabled item skipping, and tabindex management (`0` vs `-1`).
+   - **`useTypeahead`:** Type-to-navigate matching on text prefixes with configurable reset timeout (default 750ms) and cyclic multi-key search.
+   - **`useFocusReturn`:** Automatically caches `document.activeElement` when an overlay or dialog opens, and safely restores focus upon closure (handling unmounted or disabled triggers).
+   - **`useAnnouncer`:** Persistent politeness-tiered live region manager with debounced assertive and polite screen reader announcements.
+   - **`useAnchorFallback`:** Progressive enhancement for CSS Anchor Positioning with dynamic viewport collision detection and tethered coordinate computation when `CSS.supports('anchor-name: --a')` is false.
+   - **Coverage:** Tested to **100% statements, 100% lines, 100% functions, and 99.25% branches** in Vitest Browser Mode with Chromium.
+
+2. **Composite & Overlay Components (`src/components/`, `VUE-01`..`VUE-10`):**
+   - **`DsCard`:** Semantic container (`<article>`) with structured subcomponents/slots (`media`, `header`, `body`, `footer`), whole-card stretched clickable link (`.ds-card__link::after`), 3 padding sizes, and 4 visual variants (`default`, `elevated`, `outlined`, `glass` with opaque fallbacks for `prefers-reduced-transparency` and `forced-colors`).
+   - **`DsChipGroup`:** Accessible group (`role="group"`) of toggle buttons (`aria-pressed`) with numeric count badges, single and multi-select support, and horizontal keyboard arrow navigation.
+   - **`DsSearchBar`:** Native `<search>` landmark with input, search icon, clear query button, visual hotkey hint badge (`/` or `⌘K`), and global hotkey listener that ignores typing inside other form controls.
+   - **`DsSelect`:** Progressive enhancement styled `<select>` element with custom Chevron icon, options array or default slots, placeholder option, sizes (`sm`, `md`, `lg`), and seamless provide/inject integration with `DsField`.
+   - **`DsTabs`:** WAI-ARIA APG Tabs pattern (`tablist`, `tab`, `tabpanel`) with automatic selection on focus or manual activation (`manual` mode), horizontal or vertical orientation, and roving tabindex.
+   - **`DsMenu`:** WAI-ARIA APG Menu Button using native Popover API (`popover="auto"`), CSS Anchor Positioning with `useAnchorFallback`, item typeahead search, roving focus, destructive variant, and automatic focus return.
+   - **`DsModal`:** WAI-ARIA APG Dialog / Alert Dialog on native HTML5 `<dialog>` and `showModal()`, focus trapping, Escape key cancellation, backdrop blur, backdrop click dismissal, title and description ARIA labeling, and focus return.
+   - **`DsToast`:** Live notification toasts using Popover API (`popover="manual"`) with live region announcements via `useAnnouncer`, 4 semantic variants (`info`, `success`, `warning`, `error`), auto-dismiss timer (default 5s for info/success/warning, persistent for error), pause on hover/focus, and close button.
+
+3. **Strict 6-File Architecture:**
+   - Every single Phase 3 component follows the repository standard: `.vue`, `.html`, `.scss`, `.stories.ts`, `.spec.ts`, and `index.ts`.
+   - Exported from `src/index.ts`.
+
+4. **Quality & Accessibility Validation (`A11Y-*`, `TEST-*`):**
+   - **129 unit tests passing** across all 25 test suites with **96.87% statements, 88.33% branches, 99.45% functions, and 98.11% lines** (all exceeding repository gates).
+   - **58 Storybook stories passing** in Chromium with `@storybook/addon-a11y` (axe-core) reporting **0 violations**.
+
+### Verification Scorecard (`npm run verify`)
+
+| Step | Gate Command | Target / Rule | Result |
+| :--- | :--- | :--- | :--- |
+| 1 | `npm run lint` | ESLint + vue-a11y rules | **PASS** (0 errors, 0 warnings) |
+| 2 | `npm run typecheck` | `vue-tsc --noEmit` | **PASS** (0 errors) |
+| 3 | `npm run test:tokens` | `contrast-check.ts` (TOK-04, A11Y-01..03, TEST-11) | **PASS** (43/43 symmetric tokens, 22/22 contrast pairs, $\Delta E \ge 10$) |
+| 4 | `npm run test:unit` | Vitest Browser Mode with Coverage (TEST-02, TEST-04) | **PASS** (129/129 tests passed; 96.9% stmts, 88.3% branch, 99.5% funcs, 98.1% lines; composables at 100%/99.3%) |
+| 5 | `npm run test:storybook` | Storybook test + axe-core (SB-02, TEST-08) | **PASS** (58/58 tests passed, 0 axe violations) |
+| 6 | `npm run build` | Vite lib build + dts (PKG-01..03) | **PASS** (Clean build, 50.80 kB styles.css, 812.65 kB bundle, .d.ts generated) |
+| 7 | `npm run test:smoke` | Consumer fixture test (TEST-12) | **PASS** (0 alias leaks, clean consumer build) |
+
+
 

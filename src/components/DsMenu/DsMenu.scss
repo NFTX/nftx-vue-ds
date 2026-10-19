@@ -1,0 +1,146 @@
+// src/components/DsMenu/DsMenu.scss
+@use '@/styles/mixins/focus-ring' as fr;
+@use '@/styles/mixins/target-size' as ts;
+
+@layer ds.components {
+  .ds-menu-container {
+    position: relative;
+    display: inline-block;
+  }
+
+  .ds-menu-trigger {
+    @include ts.target-size;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ds-space-2);
+    box-sizing: border-box;
+    padding-block: var(--ds-space-2);
+    padding-inline: var(--ds-space-4);
+    border-radius: var(--ds-radius-md);
+    border: 1px solid var(--ds-color-border-default);
+    background-color: var(--ds-color-bg-surface);
+    color: var(--ds-color-text-primary);
+    font-size: var(--ds-font-size-sm);
+    font-weight: 500;
+    cursor: pointer;
+
+    &:hover:not(:disabled) {
+      background-color: var(--ds-color-bg-muted);
+      border-color: var(--ds-color-border-hover);
+    }
+
+    &:focus-visible {
+      @include fr.focus-ring;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  // Popover menu using modern Popover API & CSS Anchor Positioning
+  .ds-menu {
+    border: 1px solid var(--ds-color-border-default);
+    background-color: var(--ds-color-bg-surface);
+    color: var(--ds-color-text-primary);
+    border-radius: var(--ds-radius-md);
+    box-shadow: var(--ds-shadow-lg);
+    padding: var(--ds-space-1);
+    min-inline-size: 10rem;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    outline: none;
+    margin: 0;
+
+    // Anchor positioning progressive enhancement
+    @supports (anchor-name: --ds-menu-anchor) {
+      position: absolute;
+      position-anchor: --ds-menu-anchor;
+
+      &--bottom-start {
+        top: anchor(bottom);
+        left: anchor(left);
+        margin-block-start: 4px;
+      }
+
+      &--bottom-end {
+        top: anchor(bottom);
+        right: anchor(right);
+        margin-block-start: 4px;
+      }
+
+      &--top-start {
+        bottom: anchor(top);
+        left: anchor(left);
+        margin-block-end: 4px;
+      }
+
+      &--top-end {
+        bottom: anchor(top);
+        right: anchor(right);
+        margin-block-end: 4px;
+      }
+    }
+
+    // Default popover top layer styling
+    &:popover-open {
+      opacity: 1;
+    }
+  }
+
+  .ds-menuitem {
+    @include ts.target-size;
+    display: flex;
+    align-items: center;
+    inline-size: 100%;
+    padding-block: var(--ds-space-2);
+    padding-inline: var(--ds-space-3);
+    border-radius: var(--ds-radius-sm);
+    border: none;
+    background: transparent;
+    color: var(--ds-color-text-primary);
+    font-size: var(--ds-font-size-sm);
+    font-weight: 500;
+    text-align: start;
+    cursor: pointer;
+    outline: none;
+    transition: background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-default),
+                color var(--ds-motion-duration-fast) var(--ds-motion-easing-default);
+
+    &:hover:not(:disabled),
+    &:focus-visible {
+      background-color: var(--ds-color-bg-muted);
+      color: var(--ds-color-text-primary);
+    }
+
+    &--destructive {
+      color: var(--ds-color-text-error);
+
+      &:hover:not(:disabled),
+      &:focus-visible {
+        background-color: var(--ds-color-error-surface);
+        color: #b91c1c;
+      }
+    }
+
+    &--disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .ds-menu {
+      border: 1px solid CanvasText;
+    }
+
+    .ds-menuitem:focus-visible,
+    .ds-menuitem:hover:not(:disabled) {
+      background-color: Highlight;
+      color: HighlightText;
+    }
+  }
+}

@@ -1,0 +1,52 @@
+<div class="ds-menu-container" v-bind="$attrs">
+  <button
+    ref="triggerRef"
+    :id="triggerId"
+    type="button"
+    class="ds-menu-trigger"
+    :aria-expanded="isOpen"
+    aria-haspopup="menu"
+    :aria-controls="menuId"
+    :disabled="disabled"
+    @click="toggleMenu"
+    @keydown="handleTriggerKeydown"
+  >
+    <slot name="trigger">
+      <span>{{ label }}</span>
+    </slot>
+  </button>
+
+  <div
+    ref="popoverRef"
+    :id="menuId"
+    popover="auto"
+    class="ds-menu"
+    :class="[`ds-menu--${placement}`]"
+    role="menu"
+    :aria-labelledby="triggerId"
+    :style="fallback.style.value"
+    tabindex="-1"
+    @keydown="handleMenuKeydown"
+    @toggle="handleToggleEvent"
+  >
+    <button
+      v-for="(item, index) in items"
+      :key="item.id"
+      ref="itemRefs"
+      type="button"
+      role="menuitem"
+      class="ds-menuitem"
+      :class="{
+        'ds-menuitem--destructive': item.destructive,
+        'ds-menuitem--disabled': item.disabled
+      }"
+      :tabindex="roving.getTabIndex(index)"
+      :disabled="item.disabled"
+      @click="handleSelect(item)"
+    >
+      <slot :name="`item-${item.id}`" :item="item">
+        {{ item.label }}
+      </slot>
+    </button>
+  </div>
+</div>

@@ -1,0 +1,44 @@
+<div
+  ref="toastRef"
+  popover="manual"
+  class="ds-toast"
+  :class="[variantClass, positionClass, { 'ds-toast--open': open }]"
+  :role="toastRole"
+  :aria-live="toastLive"
+  :aria-atomic="true"
+  :aria-labelledby="title ? titleId : undefined"
+  :aria-describedby="description ? descId : undefined"
+  @mouseenter="handleMouseEnter"
+  @mouseleave="handleMouseLeave"
+  @focusin="handleFocusIn"
+  @focusout="handleFocusOut"
+  v-bind="$attrs"
+>
+  <div class="ds-toast__indicator" aria-hidden="true">
+    <DsIcon :icon="variantIcon" size="md" />
+  </div>
+
+  <div class="ds-toast__content">
+    <div v-if="title" :id="titleId" class="ds-toast__title">
+      {{ title }}
+    </div>
+    <div v-if="description" :id="descId" class="ds-toast__description">
+      {{ description }}
+    </div>
+    <slot />
+  </div>
+
+  <div v-if="$slots.action" class="ds-toast__action">
+    <slot name="action" />
+  </div>
+
+  <button
+    v-if="closable"
+    type="button"
+    class="ds-toast__close"
+    aria-label="Dismiss notification"
+    @click="dismiss"
+  >
+    <DsIcon :icon="X" size="sm" />
+  </button>
+</div>

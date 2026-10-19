@@ -30,7 +30,13 @@ function buildTokensCssPlugin(): Plugin {
 
 export default defineConfig({
   plugins: [
-    vue(),
+    vue({
+      template: {
+        compilerOptions: {
+          isCustomElement: (tag) => tag === 'search'
+        }
+      }
+    }),
     dts({
       tsconfigPath: resolve(__dirname, 'tsconfig.json'),
       include: ['src/**/*.ts', 'src/**/*.vue']

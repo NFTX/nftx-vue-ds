@@ -1,0 +1,29 @@
+<div
+  :id="computedId"
+  class="ds-chip-group"
+  role="group"
+  :aria-label="label"
+  @keydown="onKeydown"
+  v-bind="$attrs"
+>
+  <button
+    v-for="(option, index) in options"
+    :key="option.value"
+    ref="chipRefs"
+    type="button"
+    class="ds-chip"
+    :class="{
+      'ds-chip--active': isSelected(option.value),
+      'ds-chip--disabled': option.disabled
+    }"
+    :aria-pressed="isSelected(option.value)"
+    :disabled="option.disabled"
+    :tabindex="roving.getTabIndex(index)"
+    @click="handleChipClick(option, index)"
+  >
+    <span class="ds-chip__label">{{ option.label }}</span>
+    <span v-if="option.count !== undefined" class="ds-chip__count" aria-hidden="true">
+      {{ option.count }}
+    </span>
+  </button>
+</div>
