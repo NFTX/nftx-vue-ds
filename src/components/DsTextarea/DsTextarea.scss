@@ -1,0 +1,75 @@
+// src/components/DsTextarea/DsTextarea.scss
+@use '@/styles/mixins/focus-ring' as *;
+
+@layer ds.components {
+  .ds-textarea-wrapper {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    inline-size: 100%;
+    box-sizing: border-box;
+    background-color: var(--ds-color-bg-base);
+    border: 1px solid var(--ds-color-border-interactive);
+    border-radius: var(--ds-radius-md);
+    transition: border-color var(--ds-motion-duration-fast) var(--ds-motion-easing-default);
+
+    &:focus-within {
+      outline: 2px solid var(--ds-color-focus-ring);
+      outline-offset: 1px;
+      border-color: var(--ds-color-focus-ring);
+    }
+
+    &--invalid {
+      border-color: var(--ds-color-text-error);
+
+      &:focus-within {
+        outline-color: var(--ds-color-text-error);
+      }
+    }
+
+    &--disabled {
+      background-color: var(--ds-color-bg-muted);
+      border-color: var(--ds-color-border-default);
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+
+    .ds-textarea {
+      box-sizing: border-box;
+      inline-size: 100%;
+      border: none;
+      background: transparent;
+      font-family: inherit;
+      font-size: var(--ds-font-size-base);
+      line-height: var(--ds-line-height-normal);
+      color: var(--ds-color-text-primary);
+      outline: none;
+      padding: var(--ds-space-3);
+
+      &::placeholder {
+        color: var(--ds-color-text-muted);
+        opacity: 0.8;
+      }
+
+      &:disabled {
+        cursor: not-allowed;
+      }
+    }
+
+    .ds-textarea__count {
+      align-self: flex-end;
+      padding-inline-end: var(--ds-space-3);
+      padding-block-end: var(--ds-space-2);
+      font-size: var(--ds-font-size-xs);
+      color: var(--ds-color-text-muted);
+    }
+
+    @media (forced-colors: active) {
+      border: 1px solid CanvasText;
+
+      &:focus-within {
+        outline-color: Highlight;
+      }
+    }
+  }
+}

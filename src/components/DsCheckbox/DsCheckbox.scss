@@ -1,0 +1,99 @@
+// src/components/DsCheckbox/DsCheckbox.scss
+@use '@/styles/mixins/focus-ring' as *;
+@use '@/styles/mixins/target-size' as *;
+
+@layer ds.components {
+  .ds-checkbox {
+    @include target-size(1.5rem, 2.75rem);
+
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+    gap: var(--ds-space-2);
+    font-size: var(--ds-font-size-base);
+    color: var(--ds-color-text-primary);
+
+    &__control {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      inline-size: 1.25rem;  // 20px
+      block-size: 1.25rem;
+      flex-shrink: 0;
+    }
+
+    &__input {
+      position: absolute;
+      inset: 0;
+      margin: 0;
+      opacity: 0;
+      cursor: pointer;
+      inline-size: 100%;
+      block-size: 100%;
+      z-index: 1;
+
+      &:focus-visible + .ds-checkbox__box {
+        outline: 2px solid var(--ds-color-focus-ring);
+        outline-offset: 2px;
+      }
+    }
+
+    &__box {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+      inline-size: 100%;
+      block-size: 100%;
+      border-radius: var(--ds-radius-sm);
+      border: 2px solid var(--ds-color-border-interactive);
+      background-color: var(--ds-color-bg-base);
+      color: var(--ds-color-on-brand);
+      transition: background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-default),
+                  border-color var(--ds-motion-duration-fast) var(--ds-motion-easing-default);
+    }
+
+    &__icon {
+      inline-size: 0.875rem;
+      block-size: 0.875rem;
+      stroke-width: 3;
+    }
+
+    &--checked,
+    &--indeterminate {
+      .ds-checkbox__box {
+        background-color: var(--ds-color-brand-fill);
+        border-color: var(--ds-color-brand-fill);
+      }
+    }
+
+    &--disabled {
+      cursor: not-allowed;
+      opacity: 0.6;
+
+      .ds-checkbox__input {
+        cursor: not-allowed;
+      }
+
+      .ds-checkbox__box {
+        background-color: var(--ds-color-bg-muted);
+        border-color: var(--ds-color-border-default);
+      }
+    }
+
+    @media (forced-colors: active) {
+      .ds-checkbox__box {
+        border-color: CanvasText;
+      }
+
+      &--checked .ds-checkbox__box,
+      &--indeterminate .ds-checkbox__box {
+        background-color: Highlight;
+        color: HighlightText;
+      }
+    }
+  }
+}

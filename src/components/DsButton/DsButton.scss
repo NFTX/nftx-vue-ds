@@ -1,0 +1,167 @@
+// src/components/DsButton/DsButton.scss
+@use '@/styles/mixins/focus-ring' as *;
+@use '@/styles/mixins/target-size' as *;
+
+@layer ds.components {
+  .ds-button {
+    @include focus-ring;
+    @include target-size(1.5rem, 2.75rem);
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-sizing: border-box;
+    font-family: inherit;
+    font-weight: 600;
+    line-height: 1.25;
+    text-align: center;
+    white-space: nowrap;
+    border-radius: var(--ds-radius-md);
+    border: 1px solid transparent;
+    cursor: pointer;
+    text-decoration: none;
+    user-select: none;
+    transition: background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-default),
+                border-color var(--ds-motion-duration-fast) var(--ds-motion-easing-default),
+                color var(--ds-motion-duration-fast) var(--ds-motion-easing-default);
+
+    &__content {
+      display: inline-flex;
+      align-items: center;
+    }
+
+    &__prefix,
+    &__suffix,
+    &__spinner {
+      display: inline-flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    &__prefix {
+      margin-inline-end: var(--ds-space-2);
+    }
+
+    &__suffix {
+      margin-inline-start: var(--ds-space-2);
+    }
+
+    &__spinner {
+      margin-inline-end: var(--ds-space-2);
+    }
+
+    // Sizes
+    &--sm {
+      font-size: var(--ds-font-size-sm);
+      padding-block: var(--ds-space-1);
+      padding-inline: var(--ds-space-3);
+      min-block-size: 2rem;
+    }
+
+    &--md {
+      font-size: var(--ds-font-size-base);
+      padding-block: var(--ds-space-2);
+      padding-inline: var(--ds-space-4);
+      min-block-size: 2.5rem;
+    }
+
+    &--lg {
+      font-size: var(--ds-font-size-lg);
+      padding-block: var(--ds-space-3);
+      padding-inline: var(--ds-space-6);
+      min-block-size: 3rem;
+    }
+
+    &--full-width {
+      inline-size: 100%;
+    }
+
+    &--icon-only {
+      padding-inline: var(--ds-space-2);
+
+      .ds-button__prefix,
+      .ds-button__suffix {
+        margin: 0;
+      }
+    }
+
+    // Variants
+    &--primary {
+      background-color: var(--ds-color-brand-fill);
+      color: var(--ds-color-on-brand);
+      border-color: var(--ds-color-brand-fill);
+
+      @media (hover: hover) and (pointer: fine) {
+        &:hover:not(:disabled) {
+          background-color: var(--ds-color-brand-fill-hover);
+          border-color: var(--ds-color-brand-fill-hover);
+        }
+      }
+
+      &:active:not(:disabled) {
+        background-color: var(--ds-color-brand-fill-active);
+        border-color: var(--ds-color-brand-fill-active);
+      }
+    }
+
+    &--secondary {
+      background-color: var(--ds-color-bg-elevated);
+      color: var(--ds-color-text-primary);
+      border-color: var(--ds-color-border-default);
+
+      @media (hover: hover) and (pointer: fine) {
+        &:hover:not(:disabled) {
+          background-color: var(--ds-color-bg-muted);
+          border-color: var(--ds-color-border-interactive);
+        }
+      }
+    }
+
+    &--ghost {
+      background-color: transparent;
+      color: var(--ds-color-text-primary);
+      border-color: transparent;
+
+      @media (hover: hover) and (pointer: fine) {
+        &:hover:not(:disabled) {
+          background-color: var(--ds-color-bg-muted);
+        }
+      }
+    }
+
+    &--danger {
+      // Danger uses outline style by default per DESIGN_SYSTEM_PLAN.md §3.3
+      background-color: transparent;
+      color: var(--ds-color-text-error);
+      border-color: var(--ds-color-text-error);
+
+      @media (hover: hover) and (pointer: fine) {
+        &:hover:not(:disabled) {
+          background-color: var(--ds-color-error-surface);
+        }
+      }
+
+      &:active:not(:disabled) {
+        background-color: var(--ds-color-error-fill);
+        color: var(--ds-color-on-error);
+      }
+    }
+
+    // States
+    &:disabled,
+    &--loading {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    @media (forced-colors: active) {
+      border: 1px solid ButtonText;
+
+      &:disabled {
+        border-color: GrayText;
+        color: GrayText;
+      }
+    }
+  }
+}

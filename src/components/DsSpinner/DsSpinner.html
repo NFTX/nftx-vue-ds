@@ -1,0 +1,33 @@
+<div
+  class="ds-spinner"
+  :class="[sizeClass, variantClass]"
+  role="status"
+  aria-live="polite"
+>
+  <svg
+    class="ds-spinner__svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden="true"
+  >
+    <circle
+      class="ds-spinner__track"
+      cx="12"
+      cy="12"
+      r="10"
+      stroke="currentColor"
+      stroke-width="3"
+    />
+    <circle
+      class="ds-spinner__indicator"
+      cx="12"
+      cy="12"
+      r="10"
+      stroke="currentColor"
+      stroke-width="3"
+      stroke-linecap="round"
+    />
+  </svg>
+  <span class="ds-spinner__sr-text">{{ label }}</span>
+</div>

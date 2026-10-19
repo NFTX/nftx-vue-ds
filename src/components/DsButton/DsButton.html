@@ -1,0 +1,30 @@
+<button
+  :type="type"
+  class="ds-button"
+  :class="[
+    `ds-button--${variant}`,
+    `ds-button--${size}`,
+    {
+      'ds-button--loading': loading,
+      'ds-button--icon-only': isIconOnly,
+      'ds-button--full-width': fullWidth
+    }
+  ]"
+  :disabled="disabled || loading"
+  :aria-busy="loading ? 'true' : undefined"
+  :aria-label="ariaLabel"
+  @click="handleClick"
+>
+  <span v-if="loading" class="ds-button__spinner">
+    <DsSpinner size="sm" variant="current" />
+  </span>
+  <span v-if="$slots.prefix" class="ds-button__prefix" aria-hidden="true">
+    <slot name="prefix" />
+  </span>
+  <span v-if="$slots.default" class="ds-button__content">
+    <slot />
+  </span>
+  <span v-if="$slots.suffix" class="ds-button__suffix" aria-hidden="true">
+    <slot name="suffix" />
+  </span>
+</button>

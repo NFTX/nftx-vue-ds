@@ -1,0 +1,133 @@
+// src/components/DsSwitch/DsSwitch.scss
+@use '@/styles/mixins/focus-ring' as *;
+@use '@/styles/mixins/target-size' as *;
+
+@layer ds.components {
+  .ds-switch-wrapper {
+    @include target-size(1.5rem, 2.75rem);
+
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ds-space-2);
+    cursor: pointer;
+    user-select: none;
+    font-size: var(--ds-font-size-base);
+    color: var(--ds-color-text-primary);
+
+    &--disabled {
+      cursor: not-allowed;
+      opacity: 0.6;
+
+      .ds-switch {
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  .ds-switch {
+    @include focus-ring;
+
+    display: inline-flex;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    border-radius: var(--ds-radius-full);
+
+    &__track {
+      display: inline-flex;
+      align-items: center;
+      position: relative;
+      border-radius: var(--ds-radius-full);
+      background-color: var(--ds-color-border-interactive);
+      box-sizing: border-box;
+      transition: background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-default);
+
+      @media (prefers-reduced-motion: reduce) {
+        transition: none;
+      }
+    }
+
+    &__thumb {
+      display: inline-block;
+      border-radius: var(--ds-radius-full);
+      background-color: var(--ds-color-bg-base);
+      box-shadow: var(--ds-shadow-sm);
+      transition: transform var(--ds-motion-duration-fast) var(--ds-motion-easing-default);
+
+      @media (prefers-reduced-motion: reduce) {
+        transition: none;
+      }
+    }
+
+    // Sizes
+    .ds-switch-wrapper--sm &__track {
+      inline-size: 2rem;       // 32px
+      block-size: 1.125rem;    // 18px
+      padding: 0.125rem;
+    }
+
+    .ds-switch-wrapper--sm &__thumb {
+      inline-size: 0.875rem;   // 14px
+      block-size: 0.875rem;
+    }
+
+    .ds-switch-wrapper--sm[class*="--checked"] &__thumb {
+      transform: translateX(0.875rem);
+    }
+
+    .ds-switch-wrapper--md &__track {
+      inline-size: 2.75rem;    // 44px
+      block-size: 1.5rem;      // 24px
+      padding: 0.125rem;
+    }
+
+    .ds-switch-wrapper--md &__thumb {
+      inline-size: 1.25rem;    // 20px
+      block-size: 1.25rem;
+    }
+
+    .ds-switch-wrapper--md[class*="--checked"] &__thumb {
+      transform: translateX(1.25rem);
+    }
+
+    .ds-switch-wrapper--lg &__track {
+      inline-size: 3.5rem;     // 56px
+      block-size: 1.875rem;    // 30px
+      padding: 0.1875rem;
+    }
+
+    .ds-switch-wrapper--lg &__thumb {
+      inline-size: 1.5rem;     // 24px
+      block-size: 1.5rem;
+    }
+
+    .ds-switch-wrapper--lg[class*="--checked"] &__thumb {
+      transform: translateX(1.625rem);
+    }
+
+    .ds-switch-wrapper--checked &__track {
+      background-color: var(--ds-color-brand-fill);
+    }
+
+    @media (forced-colors: active) {
+      &__track {
+        border: 2px solid CanvasText;
+      }
+
+      .ds-switch-wrapper--checked &__track {
+        background-color: Highlight;
+      }
+
+      &__thumb {
+        background-color: CanvasText;
+      }
+
+      .ds-switch-wrapper--checked &__thumb {
+        background-color: HighlightText;
+      }
+    }
+  }
+}

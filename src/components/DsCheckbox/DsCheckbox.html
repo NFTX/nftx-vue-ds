@@ -1,0 +1,31 @@
+<label
+  :for="computedId"
+  class="ds-checkbox"
+  :class="{
+    'ds-checkbox--checked': isChecked,
+    'ds-checkbox--indeterminate': indeterminate,
+    'ds-checkbox--disabled': disabled
+  }"
+>
+  <span class="ds-checkbox__control">
+    <input
+      ref="inputRef"
+      v-model="model"
+      :id="computedId"
+      type="checkbox"
+      :value="value"
+      :disabled="disabled"
+      :required="required"
+      class="ds-checkbox__input"
+      v-bind="$attrs"
+    />
+    <span class="ds-checkbox__box" aria-hidden="true">
+      <DsIcon v-if="indeterminate" :icon="Minus" size="sm" class="ds-checkbox__icon" />
+      <DsIcon v-else-if="isChecked" :icon="Check" size="sm" class="ds-checkbox__icon" />
+    </span>
+  </span>
+
+  <span v-if="label || $slots.default" class="ds-checkbox__label">
+    <slot>{{ label }}</slot>
+  </span>
+</label>

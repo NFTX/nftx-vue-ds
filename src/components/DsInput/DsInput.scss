@@ -1,0 +1,125 @@
+// src/components/DsInput/DsInput.scss
+@use '@/styles/mixins/focus-ring' as *;
+@use '@/styles/mixins/target-size' as *;
+
+@layer ds.components {
+  .ds-input-wrapper {
+    @include target-size(1.5rem, 2.75rem);
+
+    display: flex;
+    align-items: center;
+    position: relative;
+    box-sizing: border-box;
+    inline-size: 100%;
+    background-color: var(--ds-color-bg-base);
+    border: 1px solid var(--ds-color-border-interactive);
+    border-radius: var(--ds-radius-md);
+    transition: border-color var(--ds-motion-duration-fast) var(--ds-motion-easing-default);
+
+    &:focus-within {
+      outline: 2px solid var(--ds-color-focus-ring);
+      outline-offset: 1px;
+      border-color: var(--ds-color-focus-ring);
+    }
+
+    &--sm {
+      min-block-size: 2rem;
+      padding-inline: var(--ds-space-2);
+      font-size: var(--ds-font-size-sm);
+    }
+
+    &--md {
+      min-block-size: 2.5rem;
+      padding-inline: var(--ds-space-3);
+      font-size: var(--ds-font-size-base);
+    }
+
+    &--lg {
+      min-block-size: 3rem;
+      padding-inline: var(--ds-space-4);
+      font-size: var(--ds-font-size-lg);
+    }
+
+    &--invalid {
+      border-color: var(--ds-color-text-error);
+
+      &:focus-within {
+        outline-color: var(--ds-color-text-error);
+      }
+    }
+
+    &--disabled {
+      background-color: var(--ds-color-bg-muted);
+      border-color: var(--ds-color-border-default);
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+
+    &__prefix,
+    &__suffix {
+      display: inline-flex;
+      align-items: center;
+      color: var(--ds-color-text-muted);
+      flex-shrink: 0;
+    }
+
+    &__prefix {
+      margin-inline-end: var(--ds-space-2);
+    }
+
+    &__suffix {
+      margin-inline-start: var(--ds-space-2);
+    }
+
+    &__clear {
+      @include focus-ring;
+
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      border: none;
+      color: var(--ds-color-text-muted);
+      padding: 0.125rem;
+      margin-inline-start: var(--ds-space-1);
+      cursor: pointer;
+      border-radius: var(--ds-radius-sm);
+
+      @media (hover: hover) and (pointer: fine) {
+        &:hover {
+          color: var(--ds-color-text-primary);
+        }
+      }
+    }
+
+    .ds-input {
+      flex: 1;
+      min-inline-size: 0;
+      border: none;
+      background: transparent;
+      font-family: inherit;
+      font-size: inherit;
+      line-height: inherit;
+      color: var(--ds-color-text-primary);
+      outline: none;
+      padding-block: var(--ds-space-2);
+
+      &::placeholder {
+        color: var(--ds-color-text-muted);
+        opacity: 0.8;
+      }
+
+      &:disabled {
+        cursor: not-allowed;
+      }
+    }
+
+    @media (forced-colors: active) {
+      border: 1px solid CanvasText;
+
+      &:focus-within {
+        outline-color: Highlight;
+      }
+    }
+  }
+}

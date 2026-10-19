@@ -1,0 +1,83 @@
+// src/components/DsSpinner/DsSpinner.scss
+@use '@/styles/mixins/visually-hidden' as *;
+
+@keyframes ds-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@layer ds.components {
+  .ds-spinner {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    vertical-align: middle;
+
+    &__svg {
+      inline-size: 100%;
+      block-size: 100%;
+      animation: ds-spin 800ms linear infinite;
+
+      @media (prefers-reduced-motion: reduce) {
+        animation: none;
+        opacity: 0.8;
+      }
+    }
+
+    &__track {
+      opacity: 0.25;
+    }
+
+    &__indicator {
+      stroke-dasharray: 60;
+      stroke-dashoffset: 45;
+    }
+
+    &__sr-text {
+      @include visually-hidden;
+    }
+
+    // Sizes
+    &--sm {
+      inline-size: 1rem;     // 16px
+      block-size: 1rem;
+    }
+
+    &--md {
+      inline-size: 1.5rem;   // 24px
+      block-size: 1.5rem;
+    }
+
+    &--lg {
+      inline-size: 2rem;     // 32px
+      block-size: 2rem;
+    }
+
+    &--xl {
+      inline-size: 3rem;     // 48px
+      block-size: 3rem;
+    }
+
+    // Variants
+    &--current {
+      color: currentColor;
+    }
+
+    &--brand {
+      color: var(--ds-color-brand-fill);
+    }
+
+    &--neutral {
+      color: var(--ds-color-text-muted);
+    }
+
+    @media (forced-colors: active) {
+      color: CanvasText;
+    }
+  }
+}

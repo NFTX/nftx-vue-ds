@@ -1,0 +1,22 @@
+<component
+  :is="as"
+  class="ds-badge"
+  :class="[
+    variantClass,
+    sizeClass,
+    {
+      'ds-badge--dot-only': isDotOnly,
+      'ds-badge--has-dot': dot
+    }
+  ]"
+  :role="ariaLabel ? 'status' : undefined"
+  :aria-label="ariaLabel"
+>
+  <span v-if="dot" class="ds-badge__dot" aria-hidden="true" />
+  <span v-if="$slots.prefix" class="ds-badge__prefix" aria-hidden="true">
+    <slot name="prefix" />
+  </span>
+  <span v-if="$slots.default" class="ds-badge__label">
+    <slot />
+  </span>
+</component>

@@ -1,0 +1,162 @@
+// src/components/DsRadioGroup/DsRadioGroup.scss
+@use '@/styles/mixins/focus-ring' as *;
+@use '@/styles/mixins/target-size' as *;
+
+@layer ds.components {
+  .ds-radio-group {
+    border: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-space-2);
+    inline-size: 100%;
+
+    &__legend {
+      font-size: var(--ds-font-size-sm);
+      font-weight: 600;
+      color: var(--ds-color-text-primary);
+      margin-block-end: var(--ds-space-2);
+      padding: 0;
+    }
+
+    &__options {
+      display: flex;
+      gap: var(--ds-space-3);
+    }
+
+    &--vertical &__options {
+      flex-direction: column;
+    }
+
+    &--horizontal &__options {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+
+    &__error {
+      display: flex;
+      align-items: center;
+      gap: var(--ds-space-1);
+      font-size: var(--ds-font-size-xs);
+      color: var(--ds-color-text-error);
+      font-weight: 500;
+      margin-block-start: var(--ds-space-1);
+    }
+  }
+
+  .ds-radio-item {
+    @include target-size(1.5rem, 2.75rem);
+
+    display: inline-flex;
+    align-items: flex-start;
+    gap: var(--ds-space-2);
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+
+    &__control {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      inline-size: 1.25rem;  // 20px
+      block-size: 1.25rem;
+      flex-shrink: 0;
+      margin-block-start: 0.125rem;
+    }
+
+    &__input {
+      position: absolute;
+      inset: 0;
+      margin: 0;
+      opacity: 0;
+      cursor: pointer;
+      inline-size: 100%;
+      block-size: 100%;
+      z-index: 1;
+
+      &:focus-visible + .ds-radio-item__circle {
+        outline: 2px solid var(--ds-color-focus-ring);
+        outline-offset: 2px;
+      }
+    }
+
+    &__circle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+      inline-size: 100%;
+      block-size: 100%;
+      border-radius: var(--ds-radius-full);
+      border: 2px solid var(--ds-color-border-interactive);
+      background-color: var(--ds-color-bg-base);
+      transition: border-color var(--ds-motion-duration-fast) var(--ds-motion-easing-default);
+    }
+
+    &__dot {
+      inline-size: 0.5rem;
+      block-size: 0.5rem;
+      border-radius: var(--ds-radius-full);
+      background-color: var(--ds-color-brand-fill);
+      opacity: 0;
+      transform: scale(0.5);
+      transition: opacity var(--ds-motion-duration-fast) var(--ds-motion-easing-default),
+                  transform var(--ds-motion-duration-fast) var(--ds-motion-easing-default);
+    }
+
+    &--checked {
+      .ds-radio-item__circle {
+        border-color: var(--ds-color-brand-fill);
+      }
+
+      .ds-radio-item__dot {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    &--disabled {
+      cursor: not-allowed;
+      opacity: 0.6;
+
+      .ds-radio-item__input {
+        cursor: not-allowed;
+      }
+
+      .ds-radio-item__circle {
+        border-color: var(--ds-color-border-default);
+        background-color: var(--ds-color-bg-muted);
+      }
+    }
+
+    &__content {
+      display: flex;
+      flex-direction: column;
+      gap: 0.125rem;
+    }
+
+    &__label {
+      font-size: var(--ds-font-size-base);
+      color: var(--ds-color-text-primary);
+      font-weight: 500;
+    }
+
+    &__desc {
+      font-size: var(--ds-font-size-xs);
+      color: var(--ds-color-text-muted);
+      line-height: var(--ds-line-height-normal);
+    }
+
+    @media (forced-colors: active) {
+      .ds-radio-item__circle {
+        border-color: CanvasText;
+      }
+
+      &--checked .ds-radio-item__dot {
+        background-color: Highlight;
+      }
+    }
+  }
+}

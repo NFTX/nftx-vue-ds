@@ -1,0 +1,35 @@
+<div
+  class="ds-field"
+  :class="{
+    'ds-field--error': hasError,
+    'ds-field--disabled': disabled
+  }"
+>
+  <div class="ds-field__header">
+    <label :id="labelId" :for="controlId" class="ds-field__label">
+      <slot name="label">{{ label }}</slot>
+      <span v-if="required" class="ds-field__required" aria-hidden="true">*</span>
+    </label>
+  </div>
+
+  <div class="ds-field__control">
+    <slot
+      :id="controlId"
+      :aria-describedby="ariaDescribedby"
+      :aria-invalid="hasError"
+      :required="required"
+      :disabled="disabled"
+    />
+  </div>
+
+  <p v-if="hint && !hasError" :id="hintId" class="ds-field__hint">
+    <slot name="hint">{{ hint }}</slot>
+  </p>
+
+  <div v-if="hasError" :id="errorId" class="ds-field__error" role="alert">
+    <DsIcon :icon="AlertCircle" size="sm" class="ds-field__error-icon" />
+    <span class="ds-field__error-text">
+      <slot name="error">{{ error }}</slot>
+    </span>
+  </div>
+</div>

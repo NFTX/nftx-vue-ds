@@ -1,0 +1,31 @@
+<label
+  :for="computedId"
+  class="ds-switch-wrapper"
+  :class="[
+    `ds-switch-wrapper--${size}`,
+    {
+      'ds-switch-wrapper--checked': isChecked,
+      'ds-switch-wrapper--disabled': disabled
+    }
+  ]"
+>
+  <button
+    type="button"
+    role="switch"
+    :id="computedId"
+    :aria-checked="isChecked"
+    :aria-label="computedAriaLabel"
+    :disabled="disabled"
+    class="ds-switch"
+    v-bind="$attrs"
+    @click="handleToggle"
+  >
+    <span class="ds-switch__track" aria-hidden="true">
+      <span class="ds-switch__thumb" />
+    </span>
+  </button>
+
+  <span v-if="label || $slots.default" class="ds-switch-wrapper__label">
+    <slot>{{ label }}</slot>
+  </span>
+</label>

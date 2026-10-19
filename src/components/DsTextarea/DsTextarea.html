@@ -1,0 +1,32 @@
+<div
+  class="ds-textarea-wrapper"
+  :class="{
+    'ds-textarea-wrapper--disabled': computedDisabled,
+    'ds-textarea-wrapper--invalid': computedInvalid
+  }"
+>
+  <textarea
+    v-model="model"
+    :id="computedId"
+    :rows="rows"
+    :placeholder="placeholder"
+    :disabled="computedDisabled"
+    :required="computedRequired"
+    :readonly="readonly"
+    :maxlength="maxlength"
+    :aria-invalid="computedInvalid ? 'true' : undefined"
+    :aria-describedby="computedDescribedby"
+    class="ds-textarea"
+    :style="{ resize }"
+    v-bind="$attrs"
+  />
+
+  <div
+    v-if="showCount || maxlength !== undefined"
+    :id="countId"
+    class="ds-textarea__count"
+    aria-live="polite"
+  >
+    {{ countText }}
+  </div>
+</div>

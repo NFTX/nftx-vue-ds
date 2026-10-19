@@ -1,0 +1,119 @@
+// src/components/DsBadge/DsBadge.scss
+@layer ds.components {
+  .ds-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-sizing: border-box;
+    font-weight: 500;
+    line-height: 1;
+    white-space: nowrap;
+    border-radius: var(--ds-radius-full);
+    border: 1px solid transparent;
+
+    &__dot {
+      display: inline-block;
+      border-radius: var(--ds-radius-full);
+      background-color: currentColor;
+      flex-shrink: 0;
+    }
+
+    &__prefix {
+      display: inline-flex;
+      align-items: center;
+      margin-inline-end: var(--ds-space-1);
+    }
+
+    // Sizes
+    &--sm {
+      font-size: var(--ds-font-size-xs);
+      padding-block: 0.125rem;
+      padding-inline: var(--ds-space-2);
+      gap: 0.25rem;
+
+      .ds-badge__dot {
+        inline-size: 0.375rem;
+        block-size: 0.375rem;
+      }
+    }
+
+    &--md {
+      font-size: var(--ds-font-size-sm);
+      padding-block: var(--ds-space-1);
+      padding-inline: var(--ds-space-3);
+      gap: 0.375rem;
+
+      .ds-badge__dot {
+        inline-size: 0.5rem;
+        block-size: 0.5rem;
+      }
+    }
+
+    &--lg {
+      font-size: var(--ds-font-size-base);
+      padding-block: var(--ds-space-1);
+      padding-inline: var(--ds-space-4);
+      gap: 0.5rem;
+
+      .ds-badge__dot {
+        inline-size: 0.625rem;
+        block-size: 0.625rem;
+      }
+    }
+
+    &--dot-only {
+      padding: var(--ds-space-1);
+    }
+
+    // Variants
+    &--neutral {
+      background-color: var(--ds-color-bg-muted);
+      color: var(--ds-color-text-secondary);
+      border-color: var(--ds-color-border-default);
+    }
+
+    &--brand {
+      background-color: var(--ds-color-brand-surface);
+      color: var(--ds-color-brand-text);
+      border-color: var(--ds-color-brand-border);
+    }
+
+    &--success {
+      background-color: var(--ds-color-success-surface);
+      color: var(--ds-color-text-success);
+      border-color: var(--ds-color-success-border);
+    }
+
+    &--warning {
+      background-color: var(--ds-color-warning-surface);
+      color: var(--ds-color-text-warning);
+      border-color: var(--ds-color-warning-border);
+    }
+
+    &--error {
+      background-color: var(--ds-color-error-surface);
+      color: #b91c1c;
+      border-color: var(--ds-color-error-border);
+    }
+
+    :global([data-theme='dark']) &--error,
+    :global(.dark) &--error {
+      color: var(--ds-color-text-error);
+    }
+
+    &--info {
+      background-color: var(--ds-color-info-surface);
+      color: var(--ds-color-text-info);
+      border-color: var(--ds-color-info-border);
+    }
+
+    @media (forced-colors: active) {
+      border: 1px solid CanvasText;
+
+      .ds-badge__dot {
+        background-color: CanvasText;
+      }
+    }
+  }
+}

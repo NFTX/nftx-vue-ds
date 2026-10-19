@@ -1,0 +1,29 @@
+// src/components/DsIcon/DsIcon.scss
+@layer ds.components {
+  .ds-icon {
+    display: inline-block;
+    vertical-align: middle;
+    flex-shrink: 0;
+    line-height: 1;
+
+    &--sm {
+      inline-size: 1rem;     // 16px
+      block-size: 1rem;
+    }
+
+    &--md {
+      inline-size: 1.25rem;  // 20px
+      block-size: 1.25rem;
+    }
+
+    &--lg {
+      inline-size: 1.5rem;   // 24px
+      block-size: 1.5rem;
+    }
+
+    &--xl {
+      inline-size: 2rem;     // 32px
+      block-size: 2rem;
+    }
+  }
+}
