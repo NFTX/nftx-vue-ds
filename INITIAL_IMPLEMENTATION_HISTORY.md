@@ -91,3 +91,30 @@ This document tracks the phased implementation, quality gates, and verification 
 | 6 | `npm run build` | Vite lib build + dts (PKG-01..03) | **PASS** (Clean build, 24.18 kB styles.css, 780 kB ESM bundle) |
 | 7 | `npm run test:smoke` | Consumer fixture test (TEST-12) | **PASS** (0 alias leaks, builds cleanly) |
 
+---
+
+## Phase 2b: Pilot Integration
+
+**Status:** Completed & Verified  
+**Date:** 2026-10-19  
+
+### Summary of Work Delivered
+1. **Local Version Tagging:**
+   - Tagged `v0.1.0` locally on `@nftx/vue-ds`.
+2. **Real Consumer App Integration (`portal`):**
+   - Installed `@nftx/vue-ds` into `/workspace/Projects/portal`.
+   - Imported `@nftx/vue-ds/styles.css` into `portal/src/main.ts`.
+   - Migrated `FallbackError` screen (`FallbackError.vue`, `FallbackError.html`) to replace custom icon and button markup with design system components `DsButton` and `DsIcon`.
+3. **API Friction & Verification Review:**
+   - Executed `vue-tsc` and `vite build` in `portal` with 0 errors.
+   - Verified that tree-shaking and component resolution functioned smoothly without type friction or bundle failures.
+   - Committed changes cleanly in the consumer repository.
+
+### Verification Scorecard (`portal` consumer build)
+
+| Step | Gate Command | Target / Rule | Result |
+| :--- | :--- | :--- | :--- |
+| 1 | `npm run build` in `portal` | `vue-tsc && vite build` | **PASS** (0 type errors, clean production bundle) |
+| 2 | Component integration | `DsButton` & `DsIcon` in `FallbackError` | **PASS** (Zero API friction, semantic markup verified) |
+
+
