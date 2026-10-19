@@ -395,12 +395,12 @@ flowchart LR
 ```
 
 ### Phase 1: Foundation, Tokens & Tooling
-- [ ] Scaffold Vite + Vue 3.5 + TypeScript + Dart Sass (`modern-compiler` API) library project with `@/*` aliases.
-- [ ] Implement primitive + semantic tokens (§3, §4), light/dark/system themes, `forced-colors`, and reduced motion.
-- [ ] Add mixins: `focus-ring`, `visually-hidden`, `target-size`. Add `DsVisuallyHidden`.
-- [ ] Set up Storybook 10 (`addon-a11y` as gate, `addon-themes`, `addon-vitest`) and Foundations MDX pages.
-- [ ] Add `scripts/contrast-check.ts`, ESLint + vue-a11y plugin, `vue-tsc`, and the CI pipeline (Guidelines §11).
-- **Exit:** all CI gates green; Foundations docs show measured ratios matching §3.
+- [x] Scaffold Vite + Vue 3.5 + TypeScript + Dart Sass (`modern-compiler` API) library project with `@/*` aliases.
+- [x] Implement primitive + semantic tokens (§3, §4), light/dark/system themes, `forced-colors`, and reduced motion.
+- [x] Add mixins: `focus-ring`, `visually-hidden`, `target-size`. Add `DsVisuallyHidden`.
+- [x] Set up Storybook 10 (`addon-a11y` as gate, `addon-themes`, `addon-vitest`) and Foundations MDX pages.
+- [x] Add `scripts/contrast-check.ts`, ESLint + vue-a11y plugin, `vue-tsc`, and the CI pipeline (Guidelines §11).
+- **Exit:** all CI gates green; Foundations docs show measured ratios matching §3. (COMPLETED)
 
 ### Phase 2: Core & Form Atoms
 - [ ] `DsIcon`, `DsButton`, `DsLink`, `DsSpinner`, `DsBadge`.

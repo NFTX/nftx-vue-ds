@@ -1,0 +1,34 @@
+// src/styles/mixins/_target-size.scss
+// Enforces RESP-04: Target Size (Minimum) WCAG 2.2 SC 2.5.8
+
+@mixin target-size($min-fine: 1.5rem, $min-coarse: 2.75rem) {
+  min-inline-size: $min-fine;
+  min-block-size: $min-fine;
+
+  @media (pointer: coarse) {
+    min-inline-size: $min-coarse;
+    min-block-size: $min-coarse;
+  }
+}
+
+// Pseudo-element target expansion for visually compact controls
+@mixin target-size-pseudo($min-fine: 1.5rem, $min-coarse: 2.75rem) {
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
+    transform: translate(-50%, -50%);
+    min-inline-size: $min-fine;
+    min-block-size: $min-fine;
+    inline-size: 100%;
+    block-size: 100%;
+
+    @media (pointer: coarse) {
+      min-inline-size: $min-coarse;
+      min-block-size: $min-coarse;
+    }
+  }
+}

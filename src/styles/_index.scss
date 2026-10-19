@@ -1,0 +1,10 @@
+// src/styles/_index.scss
+// Public SCSS entry point for @nftx/vue-ds
+@forward 'tokens/primitives';
+@forward 'tokens/breakpoints';
+@forward 'tokens/semantic';
+@forward 'mixins/focus-ring';
+@forward 'mixins/visually-hidden';
+@forward 'mixins/target-size';
+@use 'tokens/semantic';
+@use 'base';

@@ -1,0 +1,50 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="Foundations/Colors" />
+
+# Color System (Crimson-Wine Primary)
+
+The `@nftx/vue-ds` color architecture establishes a deep crimson-wine primary brand palette (`rose-800` light, `rose-700` dark) strictly separated from error red (`red-600` light, `red-400` dark).
+
+All ratios below are mathematically measured using the WCAG 2.2 relative-luminance formula and enforced automatically by `scripts/contrast-check.ts`.
+
+---
+
+## 1. Primary Palette (Primitives)
+
+| Token | Hex | vs White (#FFF) | vs Dark Surface (#0F172A) | Role / Conformance |
+| :--- | :--- | :--- | :--- | :--- |
+| `rose-50` | `#FFF1F2` | 1.10:1 | 16.25:1 | Light tint backgrounds |
+| `rose-100` | `#FFE4E6` | 1.20:1 | 14.87:1 | Light hover surfaces |
+| `rose-200` | `#FECDD3` | 1.41:1 | 12.66:1 | Subtle borders |
+| `rose-300` | `#FDA4AF` | 1.89:1 | **9.44:1** | **Dark-mode brand text & focus ring (AAA)** |
+| `rose-400` | `#FB7185` | 2.69:1 | 6.63:1 | Dark-mode hover text, dark button border |
+| `rose-500` | `#F43F5E` | 3.67:1 | 4.86:1 | Decorative only |
+| `rose-600` | `#E11D48` | 4.70:1 | 3.80:1 | Not used for brand fills (reserved) |
+| `rose-700` | `#BE123C` | **6.29:1** | 2.84:1 | **Dark-mode brand fill (white text 6.29:1, AA)** |
+| `rose-800` | `#9F1239` | **8.02:1** | 2.23:1 | **Light-mode brand base: fill, text, focus ring (AAA)** |
+| `rose-900` | `#881337` | **9.57:1** | 1.87:1 | Light-mode hover/active fill |
+| `rose-950` | `#4C0519` | 15.64:1 | 1.14:1 | Dark-mode subtle brand surface |
+
+---
+
+## 2. Semantic Role Mapping
+
+| Role | Light Theme | Dark Theme | Min Contrast Required |
+| :--- | :--- | :--- | :--- |
+| `brand-fill` + `on-brand` | `rose-800` + White (8.02:1, AAA) | `rose-700` + White (6.29:1, AA) | ≥ 4.5:1 (AA) / ≥ 7.0:1 (AAA) |
+| `brand-text` | `rose-800` (8.02:1 on White, 7.66:1 on surface) | `rose-300` (9.44:1 on slate-900) | ≥ 7.0:1 (AAA) |
+| `focus-ring` | `rose-800` (8.02:1 vs White) | `rose-300` (9.44:1 vs slate-900) | ≥ 3.0:1 (UI boundary) |
+| `error-text` | `red-600` (4.83:1 vs White) | `red-400` (6.45:1 vs slate-900) | ≥ 4.5:1 (AA) |
+| `success-text` | `emerald-700` (5.48:1 vs White) | `emerald-500` (7.04:1 vs slate-900) | ≥ 4.5:1 (AA) |
+| `warning-text` | `amber-700` (5.02:1 vs White) | `amber-500` (8.31:1 vs slate-900) | ≥ 4.5:1 (AA) |
+| `info-text` | `sky-700` (5.93:1 vs White) | `sky-500` (6.44:1 vs slate-900) | ≥ 4.5:1 (AA) |
+| `border-interactive` | `slate-500` (4.76:1 vs White) | `slate-500` (3.75:1 vs slate-900) | ≥ 3.0:1 (UI boundary) |
+
+---
+
+## 3. Brand vs. Error Perceptual Separation ($\Delta E$)
+
+To avoid confusing brand red with error red:
+- **Light Theme Separation:** `rose-800` vs `red-600` achieves $\Delta E(\text{OKLab}) = \mathbf{13.8}$ (exceeds $\ge 10.0$).
+- **Dark Theme Separation:** `rose-300` vs `red-400` achieves $\Delta E(\text{OKLab}) = \mathbf{11.8}$ (exceeds $\ge 10.0$).

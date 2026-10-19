@@ -1,0 +1,86 @@
+{
+  "name": "@nftx/vue-ds",
+  "version": "0.1.0",
+  "description": "Standalone Vue 3 Design System with framework-agnostic design tokens",
+  "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "peerDependencies": {
+    "vue": "^3.5.0"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./styles.css": "./dist/styles.css",
+    "./tokens.css": "./dist/tokens.css",
+    "./scss": "./src/styles/_index.scss"
+  },
+  "files": [
+    "dist",
+    "src/styles"
+  ],
+  "scripts": {
+    "lint": "eslint .",
+    "typecheck": "vue-tsc --noEmit",
+    "test:tokens": "node --experimental-strip-types scripts/contrast-check.ts",
+    "test:unit": "vitest run --project=unit --coverage",
+    "test:storybook": "vitest run --project=storybook",
+    "build": "vite build",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
+    "test:smoke": "node --experimental-strip-types scripts/smoke-consumer.ts",
+    "verify": "npm run lint && npm run typecheck && npm run test:tokens && npm run test:unit && npm run test:storybook && npm run build && npm run test:smoke"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NFTX/nftx-vue-ds.git"
+  },
+  "keywords": [
+    "vue",
+    "vue3",
+    "design-system",
+    "tokens",
+    "accessibility",
+    "wcag"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/NFTX/nftx-vue-ds/issues"
+  },
+  "homepage": "https://github.com/NFTX/nftx-vue-ds#readme",
+  "dependencies": {
+    "lucide-vue-next": "^1.0.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@storybook/addon-a11y": "^10.6.2",
+    "@storybook/addon-docs": "^10.6.2",
+    "@storybook/addon-themes": "^10.6.2",
+    "@storybook/addon-vitest": "^10.6.2",
+    "@storybook/vue3-vite": "^10.6.2",
+    "@types/node": "^22.20.5",
+    "@vitejs/plugin-vue": "^6.0.10",
+    "@vitest/browser": "^5.0.5",
+    "@vitest/browser-playwright": "^5.0.5",
+    "@vitest/coverage-v8": "^5.0.5",
+    "@vue/server-renderer": "^3.5.44",
+    "@vue/test-utils": "^2.5.1",
+    "eslint": "^10.13.0",
+    "eslint-plugin-vue": "^10.11.1",
+    "eslint-plugin-vuejs-accessibility": "^2.6.2",
+    "playwright": "^1.64.1",
+    "sass": "^1.105.2",
+    "storybook": "^10.6.2",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.72.0",
+    "vite": "^8.3.4",
+    "vite-plugin-dts": "^5.1.2",
+    "vitest": "^5.0.5",
+    "vue": "^3.5.44",
+    "vue-tsc": "^3.3.13"
+  }
+}

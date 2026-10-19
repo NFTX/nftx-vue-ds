@@ -1,0 +1,43 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="Foundations/Typography" />
+
+# Typography & Type Scale
+
+The typography scale is strictly defined in `rem` units, allowing text to reflow and scale proportionately when the user overrides their default browser root font size (WCAG 2.2 SC 1.4.4 Resize Text).
+
+---
+
+## 1. System Font Stack
+
+We adopt a zero-network, 100% offline system font stack:
+
+```css
+--ds-font-family-system: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+--ds-font-family-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+```
+
+---
+
+## 2. Type Scale
+
+| Token | Rem | Equivalent at 16px root | Line Height | Typical Usage |
+| :--- | :--- | :--- | :--- | :--- |
+| `--ds-font-size-xs` | `0.75rem` | 12px | 1.5 | Badges, captions, hints |
+| `--ds-font-size-sm` | `0.875rem` | 14px | 1.5 | Form labels, helper text, secondary buttons |
+| `--ds-font-size-base` | `1rem` | 16px | 1.5 | Body text, inputs, standard buttons |
+| `--ds-font-size-lg` | `1.125rem` | 18px | 1.5 | Card titles, prominent subheadings |
+| `--ds-font-size-xl` | `1.25rem` | 20px | 1.25 | H3, dialog headings |
+| `--ds-font-size-2xl` | `1.5rem` | 24px | 1.25 | H2, section titles |
+| `--ds-font-size-3xl` | `1.875rem` | 30px | 1.25 | H1, page titles |
+| `--ds-font-size-4xl` | `2.25rem` | 36px | 1.25 | Hero headings |
+
+---
+
+## 3. WCAG Text Spacing Compliance (SC 1.4.12)
+
+All components are built to survive user stylesheet spacing overrides without layout breakage or text clipping:
+- Line height: `1.5`
+- Paragraph spacing: `2em`
+- Letter spacing: `0.12em`
+- Word spacing: `0.16em`

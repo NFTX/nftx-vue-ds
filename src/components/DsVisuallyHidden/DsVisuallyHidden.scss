@@ -1,0 +1,8 @@
+// src/components/DsVisuallyHidden/DsVisuallyHidden.scss
+@use '@/styles/mixins/visually-hidden' as *;
+
+@layer ds.components {
+  .ds-visually-hidden {
+    @include visually-hidden;
+  }
+}

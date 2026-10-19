@@ -1,0 +1,5 @@
+// src/styles/tokens/tokens.scss
+// Standalone framework-agnostic tokens CSS entry point
+@forward 'primitives';
+@forward 'breakpoints';
+@use 'semantic';
