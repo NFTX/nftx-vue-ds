@@ -1,0 +1,33 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="Foundations/Accessibility" />
+
+# Accessibility Principles & Quality Gates
+
+`@nftx/vue-ds` targets **WCAG 2.2 Level AA** as a strict minimum, achieving AAA in contrast, focus appearance, and reduced motion.
+
+---
+
+## 1. Zero Headless UI Dependencies (`ARCH-01`)
+
+To maximize long-term maintainability, avoid external dependency churn, and remain 100% lightweight, we leverage native browser primitives:
+- Native `<dialog>` and `showModal()` for modal focus trapping, top layer placement, and Esc dismissal.
+- Native Popover API (`popover="auto"` / `popover="manual"`) for light dismiss and non-modal overlays.
+- Native CSS Anchor Positioning (`anchor-name`, `position-anchor`) with a fallback for older engines.
+- Native `<select>` with progressive enhancements.
+- Small in-house composables (`useRovingFocus`, `useTypeahead`, `useFocusReturn`, `useAnnouncer`) for remaining APG gaps.
+
+---
+
+## 2. High Contrast & Forced Colors (`CSS-07`)
+
+When Windows High Contrast / Forced Colors mode is active:
+- Focus rings map to the system `Highlight` color.
+- Interactive boundaries use `ButtonText` or `CanvasText`.
+- Background shadows and glass blurs are disabled to prevent illegibility.
+
+---
+
+## 3. Reduced Motion (`TOK-05`)
+
+Under `@media (prefers-reduced-motion: reduce)`, all transition and animation duration tokens collapse to `0ms`. Non-essential movement is eliminated while preserving functional state changes.

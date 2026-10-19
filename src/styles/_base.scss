@@ -1,0 +1,45 @@
+// src/styles/_base.scss
+// Minimal base layer conforming to TOK-02 and CSS-01..CSS-08
+
+@layer ds.base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+  }
+
+  html {
+    font-family: var(--ds-font-family-system, system-ui, -apple-system, sans-serif);
+    font-size: 100%;
+    line-height: var(--ds-line-height-normal, 1.5);
+    color: var(--ds-color-text-primary);
+    background-color: var(--ds-color-bg-base);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scrollbar-gutter: stable;
+
+    // Prevent body scroll when native modal dialog is open
+    &:has(dialog:modal) {
+      overflow: hidden;
+    }
+  }
+
+  body {
+    min-block-size: 100%;
+    margin: 0;
+  }
+
+  // Anchor and button base reset
+  button,
+  input,
+  optgroup,
+  select,
+  textarea {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    color: inherit;
+  }
+}
