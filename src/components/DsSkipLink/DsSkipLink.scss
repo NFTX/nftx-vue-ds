@@ -1,0 +1,49 @@
+// src/components/DsSkipLink/DsSkipLink.scss
+@use '@/styles/mixins/focus-ring' as fr;
+@use '@/styles/mixins/target-size' as ts;
+
+@layer ds.components {
+  .ds-skip-link {
+    position: fixed;
+    inset-block-start: var(--ds-space-2);
+    inset-inline-start: var(--ds-space-2);
+    z-index: var(--ds-z-index-toast);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding-block: var(--ds-space-2);
+    padding-inline: var(--ds-space-4);
+    background-color: var(--ds-color-brand-fill);
+    color: var(--ds-color-on-brand);
+    font-size: var(--ds-font-size-sm);
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: var(--ds-radius-md);
+    box-shadow: var(--ds-shadow-lg);
+    box-sizing: border-box;
+
+    // Default offscreen/clipped state (hidden from sight until focused)
+    transform: translateY(-200%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform var(--ds-motion-duration-fast) var(--ds-motion-easing-default),
+                opacity var(--ds-motion-duration-fast) var(--ds-motion-easing-default);
+
+    @include ts.target-size(1.5rem, 2.75rem);
+
+    // Visible on keyboard focus
+    &:focus,
+    &:focus-visible {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+      @include fr.focus-ring(2px, 2px);
+    }
+
+    @media (forced-colors: active) {
+      background-color: Highlight;
+      color: HighlightText;
+      border: 2px solid ButtonText;
+    }
+  }
+}

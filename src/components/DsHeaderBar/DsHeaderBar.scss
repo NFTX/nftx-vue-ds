@@ -1,0 +1,172 @@
+// src/components/DsHeaderBar/DsHeaderBar.scss
+@use '@/styles/tokens/breakpoints' as bp;
+@use '@/styles/mixins/focus-ring' as fr;
+@use '@/styles/mixins/target-size' as ts;
+
+@layer ds.components {
+  .ds-header-bar {
+    position: relative;
+    inline-size: 100%;
+    min-block-size: var(--ds-header-height, 4rem);
+    background-color: var(--ds-color-bg-elevated);
+    border-block-end: 1px solid var(--ds-color-border-subtle);
+    color: var(--ds-color-text-primary);
+    box-sizing: border-box;
+    transition: background-color var(--ds-motion-duration-base) var(--ds-motion-easing-default),
+                border-color var(--ds-motion-duration-base) var(--ds-motion-easing-default);
+
+    &--sticky {
+      position: sticky;
+      inset-block-start: 0;
+      z-index: var(--ds-z-index-sticky);
+      backdrop-filter: blur(12px);
+    }
+
+    &__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--ds-space-4);
+      max-inline-size: 80rem; // 1280px
+      margin-inline: auto;
+      padding-block: var(--ds-space-3);
+      padding-inline: var(--ds-space-4);
+      min-block-size: inherit;
+      box-sizing: border-box;
+
+      @media (min-width: bp.$ds-bp-sm) {
+        padding-inline: var(--ds-space-6);
+      }
+    }
+
+    &__brand {
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      gap: var(--ds-space-1);
+    }
+
+    &__title {
+      font-size: var(--ds-font-size-xl);
+      font-weight: 700;
+      line-height: var(--ds-line-height-tight);
+      margin: 0;
+      color: var(--ds-color-text-primary);
+    }
+
+    &__subtitle {
+      font-size: var(--ds-font-size-xs);
+      color: var(--ds-color-text-muted);
+      margin: 0;
+      line-height: var(--ds-line-height-normal);
+    }
+
+    &__center {
+      flex: 1 1 auto;
+      max-inline-size: 36rem;
+      display: none;
+
+      @media (min-width: bp.$ds-bp-md) {
+        display: flex;
+        justify-content: center;
+      }
+    }
+
+    &__actions {
+      display: flex;
+      align-items: center;
+      gap: var(--ds-space-2);
+      flex-shrink: 0;
+    }
+
+    &__nav {
+      display: none;
+      align-items: center;
+      gap: var(--ds-space-4);
+
+      @media (min-width: bp.$ds-bp-md) {
+        display: flex;
+      }
+    }
+
+    &__theme-toggle,
+    &__mobile-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      color: var(--ds-color-text-secondary);
+      border: 1px solid var(--ds-color-border-default);
+      border-radius: var(--ds-radius-md);
+      cursor: pointer;
+      padding: var(--ds-space-2);
+      transition: color var(--ds-motion-duration-fast) var(--ds-motion-easing-default),
+                  background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-default),
+                  border-color var(--ds-motion-duration-fast) var(--ds-motion-easing-default);
+
+      @include ts.target-size(2rem, 2.75rem);
+      @include fr.focus-ring(2px, 2px);
+
+      @media (hover: hover) and (pointer: fine) {
+        &:hover {
+          color: var(--ds-color-text-primary);
+          background-color: var(--ds-color-bg-muted);
+          border-color: var(--ds-color-border-interactive);
+        }
+      }
+
+      &:active {
+        background-color: var(--ds-color-bg-surface);
+      }
+    }
+
+    &__mobile-toggle {
+      display: inline-flex;
+
+      @media (min-width: bp.$ds-bp-md) {
+        display: none;
+      }
+    }
+
+    &__mobile-menu {
+      border-block-start: 1px solid var(--ds-color-border-subtle);
+      background-color: var(--ds-color-bg-elevated);
+      padding: var(--ds-space-4);
+      box-sizing: border-box;
+
+      @media (min-width: bp.$ds-bp-md) {
+        display: none;
+      }
+    }
+
+    &__mobile-menu-content {
+      display: flex;
+      flex-direction: column;
+      gap: var(--ds-space-4);
+    }
+
+    &__mobile-search {
+      inline-size: 100%;
+    }
+
+    &__mobile-nav {
+      display: flex;
+      flex-direction: column;
+      gap: var(--ds-space-2);
+    }
+
+    @media (forced-colors: active) {
+      border-block-end: 1px solid CanvasText;
+
+      &__theme-toggle,
+      &__mobile-toggle {
+        border: 1px solid ButtonText;
+        color: ButtonText;
+      }
+
+      &__mobile-menu {
+        border-block-start: 1px solid CanvasText;
+      }
+    }
+  }
+}

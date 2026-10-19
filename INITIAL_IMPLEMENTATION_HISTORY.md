@@ -163,5 +163,48 @@ This document tracks the phased implementation, quality gates, and verification 
 | 6 | `npm run build` | Vite lib build + dts (PKG-01..03) | **PASS** (Clean build, 50.80 kB styles.css, 812.65 kB bundle, .d.ts generated) |
 | 7 | `npm run test:smoke` | Consumer fixture test (TEST-12) | **PASS** (0 alias leaks, clean consumer build) |
 
+---
+
+## Phase 4: Layout & Page Primitives
+
+**Status:** Completed & Verified  
+**Date:** 2026-10-19  
+
+### Summary of Work Delivered
+1. **Layout & Page Primitives (`src/components/`, `VUE-01`..`VUE-10`):**
+   - **`DsSkipLink`:** Accessible landmark bypass link conforming to WCAG 2.2 SC 2.4.1 (Bypass Blocks). First focusable element on the page, visually hidden until focused via `:focus` / `:focus-visible`, provides smooth scroll and temporary programmatic focus handling on target containers.
+   - **`DsHeaderBar`:** Semantic `<header>` landmark (`role="banner"`) with brand area, center search slot, navigation links, integrated theme toggle (`light` / `dark`), responsive mobile menu toggle (`aria-expanded`, `aria-controls`), and sticky positioning support adhering to WCAG 2.2 SC 2.4.11 (`scroll-padding-top: var(--ds-header-height)`).
+   - **`DsCardGrid`:** Responsive auto-fit CSS grid layout with gap tokens (`xs` through `xl`), semantic list structure (`role="list"` and `role="listitem"`), and intrinsic fluid columns guaranteeing zero horizontal overflow down to 320px viewport width (WCAG SC 1.4.10 Reflow).
+   - **`DsEmptyState`:** Informative empty state organism with icon wrapper, semantic title (`headingTag` prop), description, and customizable action CTA slot or button for zero search results, network errors, and empty lists.
+
+2. **Strict 6-File Component Structure (`VUE-01`..`VUE-03`):**
+   - Every Phase 4 component delivered across all 6 mandatory files:
+     - `DsSkipLink`: `.vue`, `.html`, `.scss`, `.stories.ts`, `.spec.ts`, `index.ts`
+     - `DsHeaderBar`: `.vue`, `.html`, `.scss`, `.stories.ts`, `.spec.ts`, `index.ts`
+     - `DsCardGrid`: `.vue`, `.html`, `.scss`, `.stories.ts`, `.spec.ts`, `index.ts`
+     - `DsEmptyState`: `.vue`, `.html`, `.scss`, `.stories.ts`, `.spec.ts`, `index.ts`
+   - Re-exported from library entry `src/index.ts`.
+
+3. **Storybook 10 & Full Page Demo (`SB-01`..`SB-05`):**
+   - Created `HomelabDashboardDemo` (`src/docs/DemoPage.stories.ts`) integrating `DsSkipLink`, `DsHeaderBar`, `DsSearchBar`, `DsChipGroup`, `DsCardGrid`, `DsCard`, and `DsEmptyState` into a cohesive page layout.
+   - Verified zero `axe-core` accessibility violations in both light and dark modes.
+
+4. **Responsive & Target Size Audit (`RESP-01`..`RESP-07`, `A11Y-01`..`A11Y-19`):**
+   - Verified 320px viewport reflow with zero horizontal scroll across all stories and components.
+   - Verified touch target sizes meet ≥ 24px on fine pointers and ≥ 44px on coarse pointers (`@media (pointer: coarse)`).
+
+### Verification Scorecard (`npm run verify`)
+
+| Step | Gate Command | Target / Rule | Result |
+| :--- | :--- | :--- | :--- |
+| 1 | `npm run lint` | ESLint + vue-a11y rules | **PASS** (0 errors, 0 warnings) |
+| 2 | `npm run typecheck` | `vue-tsc --noEmit` | **PASS** (0 errors) |
+| 3 | `npm run test:tokens` | `contrast-check.ts` (TOK-04, A11Y-01..03, TEST-11) | **PASS** (43/43 symmetric tokens, 22/22 contrast pairs, $\Delta E \ge 10$) |
+| 4 | `npm run test:unit` | Vitest Browser Mode with Coverage (TEST-02, TEST-04) | **PASS** (155/155 tests passed; all coverage thresholds met; composables at 100%) |
+| 5 | `npm run test:storybook` | Storybook test + axe-core (SB-02, TEST-08) | **PASS** (77/77 tests passed across 25 story suites, 0 axe violations) |
+| 6 | `npm run build` | Vite lib build + dts (PKG-01..03) | **PASS** (Clean build, 64.92 kB styles.css, 831 kB ESM bundle, .d.ts generated) |
+| 7 | `npm run test:smoke` | Consumer fixture test (TEST-12) | **PASS** (0 alias leaks, clean consumer build) |
+
+
 
 

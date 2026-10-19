@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Layout & Page Primitives (Phase 4):**
+  - `DsSkipLink`: Accessible landmark bypass link (first focusable element on page, WCAG 2.2 SC 2.4.1) with smooth scrolling and temporary programmatic focus handling.
+  - `DsHeaderBar`: Semantic `<header>` landmark (`role="banner"`) with navigation slots, responsive mobile drawer toggle, theme switcher, and sticky positioning support (`scroll-padding-top` compliant).
+  - `DsCardGrid`: Auto-fit responsive CSS grid layout with gap tokens and semantic list structure (`role="list"` / `<li>`) guaranteeing zero overflow at 320px width.
+  - `DsEmptyState`: Feedback organism communicating empty search queries, zero-data states, or offline connection states with icons, semantic headings, and action CTAs.
+  - `HomelabDashboardDemo`: Full-page integration Storybook demo verifying composition of layout, form atoms, and composite widgets with 0 axe violations.
 - **Accessibility Composables (`src/composables/a11y/`):**
   - `useRovingFocus`: Bidirectional and linear roving tabindex navigation for interactive collections.
   - `useTypeahead`: Dynamic character-prefix search for menus and list components.

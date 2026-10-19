@@ -1,0 +1,23 @@
+<component
+  :is="tag"
+  class="ds-card-grid"
+  :class="[
+    gapClass,
+    { 'ds-card-grid--dense': dense }
+  ]"
+  :style="gridStyle"
+  role="list"
+  v-bind="$attrs"
+>
+  <template v-if="items && items.length">
+    <li
+      v-for="(item, index) in items"
+      :key="index"
+      class="ds-card-grid__item"
+      role="listitem"
+    >
+      <slot name="item" :item="item" :index="index" />
+    </li>
+  </template>
+  <slot v-else />
+</component>

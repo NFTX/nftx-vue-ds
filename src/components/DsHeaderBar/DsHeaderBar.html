@@ -1,0 +1,85 @@
+<header
+  class="ds-header-bar"
+  :class="{ 'ds-header-bar--sticky': sticky }"
+  role="banner"
+  v-bind="$attrs"
+>
+  <div class="ds-header-bar__inner">
+    <!-- Brand area -->
+    <div class="ds-header-bar__brand">
+      <slot name="brand">
+        <h1 class="ds-header-bar__title">{{ title }}</h1>
+        <p v-if="subtitle" class="ds-header-bar__subtitle">{{ subtitle }}</p>
+      </slot>
+    </div>
+
+    <!-- Center / Search slot -->
+    <div v-if="$slots.search || $slots.center" class="ds-header-bar__center">
+      <slot name="search">
+        <slot name="center" />
+      </slot>
+    </div>
+
+    <!-- Desktop Navigation & Actions -->
+    <div class="ds-header-bar__actions">
+      <nav
+        v-if="$slots.default || $slots.navigation"
+        class="ds-header-bar__nav"
+        aria-label="Primary navigation"
+      >
+        <slot name="navigation">
+          <slot />
+        </slot>
+      </nav>
+
+      <slot name="actions" />
+
+      <!-- Built-in Theme Switch -->
+      <button
+        v-if="showThemeToggle"
+        type="button"
+        class="ds-header-bar__theme-toggle"
+        :aria-label="themeToggleLabel"
+        @click="handleThemeToggle"
+      >
+        <DsIcon :icon="isDarkTheme ? 'sun' : 'moon'" size="md" aria-hidden="true" />
+      </button>
+
+      <!-- Responsive Mobile Menu Toggle -->
+      <button
+        type="button"
+        class="ds-header-bar__mobile-toggle"
+        :aria-expanded="isMobileOpen"
+        :aria-controls="mobileMenuId"
+        :aria-label="isMobileOpen ? 'Close navigation menu' : 'Open navigation menu'"
+        @click="toggleMobileMenu"
+      >
+        <DsIcon :icon="isMobileOpen ? 'x' : 'menu'" size="lg" aria-hidden="true" />
+      </button>
+    </div>
+  </div>
+
+  <!-- Responsive Mobile Menu Panel -->
+  <div
+    v-if="isMobileOpen"
+    :id="mobileMenuId"
+    class="ds-header-bar__mobile-menu"
+  >
+    <div class="ds-header-bar__mobile-menu-content">
+      <slot name="mobile-menu">
+        <div v-if="$slots.search" class="ds-header-bar__mobile-search">
+          <slot name="search" />
+        </div>
+        <nav
+          v-if="$slots.default || $slots.navigation"
+          class="ds-header-bar__mobile-nav"
+          aria-label="Mobile navigation"
+        >
+          <slot name="navigation">
+            <slot />
+          </slot>
+        </nav>
+      </slot>
+    </div>
+  </div>
+</header>
