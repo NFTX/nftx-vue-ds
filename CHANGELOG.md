@@ -25,3 +25,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Vitest Browser Mode with Playwright Chromium for real browser DOM testing.
   - Consumer package smoke test (`scripts/smoke-consumer.ts`) verifying zero `@/*` path alias leaks and clean packaging via `npm pack`.
   - Full CI verification pipeline script (`npm run verify`).
+- **Core Atoms (`ATOM-01`..`ATOM-05`):**
+  - `DsIcon`: Lucide icon integration supporting direct component or kebab/Pascal case string names with logical sizing and standalone accessible modes.
+  - `DsSpinner`: Animated SVG loading indicator with reduced-motion static pulse fallback and polite live region.
+  - `DsButton`: Tag polymorphism (`<button>` or `<a>`), 4 variants, 3 sizes, loading spinner state, focus rings, and coarse target size.
+  - `DsLink`: Accessible hyperlinks with external target blank detection, rel noopener noreferrer, and screen reader announcements.
+  - `DsBadge`: Semantic status pills with 6 variants, dot indicators, and WCAG AA/AAA verified contrast.
+- **Form Atoms (`FORM-01`..`FORM-06`):**
+  - `DsField`: Accessible form control wrapper with `useId()` binding, hint, error, and contextual injection.
+  - `DsInput`: Single-line text input with clear button, prefix/suffix slots, and transparent attribute inheritance.
+  - `DsTextarea`: Auto-resizing textarea with character count and live region limits.
+  - `DsCheckbox`: Styled checkbox supporting two-way boolean and array models, and 3-state indeterminate.
+  - `DsRadioGroup`: Accessible fieldset/legend radio group with vertical/horizontal layouts.
+  - `DsSwitch`: Accessible toggle switch using native checkbox semantics and animated thumb.
+

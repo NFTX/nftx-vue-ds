@@ -1,0 +1,70 @@
+// src/components/DsField/DsField.scss
+@layer ds.components {
+  .ds-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-space-1);
+    inline-size: 100%;
+
+    &__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    &__label {
+      font-size: var(--ds-font-size-sm);
+      font-weight: 600;
+      line-height: var(--ds-line-height-tight);
+      color: var(--ds-color-text-primary);
+      cursor: pointer;
+    }
+
+    &__required {
+      color: var(--ds-color-text-error);
+      margin-inline-start: 0.25rem;
+    }
+
+    &__control {
+      inline-size: 100%;
+    }
+
+    &__hint {
+      font-size: var(--ds-font-size-xs);
+      line-height: var(--ds-line-height-normal);
+      color: var(--ds-color-text-muted);
+    }
+
+    &__error {
+      display: flex;
+      align-items: center;
+      gap: var(--ds-space-1);
+      font-size: var(--ds-font-size-xs);
+      font-weight: 500;
+      line-height: var(--ds-line-height-normal);
+      color: var(--ds-color-text-error);
+
+      &-icon {
+        flex-shrink: 0;
+      }
+    }
+
+    &--disabled {
+      cursor: not-allowed;
+
+      .ds-field__label {
+        cursor: not-allowed;
+      }
+
+      .ds-field__control {
+        opacity: 0.6;
+      }
+    }
+
+    @media (forced-colors: active) {
+      &__error {
+        color: CanvasText;
+      }
+    }
+  }
+}

@@ -1,0 +1,54 @@
+// src/components/DsLink/DsLink.scss
+@use '@/styles/mixins/focus-ring' as *;
+@use '@/styles/mixins/target-size' as *;
+
+@layer ds.components {
+  .ds-link {
+    @include focus-ring;
+    @include target-size-pseudo(1.5rem, 2.75rem);
+
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ds-space-1);
+    font-weight: 500;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    cursor: pointer;
+    transition: color var(--ds-motion-duration-fast) var(--ds-motion-easing-default);
+
+    &--primary {
+      color: var(--ds-color-brand-text);
+
+      @media (hover: hover) and (pointer: fine) {
+        &:hover {
+          color: var(--ds-color-brand-fill-hover);
+        }
+      }
+    }
+
+    &--subtle {
+      color: var(--ds-color-text-secondary);
+
+      @media (hover: hover) and (pointer: fine) {
+        &:hover {
+          color: var(--ds-color-text-primary);
+        }
+      }
+    }
+
+    &__external-icon {
+      margin-inline-start: var(--ds-space-1);
+      inline-size: 0.875em;
+      block-size: 0.875em;
+      vertical-align: -0.1em;
+    }
+
+    @media (forced-colors: active) {
+      color: LinkText;
+
+      &:visited {
+        color: VisitedText;
+      }
+    }
+  }
+}

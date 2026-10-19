@@ -1,0 +1,44 @@
+<div
+  class="ds-input-wrapper"
+  :class="[
+    `ds-input-wrapper--${size}`,
+    {
+      'ds-input-wrapper--disabled': computedDisabled,
+      'ds-input-wrapper--invalid': computedInvalid
+    }
+  ]"
+>
+  <span v-if="$slots.prefix" class="ds-input-wrapper__prefix" aria-hidden="true">
+    <slot name="prefix" />
+  </span>
+
+  <input
+    ref="inputRef"
+    v-model="model"
+    :id="computedId"
+    :type="type"
+    :placeholder="placeholder"
+    :disabled="computedDisabled"
+    :required="computedRequired"
+    :readonly="readonly"
+    :aria-invalid="computedInvalid ? 'true' : undefined"
+    :aria-describedby="computedDescribedby"
+    class="ds-input"
+    v-bind="$attrs"
+  />
+
+  <button
+    v-if="showClear"
+    type="button"
+    class="ds-input-wrapper__clear"
+    aria-label="Clear input"
+    tabindex="-1"
+    @click="handleClear"
+  >
+    <DsIcon :icon="X" size="sm" />
+  </button>
+
+  <span v-if="$slots.suffix" class="ds-input-wrapper__suffix" aria-hidden="true">
+    <slot name="suffix" />
+  </span>
+</div>

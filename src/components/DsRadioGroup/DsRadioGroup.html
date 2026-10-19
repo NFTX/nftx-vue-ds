@@ -1,0 +1,51 @@
+<fieldset
+  class="ds-radio-group"
+  :class="[
+    `ds-radio-group--${orientation}`,
+    {
+      'ds-radio-group--disabled': disabled,
+      'ds-radio-group--invalid': !!error
+    }
+  ]"
+  :aria-describedby="error ? errorId : undefined"
+>
+  <legend class="ds-radio-group__legend">{{ legend }}</legend>
+
+  <div class="ds-radio-group__options">
+    <label
+      v-for="option in options"
+      :key="String(option.value)"
+      class="ds-radio-item"
+      :class="{
+        'ds-radio-item--checked': model === option.value,
+        'ds-radio-item--disabled': isOptionDisabled(option)
+      }"
+    >
+      <span class="ds-radio-item__control">
+        <input
+          v-model="model"
+          type="radio"
+          :name="computedName"
+          :value="option.value"
+          :disabled="isOptionDisabled(option)"
+          class="ds-radio-item__input"
+        />
+        <span class="ds-radio-item__circle" aria-hidden="true">
+          <span class="ds-radio-item__dot" />
+        </span>
+      </span>
+
+      <div class="ds-radio-item__content">
+        <span class="ds-radio-item__label">{{ option.label }}</span>
+        <span v-if="option.description" class="ds-radio-item__desc">
+          {{ option.description }}
+        </span>
+      </div>
+    </label>
+  </div>
+
+  <div v-if="error" :id="errorId" class="ds-radio-group__error" role="alert">
+    <DsIcon :icon="AlertCircle" size="sm" class="ds-radio-group__error-icon" />
+    <span class="ds-radio-group__error-text">{{ error }}</span>
+  </div>
+</fieldset>

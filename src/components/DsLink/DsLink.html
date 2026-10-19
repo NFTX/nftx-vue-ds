@@ -1,0 +1,13 @@
+<a
+  :href="href"
+  :target="target"
+  :rel="computedRel"
+  class="ds-link"
+  :class="[variantClass, { 'ds-link--external': isExternal }]"
+>
+  <slot />
+  <template v-if="isExternal">
+    <DsIcon :icon="ExternalLink" size="sm" class="ds-link__external-icon" />
+    <DsVisuallyHidden v-if="target === '_blank'">(opens in a new tab)</DsVisuallyHidden>
+  </template>
+</a>
