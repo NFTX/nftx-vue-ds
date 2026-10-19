@@ -1,0 +1,54 @@
+<div
+  class="ds-tabs"
+  :class="[`ds-tabs--${orientation}`]"
+  v-bind="$attrs"
+>
+  <div
+    class="ds-tabs__list"
+    role="tablist"
+    :aria-label="label"
+    :aria-orientation="orientation"
+    @keydown="onKeydown"
+  >
+    <button
+      v-for="(tab, index) in tabs"
+      :key="tab.id"
+      ref="tabRefs"
+      :id="getTabDomId(tab.id)"
+      type="button"
+      role="tab"
+      class="ds-tab"
+      :class="{
+        'ds-tab--active': model === tab.id,
+        'ds-tab--disabled': tab.disabled
+      }"
+      :aria-selected="model === tab.id"
+      :aria-controls="getPanelDomId(tab.id)"
+      :tabindex="roving.getTabIndex(index)"
+      :disabled="tab.disabled"
+      @click="selectTab(tab, index)"
+    >
+      <span class="ds-tab__label">{{ tab.label }}</span>
+      <span v-if="tab.badge !== undefined" class="ds-tab__badge" aria-hidden="true">
+        {{ tab.badge }}
+      </span>
+    </button>
+  </div>
+
+  <div class="ds-tabs__panels">
+    <div
+      v-for="tab in tabs"
+      :key="tab.id"
+      :id="getPanelDomId(tab.id)"
+      role="tabpanel"
+      class="ds-tabpanel"
+      :aria-labelledby="getTabDomId(tab.id)"
+      :tabindex="model === tab.id ? 0 : -1"
+      :hidden="model !== tab.id"
+    >
+      <slot v-if="model === tab.id" :name="tab.id">
+        <slot />
+      </slot>
+    </div>
+  </div>
+</div>

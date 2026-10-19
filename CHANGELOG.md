@@ -5,6 +5,25 @@ All notable changes to `@nftx/vue-ds` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- **Accessibility Composables (`src/composables/a11y/`):**
+  - `useRovingFocus`: Bidirectional and linear roving tabindex navigation for interactive collections.
+  - `useTypeahead`: Dynamic character-prefix search for menus and list components.
+  - `useFocusReturn`: Preserves and restores focus to triggering elements on overlay close.
+  - `useAnnouncer`: Live region announcer with polite and assertive queuing.
+  - `useAnchorFallback`: Dynamic coordinate positioning for tethered menus where CSS Anchor Positioning is unsupported.
+- **Composite & Overlay Widgets:**
+  - `DsCard`: Semantic container (`<article>`) with media, header, body, footer slots and stretched-link overlay.
+  - `DsChipGroup`: Accessible toggle button group (`role="group"`) with count badges and single/multi selection.
+  - `DsSearchBar`: Semantic `<search>` landmark with input, search icon, clear button, and global hotkey focus (`/`, `⌘K`).
+  - `DsSelect`: Native `<select>` progressive enhancement with custom dropdown styling and `DsField` context integration.
+  - `DsTabs`: APG compliant tabs with automatic and manual selection modes, roving focus, and vertical layout support.
+  - `DsMenu`: APG Menu Button using native Popover API (`popover="auto"`), anchor positioning, and typeahead.
+  - `DsModal`: APG Dialog / Alert Dialog on native `<dialog>` and `showModal()`, focus trapping, escape key cancellation, and backdrop blur.
+  - `DsToast`: Live notification toasts using Popover API (`popover="manual"`) with live region announcements via `useAnnouncer`, 4 semantic variants, auto-dismiss, and hover/focus pause.
+
 ## [0.1.0] - 2026-10-19
 
 ### Added

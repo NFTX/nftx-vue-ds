@@ -1,0 +1,40 @@
+<div
+  class="ds-select-wrapper"
+  :class="[
+    sizeClass,
+    {
+      'ds-select-wrapper--disabled': computedDisabled,
+      'ds-select-wrapper--invalid': computedAriaInvalid === 'true'
+    }
+  ]"
+>
+  <select
+    :id="computedId"
+    class="ds-select"
+    :value="model"
+    :disabled="computedDisabled"
+    :required="computedRequired"
+    :aria-describedby="computedAriaDescribedby"
+    :aria-invalid="computedAriaInvalid"
+    @change="handleChange"
+    v-bind="$attrs"
+  >
+    <option v-if="placeholder" value="" disabled :selected="!model">
+      {{ placeholder }}
+    </option>
+
+    <option
+      v-for="opt in options"
+      :key="opt.value"
+      :value="opt.value"
+      :disabled="opt.disabled"
+    >
+      {{ opt.label }}
+    </option>
+    <slot />
+  </select>
+
+  <span class="ds-select__arrow" aria-hidden="true">
+    <DsIcon :icon="ChevronDown" size="sm" />
+  </span>
+</div>

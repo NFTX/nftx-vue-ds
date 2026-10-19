@@ -1,0 +1,39 @@
+<search class="ds-search-bar" :aria-label="ariaLabel" v-bind="$attrs">
+  <form class="ds-search-bar__form" role="search" @submit="handleSubmit">
+    <span class="ds-search-bar__icon" aria-hidden="true">
+      <DsIcon :icon="SearchIcon" size="sm" />
+    </span>
+
+    <input
+      ref="inputRef"
+      :id="computedId"
+      type="search"
+      class="ds-search-bar__input"
+      :value="model"
+      :placeholder="placeholder"
+      :disabled="disabled"
+      :aria-keyshortcuts="hotkey"
+      autocomplete="off"
+      spellcheck="false"
+      @input="handleInput"
+    />
+
+    <button
+      v-if="model"
+      type="button"
+      class="ds-search-bar__clear"
+      aria-label="Clear search query"
+      @click="handleClear"
+    >
+      <DsIcon :icon="XIcon" size="sm" />
+    </button>
+
+    <div v-else-if="shortcutLabel" class="ds-search-bar__shortcut" aria-hidden="true">
+      <kbd>{{ shortcutLabel }}</kbd>
+    </div>
+
+    <DsVisuallyHidden v-if="shortcutLabel">
+      Press {{ shortcutLabel }} to focus search
+    </DsVisuallyHidden>
+  </form>
+</search>

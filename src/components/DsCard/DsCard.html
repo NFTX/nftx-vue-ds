@@ -1,0 +1,34 @@
+<article
+  class="ds-card"
+  :class="[
+    variantClass,
+    paddingClass,
+    { 'ds-card--clickable': isClickable }
+  ]"
+  v-bind="$attrs"
+>
+  <div v-if="$slots.media" class="ds-card__media">
+    <slot name="media" />
+  </div>
+
+  <header v-if="$slots.header" class="ds-card__header">
+    <slot name="header" />
+  </header>
+
+  <div class="ds-card__body">
+    <a
+      v-if="href"
+      :href="href"
+      :target="target"
+      class="ds-card__link"
+      tabindex="0"
+    >
+      <slot />
+    </a>
+    <slot v-else />
+  </div>
+
+  <footer v-if="$slots.footer" class="ds-card__footer">
+    <slot name="footer" />
+  </footer>
+</article>

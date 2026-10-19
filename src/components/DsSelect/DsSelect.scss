@@ -1,0 +1,119 @@
+// src/components/DsSelect/DsSelect.scss
+@use '@/styles/mixins/focus-ring' as fr;
+@use '@/styles/mixins/target-size' as ts;
+
+@layer ds.components {
+  .ds-select-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    inline-size: 100%;
+    box-sizing: border-box;
+    border-radius: var(--ds-radius-md);
+    border: 1px solid var(--ds-color-border-default);
+    background-color: var(--ds-color-bg-surface);
+    color: var(--ds-color-text-primary);
+    transition: border-color var(--ds-motion-duration-fast) var(--ds-motion-easing-default),
+                box-shadow var(--ds-motion-duration-fast) var(--ds-motion-easing-default);
+
+    &:focus-within {
+      @include fr.focus-ring;
+      border-color: var(--ds-color-border-focus);
+    }
+
+    &--sm {
+      font-size: var(--ds-font-size-xs);
+
+      .ds-select {
+        padding-block: var(--ds-space-1);
+        padding-inline-start: var(--ds-space-2);
+        padding-inline-end: var(--ds-space-6);
+        min-block-size: 2rem;
+      }
+    }
+
+    &--md {
+      font-size: var(--ds-font-size-sm);
+
+      .ds-select {
+        padding-block: var(--ds-space-2);
+        padding-inline-start: var(--ds-space-3);
+        padding-inline-end: var(--ds-space-8);
+        min-block-size: 2.5rem;
+      }
+    }
+
+    &--lg {
+      font-size: var(--ds-font-size-base);
+
+      .ds-select {
+        padding-block: var(--ds-space-3);
+        padding-inline-start: var(--ds-space-4);
+        padding-inline-end: var(--ds-space-10);
+        min-block-size: 3rem;
+      }
+    }
+
+    &--invalid {
+      border-color: var(--ds-color-border-error);
+
+      &:focus-within {
+        outline-color: var(--ds-color-focus-ring-error);
+      }
+    }
+
+    &--disabled {
+      background-color: var(--ds-color-bg-muted);
+      cursor: not-allowed;
+      opacity: 0.6;
+
+      .ds-select {
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  .ds-select {
+    @include ts.target-size;
+    inline-size: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: inherit;
+    font-size: inherit;
+    font-family: inherit;
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+
+    // Progressive enhancement for modern appearance: base-select
+    @supports (appearance: base-select) {
+      appearance: base-select;
+    }
+
+    option {
+      background-color: var(--ds-color-bg-surface);
+      color: var(--ds-color-text-primary);
+    }
+  }
+
+  .ds-select__arrow {
+    position: absolute;
+    inset-inline-end: var(--ds-space-3);
+    pointer-events: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ds-color-text-muted);
+  }
+
+  @media (forced-colors: active) {
+    .ds-select-wrapper {
+      border: 1px solid CanvasText;
+
+      &:focus-within {
+        outline: 2px solid Highlight;
+      }
+    }
+  }
+}

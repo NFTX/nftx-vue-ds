@@ -1,0 +1,178 @@
+// src/components/DsModal/DsModal.scss
+@use '@/styles/mixins/focus-ring' as fr;
+@use '@/styles/mixins/target-size' as ts;
+
+@layer ds.components {
+  dialog.ds-modal {
+    position: fixed;
+    inset: 0;
+    margin: auto;
+    padding: 0;
+    border: none;
+    background: transparent;
+    max-inline-size: calc(100vw - 2rem);
+    max-block-size: calc(100vh - 2rem);
+    overflow: visible;
+
+    &::backdrop {
+      background-color: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      transition: opacity var(--ds-motion-duration-base) var(--ds-motion-easing-default);
+    }
+
+    &:not([open]) {
+      display: none;
+    }
+
+    // Modal card box container
+    .ds-modal__box {
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+      background-color: var(--ds-color-bg-surface);
+      color: var(--ds-color-text-primary);
+      border: 1px solid var(--ds-color-border-default);
+      border-radius: var(--ds-radius-lg);
+      box-shadow: var(--ds-shadow-xl);
+      max-block-size: calc(100vh - 2rem);
+      overflow: hidden;
+      animation: ds-modal-appear var(--ds-motion-duration-base) var(--ds-motion-easing-default);
+    }
+
+    // Sizes
+    &--sm .ds-modal__box {
+      inline-size: 28rem;
+    }
+
+    &--md .ds-modal__box {
+      inline-size: 36rem;
+    }
+
+    &--lg .ds-modal__box {
+      inline-size: 48rem;
+    }
+
+    &--fullscreen {
+      inline-size: 100vw;
+      block-size: 100vh;
+      max-inline-size: 100vw;
+      max-block-size: 100vh;
+
+      .ds-modal__box {
+        inline-size: 100vw;
+        block-size: 100vh;
+        max-inline-size: 100vw;
+        max-block-size: 100vh;
+        border-radius: 0;
+        border: none;
+      }
+    }
+
+    // Header
+    .ds-modal__header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: var(--ds-space-4);
+      padding-block: var(--ds-space-4);
+      padding-inline: var(--ds-space-6);
+      border-block-end: 1px solid var(--ds-color-border-subtle);
+    }
+
+    .ds-modal__headings {
+      display: flex;
+      flex-direction: column;
+      gap: var(--ds-space-1);
+    }
+
+    .ds-modal__title {
+      margin: 0;
+      font-size: var(--ds-font-size-lg);
+      font-weight: 600;
+      line-height: var(--ds-line-height-tight);
+      color: var(--ds-color-text-primary);
+    }
+
+    .ds-modal__desc {
+      margin: 0;
+      font-size: var(--ds-font-size-sm);
+      line-height: var(--ds-line-height-normal);
+      color: var(--ds-color-text-secondary);
+    }
+
+    .ds-modal__close {
+      @include ts.target-size;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      background: transparent;
+      border-radius: var(--ds-radius-sm);
+      color: var(--ds-color-text-secondary);
+      cursor: pointer;
+      padding: var(--ds-space-1);
+      margin-inline-end: calc(-1 * var(--ds-space-2));
+      margin-block-start: calc(-1 * var(--ds-space-1));
+      transition: color var(--ds-motion-duration-fast) var(--ds-motion-easing-default),
+                  background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-default);
+
+      &:hover {
+        color: var(--ds-color-text-primary);
+        background-color: var(--ds-color-bg-muted);
+      }
+
+      &:focus-visible {
+        @include fr.focus-ring;
+      }
+    }
+
+    // Body
+    .ds-modal__body {
+      flex: 1 1 auto;
+      padding-block: var(--ds-space-6);
+      padding-inline: var(--ds-space-6);
+      overflow-y: auto;
+      font-size: var(--ds-font-size-base);
+      line-height: var(--ds-line-height-normal);
+    }
+
+    // Footer
+    .ds-modal__footer {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: var(--ds-space-3);
+      padding-block: var(--ds-space-4);
+      padding-inline: var(--ds-space-6);
+      border-block-start: 1px solid var(--ds-color-border-subtle);
+      background-color: var(--ds-color-bg-surface);
+    }
+
+    @keyframes ds-modal-appear {
+      from {
+        opacity: 0;
+        transform: scale(0.96) translateY(-4px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    @media (forced-colors: active) {
+      .ds-modal__box {
+        border: 2px solid CanvasText;
+      }
+
+      .ds-modal__close:focus-visible {
+        outline: 2px solid Highlight;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .ds-modal__box {
+        animation: none;
+      }
+    }
+  }
+}

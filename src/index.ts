@@ -13,3 +13,13 @@ export * from './components/DsTextarea'
 export * from './components/DsCheckbox'
 export * from './components/DsRadioGroup'
 export * from './components/DsSwitch'
+
+// Phase 3: Composite & Overlay Widgets
+export * from './components/DsCard'
+export * from './components/DsChipGroup'
+export * from './components/DsSearchBar'
+export * from './components/DsSelect'
+export * from './components/DsTabs'
+export * from './components/DsMenu'
+export * from './components/DsModal'
+export * from './components/DsToast'

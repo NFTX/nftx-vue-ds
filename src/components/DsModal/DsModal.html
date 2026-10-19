@@ -1,0 +1,42 @@
+<dialog
+  ref="dialogRef"
+  class="ds-modal"
+  :class="[sizeClass]"
+  :role="role"
+  :aria-labelledby="title ? titleId : undefined"
+  :aria-describedby="description ? descriptionId : undefined"
+  @cancel="handleCancel"
+  @click="handleBackdropClick"
+  v-bind="$attrs"
+>
+  <div class="ds-modal__box">
+    <header class="ds-modal__header">
+      <slot name="header">
+        <div class="ds-modal__headings">
+          <component :is="headingTag" v-if="title" :id="titleId" class="ds-modal__title">
+            {{ title }}
+          </component>
+          <p v-if="description" :id="descriptionId" class="ds-modal__desc">
+            {{ description }}
+          </p>
+        </div>
+      </slot>
+      <button
+        type="button"
+        class="ds-modal__close"
+        aria-label="Close dialog"
+        @click="handleClose"
+      >
+        <DsIcon :icon="X" size="sm" />
+      </button>
+    </header>
+
+    <div class="ds-modal__body">
+      <slot />
+    </div>
+
+    <footer v-if="$slots.footer" class="ds-modal__footer">
+      <slot name="footer" />
+    </footer>
+  </div>
+</dialog>

@@ -1,0 +1,84 @@
+// src/components/DsChipGroup/DsChipGroup.scss
+@use '@/styles/mixins/focus-ring' as fr;
+@use '@/styles/mixins/target-size' as ts;
+
+@layer ds.components {
+  .ds-chip-group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--ds-space-2);
+  }
+
+  .ds-chip {
+    @include ts.target-size;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--ds-space-2);
+    box-sizing: border-box;
+    padding-block: var(--ds-space-1);
+    padding-inline: var(--ds-space-3);
+    border-radius: var(--ds-radius-full);
+    border: 1px solid var(--ds-color-border-default);
+    background-color: var(--ds-color-bg-surface);
+    color: var(--ds-color-text-secondary);
+    font-size: var(--ds-font-size-sm);
+    font-weight: 500;
+    line-height: 1;
+    cursor: pointer;
+    transition: background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-default),
+                border-color var(--ds-motion-duration-fast) var(--ds-motion-easing-default),
+                color var(--ds-motion-duration-fast) var(--ds-motion-easing-default);
+
+    &:hover:not(:disabled) {
+      border-color: var(--ds-color-border-hover);
+      color: var(--ds-color-text-primary);
+    }
+
+    &:focus-visible {
+      @include fr.focus-ring;
+      border-radius: var(--ds-radius-full);
+    }
+
+    &--active {
+      background-color: var(--ds-color-brand-surface);
+      color: var(--ds-color-brand-text);
+      border-color: var(--ds-color-brand-border);
+      font-weight: 600;
+
+      .ds-chip__count {
+        background-color: var(--ds-color-brand-fill);
+        color: var(--ds-color-on-brand);
+      }
+    }
+
+    &--disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    &__count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-inline-size: 1.25rem;
+      padding-inline: 0.25rem;
+      block-size: 1.25rem;
+      border-radius: var(--ds-radius-full);
+      background-color: var(--ds-color-bg-muted);
+      color: var(--ds-color-text-secondary);
+      font-size: var(--ds-font-size-xs);
+      font-weight: 600;
+    }
+
+    @media (forced-colors: active) {
+      border: 1px solid CanvasText;
+
+      &--active {
+        background-color: Highlight;
+        color: HighlightText;
+      }
+    }
+  }
+}
