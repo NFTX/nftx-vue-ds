@@ -1,6 +1,6 @@
 {
   "name": "@nftx/vue-ds",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Standalone Vue 3 Design System with framework-agnostic design tokens",
   "type": "module",
   "sideEffects": [
