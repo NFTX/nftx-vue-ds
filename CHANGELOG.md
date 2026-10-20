@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.0] - 2026-10-19
 
+### Fixed
+- **Documentation:** Fixed MDX syntax in `Colors.mdx` where LaTeX `{OKLab}` was parsed as an undefined JavaScript variable at runtime.
+
 ### Added
 - **Layout & Page Primitives (Phase 4):**
   - `DsSkipLink`: Accessible landmark bypass link (first focusable element on page, WCAG 2.2 SC 2.4.1) with smooth scrolling and temporary programmatic focus handling.
