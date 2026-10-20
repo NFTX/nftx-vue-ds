@@ -1,0 +1,9 @@
+services:
+  storybook:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vue-ds-storybook
+    restart: unless-stopped
+    ports:
+      - "${STORYBOOK_PORT:-6006}:80"

@@ -1,0 +1,13 @@
+node_modules
+coverage
+.git
+.gitignore
+.dockerignore
+dist
+storybook-static
+*.log
+.env
+.env*.local
+.vscode
+.idea
+.vitest
