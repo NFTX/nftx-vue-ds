@@ -5,7 +5,7 @@ All notable changes to `@nftx/vue-ds` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.0.0] - 2026-10-19
 
 ### Added
 - **Layout & Page Primitives (Phase 4):**
@@ -20,7 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `useFocusReturn`: Preserves and restores focus to triggering elements on overlay close.
   - `useAnnouncer`: Live region announcer with polite and assertive queuing.
   - `useAnchorFallback`: Dynamic coordinate positioning for tethered menus where CSS Anchor Positioning is unsupported.
-- **Composite & Overlay Widgets:**
+- **Composite & Overlay Widgets (Phase 3):**
   - `DsCard`: Semantic container (`<article>`) with media, header, body, footer slots and stretched-link overlay.
   - `DsChipGroup`: Accessible toggle button group (`role="group"`) with count badges and single/multi selection.
   - `DsSearchBar`: Semantic `<search>` landmark with input, search icon, clear button, and global hotkey focus (`/`, `⌘K`).
@@ -29,6 +29,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `DsMenu`: APG Menu Button using native Popover API (`popover="auto"`), anchor positioning, and typeahead.
   - `DsModal`: APG Dialog / Alert Dialog on native `<dialog>` and `showModal()`, focus trapping, escape key cancellation, and backdrop blur.
   - `DsToast`: Live notification toasts using Popover API (`popover="manual"`) with live region announcements via `useAnnouncer`, 4 semantic variants, auto-dismiss, and hover/focus pause.
+- **Consumer Application Integration (Phase 5):**
+  - Full migration of `/workspace/Projects/portal` homelab dashboard to `@nftx/vue-ds`.
+  - Replaced legacy headers, filters, cards, and automation sections with `DsHeaderBar`, `DsSearchBar`, `DsChipGroup`, `DsCardGrid`, `DsCard`, `DsBadge`, `DsEmptyState`, and `DsSpinner`.
+  - Mapped portal CSS variables directly to design system semantic tokens (`--ds-color-*`).
 
 ## [0.1.0] - 2026-10-19
 

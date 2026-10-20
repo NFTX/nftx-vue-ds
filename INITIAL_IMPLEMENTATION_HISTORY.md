@@ -205,6 +205,55 @@ This document tracks the phased implementation, quality gates, and verification 
 | 6 | `npm run build` | Vite lib build + dts (PKG-01..03) | **PASS** (Clean build, 64.92 kB styles.css, 831 kB ESM bundle, .d.ts generated) |
 | 7 | `npm run test:smoke` | Consumer fixture test (TEST-12) | **PASS** (0 alias leaks, clean consumer build) |
 
+---
+
+## Phase 5: Release 1.0 Packaging & Consumer Migration
+
+**Status:** Completed & Verified  
+**Date:** 2026-10-19  
+
+### Summary of Work Delivered
+1. **Packaging & Exports Finalization (`PKG-01`..`PKG-04`):**
+   - Version bumped to `1.0.0` in `package.json`.
+   - Verified exports map (`.`, `./styles.css`, `./tokens.css`, `./scss`).
+   - Verified `.d.ts` declaration generation with zero unresolved `@/*` alias leakage.
+   - Verified clean tarball creation (`nftx-vue-ds-1.0.0.tgz`) and consumer installation via `npm run test:smoke`.
+
+2. **Full Consumer Application Migration (`/workspace/Projects/portal`):**
+   - **`App.vue` & `App.html`:**
+     - Integrated `DsSkipLink` for keyboard landmark bypass navigation to `#main-content`.
+     - Integrated `DsSpinner` for accessible loading state with live region announcement.
+     - Integrated `DsEmptyState` with search icon, dynamic query description, and clear action CTA for empty search results.
+     - Integrated `DsCardGrid` for responsive auto-fit service cards.
+   - **`Header` Component:**
+     - Migrated to wrap `DsHeaderBar` with brand slot (server icon, title, subtitle), search slot using `DsSearchBar`, and theme toggle.
+   - **`CategoryFilter` Component:**
+     - Migrated to use `DsChipGroup` with active category selection, service counts, and keyboard navigation.
+   - **`ServiceCard` Component:**
+     - Migrated to use `DsCard` with elevated variant, stretched link pseudo-element to `serviceUrl`, `DsIcon` for service and external link, and `DsBadge` for port and custom badges.
+   - **`ScriptsSection` Component:**
+     - Migrated to use `DsCard` with outlined variant, `DsBadge` for phase and script execution status, and `DsButton` for execution triggers.
+   - **Styles & Tokens (`variables.scss` & `App.scss`):**
+     - Mapped portal CSS variables directly to `@nftx/vue-ds` semantic tokens (`--ds-color-*`), unifying light/dark themes under the crimson-wine brand palette.
+   - **Consumer Verification:** Executed `vue-tsc && vite build` in `portal` with 0 errors and verified production bundle creation.
+
+3. **Git Tagging:**
+   - Tagged `v1.0.0` locally in `design-system`.
+
+### Verification Scorecard (`npm run verify` & `portal` build)
+
+| Step | Gate Command | Target / Rule | Result |
+| :--- | :--- | :--- | :--- |
+| 1 | `npm run lint` | ESLint + vue-a11y rules | **PASS** (0 errors, 0 warnings) |
+| 2 | `npm run typecheck` | `vue-tsc --noEmit` | **PASS** (0 errors) |
+| 3 | `npm run test:tokens` | `contrast-check.ts` (TOK-04, A11Y-01..03, TEST-11) | **PASS** (43/43 symmetric tokens, 22/22 contrast pairs, $\Delta E \ge 10$) |
+| 4 | `npm run test:unit` | Vitest Browser Mode with Coverage (TEST-02, TEST-04) | **PASS** (155/155 tests passed; all coverage thresholds met) |
+| 5 | `npm run test:storybook` | Storybook test + axe-core (SB-02, TEST-08) | **PASS** (77/77 tests passed, 0 axe violations) |
+| 6 | `npm run build` | Vite lib build + dts (PKG-01..03) | **PASS** (Clean build, 1.0.0 bundle and .d.ts emitted) |
+| 7 | `npm run test:smoke` | Consumer fixture test (TEST-12) | **PASS** (0 alias leaks, clean consumer build) |
+| 8 | `npm run build` in `portal` | Consumer compilation & typecheck | **PASS** (vue-tsc + vite build 0 errors, 1.96s) |
+
+
 
 
 
