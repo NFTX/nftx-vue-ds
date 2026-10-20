@@ -58,10 +58,11 @@ export const EditorialArticleValidation: Story = {
       const activeSurface = ref<SurfaceId>('white')
       const customCanvasHex = ref('#3C0911')
 
-      // Dark Mode Titling Strategy (Defaults to Gilded Manuscript Gold)
-      const selectedDarkAccent = ref('#F3C77C')
-      const customDarkAccentInput = ref('#F3C77C')
+      // Dark Mode Titling Strategy (Defaults to Pale Champagne Gold)
+      const selectedDarkAccent = ref('#FDE68A')
+      const customDarkAccentInput = ref('#FDE68A')
       const darkHandlingMode = ref<'palette' | 'direct-raw'>('palette')
+      const darkBodyMode = ref<'ivory' | 'parchment' | 'pure-white'>('ivory')
 
       const surfaceOptions: { id: SurfaceId; label: string; hex: string; desc: string }[] = [
         { id: 'white', label: 'Pure White', hex: '#FFFFFF', desc: 'Modern high-contrast light' },
@@ -81,10 +82,10 @@ export const EditorialArticleValidation: Story = {
       ]
 
       const darkGoldPresets = [
+        { id: 'champagne', label: '⭐ Pale Champagne', hex: '#FDE68A', desc: 'Soft luminous parchment highlight (AAA)' },
         { id: 'gilded-gold', label: 'Gilded Leaf Gold', hex: '#F3C77C', desc: 'Illuminated manuscript gold leaf (AAA)' },
         { id: 'amber-gold', label: 'Luminous Amber', hex: '#FBBF24', desc: 'Radiant modern amber gold (AAA)' },
         { id: 'antique-gold', label: 'Antique Ochre Gold', hex: '#E2B357', desc: 'Historical bookbinder gold (AAA)' },
-        { id: 'champagne', label: 'Pale Champagne', hex: '#FDE68A', desc: 'Soft parchment highlight (AAA)' },
         { id: 'pale-rose', label: 'Pale Rose (Old)', hex: '#FDA4AF', desc: 'Desaturated rose-300 tint (AAA)' }
       ]
 
@@ -196,7 +197,11 @@ export const EditorialArticleValidation: Story = {
       })
 
       const surfaceText = computed(() => {
-        if (isDarkMode.value) return '#F8FAFC'
+        if (isDarkMode.value) {
+          if (darkBodyMode.value === 'pure-white') return '#FFFFFF'
+          if (darkBodyMode.value === 'parchment') return '#F8FAFC'
+          return '#F7F4EE'
+        }
         if (activeSurface.value === 'paper') return '#1E293B'
         return '#0F172A'
       })
@@ -258,6 +263,7 @@ export const EditorialArticleValidation: Story = {
         selectedDarkAccent,
         customDarkAccentInput,
         darkHandlingMode,
+        darkBodyMode,
         selectedTag,
         lightPresets,
         darkGoldPresets,
@@ -440,6 +446,53 @@ export const EditorialArticleValidation: Story = {
                     style="width: 26px; height: 26px; border: none; border-radius: 4px; cursor: pointer; background: transparent;"
                   />
                 </label>
+
+                <!-- Body text tone selector -->
+                <div style="display: flex; align-items: center; gap: 0.35rem; margin-left: 0.4rem; border-left: 1px solid #475569; padding-left: 0.5rem;">
+                  <span style="font-weight: 700; color: #CBD5E1; text-transform: uppercase; font-size: 0.72rem;">Body Text:</span>
+                  <button
+                    type="button"
+                    @click="darkBodyMode = 'ivory'"
+                    :style="{
+                      padding: '0.25rem 0.5rem',
+                      borderRadius: '0.25rem',
+                      background: darkBodyMode === 'ivory' ? '#F7F4EE' : '#1E293B',
+                      color: darkBodyMode === 'ivory' ? '#0F172A' : '#CBD5E1',
+                      border: darkBodyMode === 'ivory' ? '1px solid #FDE68A' : '1px solid #475569',
+                      cursor: 'pointer',
+                      fontSize: '0.75rem',
+                      fontWeight: darkBodyMode === 'ivory' ? '700' : '400'
+                    }"
+                  >Warm Ivory</button>
+                  <button
+                    type="button"
+                    @click="darkBodyMode = 'parchment'"
+                    :style="{
+                      padding: '0.25rem 0.5rem',
+                      borderRadius: '0.25rem',
+                      background: darkBodyMode === 'parchment' ? '#F8FAFC' : '#1E293B',
+                      color: darkBodyMode === 'parchment' ? '#0F172A' : '#CBD5E1',
+                      border: darkBodyMode === 'parchment' ? '1px solid #38BDF8' : '1px solid #475569',
+                      cursor: 'pointer',
+                      fontSize: '0.75rem',
+                      fontWeight: darkBodyMode === 'parchment' ? '700' : '400'
+                    }"
+                  >Parchment</button>
+                  <button
+                    type="button"
+                    @click="darkBodyMode = 'pure-white'"
+                    :style="{
+                      padding: '0.25rem 0.5rem',
+                      borderRadius: '0.25rem',
+                      background: darkBodyMode === 'pure-white' ? '#FFFFFF' : '#1E293B',
+                      color: darkBodyMode === 'pure-white' ? '#0F172A' : '#CBD5E1',
+                      border: darkBodyMode === 'pure-white' ? '1px solid #FFFFFF' : '1px solid #475569',
+                      cursor: 'pointer',
+                      fontSize: '0.75rem',
+                      fontWeight: darkBodyMode === 'pure-white' ? '700' : '400'
+                    }"
+                  >Pure White</button>
+                </div>
               </div>
             </div>
 

@@ -48,3 +48,22 @@ All ratios below are mathematically measured using the WCAG 2.2 relative-luminan
 To avoid confusing brand red with error red:
 - **Light Theme Separation:** `rose-800` vs `red-600` achieves **ΔE(OKLab) = 13.8** (exceeds ≥ 10.0).
 - **Dark Theme Separation:** `rose-300` vs `red-400` achieves **ΔE(OKLab) = 11.8** (exceeds ≥ 10.0).
+
+---
+
+## 4. Validated Editorial & Chromatic Dark Archetype
+
+Following in-context typographic stress-testing on the Editorial Blog Post archetype (`Pages / EditorialBlogPostDemo`), the following palette was validated for high-authority publications:
+
+### Light Mode: Warm Paper & Print Ink Red
+- **Canvas Base:** `#FAF8F5` (Warm archival paper / vellum)
+- **Title & Primary Accents:** `#750008` (Print ink red, **11.40:1 AAA** contrast vs canvas, **ΔE = 23.4** separation from error red)
+- **Body Text:** `#1E293B` (Refined deep charcoal, **13.5:1 AAA**)
+
+### Dark Mode: Velvet Oxblood & Pale Champagne
+- **Canvas Base:** `#3C0911` (Velvet midpoint oxblood, optical luminance `0.0120`)
+- **Titling & Illumination:** `#FDE68A` (Pale champagne gold, **13.61:1 AAA** contrast) or `#F3C77C` (Gilded gold leaf, **10.71:1 AAA**)
+- **Body Text:** `#F7F4EE` (Warm antique ivory, **15.44:1 AAA** contrast — prevents optical irradiation and eye fatigue caused by pure `#FFFFFF`)
+- **Inset Surface / Cards:** `#2E060D` with `#5A0E1A` borders
+
+Interactive token auditioning and live math readouts are available in Storybook under `Pages → EditorialBlogPostDemo`.
