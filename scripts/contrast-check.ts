@@ -70,31 +70,44 @@ interface ContrastAssertion {
 }
 
 const assertions: ContrastAssertion[] = [
-  // Light Theme
-  { name: 'Light: Brand Fill on White (rose-800 vs white)', fgHex: '#9F1239', bgHex: '#FFFFFF', minRatio: 7.0, targetLevel: 'AAA' },
-  { name: 'Light: Brand Text on slate-50 (rose-800 vs slate-50)', fgHex: '#9F1239', bgHex: '#F8FAFC', minRatio: 7.0, targetLevel: 'AAA' },
-  { name: 'Light: Focus Ring on White (rose-800 vs white)', fgHex: '#9F1239', bgHex: '#FFFFFF', minRatio: 3.0, targetLevel: 'AA Non-text' },
-  { name: 'Light: Error Text on White (red-600 vs white)', fgHex: '#DC2626', bgHex: '#FFFFFF', minRatio: 4.5, targetLevel: 'AA' },
-  { name: 'Light: Success Text on White (emerald-700 vs white)', fgHex: '#047857', bgHex: '#FFFFFF', minRatio: 4.5, targetLevel: 'AA' },
-  { name: 'Light: Warning Text on White (amber-700 vs white)', fgHex: '#B45309', bgHex: '#FFFFFF', minRatio: 4.5, targetLevel: 'AA' },
-  { name: 'Light: Info Text on White (sky-700 vs white)', fgHex: '#0369A1', bgHex: '#FFFFFF', minRatio: 4.5, targetLevel: 'AA' },
-  { name: 'Light: Text Primary on White (slate-900 vs white)', fgHex: '#0F172A', bgHex: '#FFFFFF', minRatio: 7.0, targetLevel: 'AAA' },
-  { name: 'Light: Text Secondary on White (slate-700 vs white)', fgHex: '#334155', bgHex: '#FFFFFF', minRatio: 4.5, targetLevel: 'AA' },
-  { name: 'Light: Text Muted on White (slate-600 vs white)', fgHex: '#475569', bgHex: '#FFFFFF', minRatio: 4.5, targetLevel: 'AA' },
-  { name: 'Light: Border Interactive on White (slate-500 vs white)', fgHex: '#64748B', bgHex: '#FFFFFF', minRatio: 3.0, targetLevel: 'AA Non-text' },
+  // Default Light Theme (Warm Paper & Print Ink Red)
+  { name: 'Light: Brand Fill on Warm Paper (print-red vs warm-paper)', fgHex: '#750008', bgHex: '#FAF8F5', minRatio: 7.0, targetLevel: 'AAA' },
+  { name: 'Light: Brand Fill on White (print-red vs white)', fgHex: '#750008', bgHex: '#FFFFFF', minRatio: 7.0, targetLevel: 'AAA' },
+  { name: 'Light: Focus Ring on Warm Paper (print-red vs warm-paper)', fgHex: '#750008', bgHex: '#FAF8F5', minRatio: 3.0, targetLevel: 'AA Non-text' },
+  { name: 'Light: Error Text on Warm Paper (red-700 vs warm-paper)', fgHex: '#B91C1C', bgHex: '#FAF8F5', minRatio: 4.5, targetLevel: 'AA' },
+  { name: 'Light: Success Text on Warm Paper (emerald-700 vs warm-paper)', fgHex: '#047857', bgHex: '#FAF8F5', minRatio: 4.5, targetLevel: 'AA' },
+  { name: 'Light: Warning Text on Warm Paper (amber-700 vs warm-paper)', fgHex: '#B45309', bgHex: '#FAF8F5', minRatio: 4.5, targetLevel: 'AA' },
+  { name: 'Light: Info Text on Warm Paper (sky-700 vs warm-paper)', fgHex: '#0369A1', bgHex: '#FAF8F5', minRatio: 4.5, targetLevel: 'AA' },
+  { name: 'Light: Text Primary on Warm Paper (slate-800 vs warm-paper)', fgHex: '#1E293B', bgHex: '#FAF8F5', minRatio: 7.0, targetLevel: 'AAA' },
+  { name: 'Light: Text Secondary on Warm Paper (slate-700 vs warm-paper)', fgHex: '#334155', bgHex: '#FAF8F5', minRatio: 4.5, targetLevel: 'AA' },
+  { name: 'Light: Text Muted on Warm Paper (slate-600 vs warm-paper)', fgHex: '#475569', bgHex: '#FAF8F5', minRatio: 4.5, targetLevel: 'AA' },
+  { name: 'Light: Border Interactive on Warm Paper (slate-500 vs warm-paper)', fgHex: '#64748B', bgHex: '#FAF8F5', minRatio: 3.0, targetLevel: 'AA Non-text' },
 
-  // Dark Theme
-  { name: 'Dark: White on Brand Fill (white vs rose-700)', fgHex: '#FFFFFF', bgHex: '#BE123C', minRatio: 4.5, targetLevel: 'AA' },
-  { name: 'Dark: Brand Text on slate-900 (rose-300 vs slate-900)', fgHex: '#FDA4AF', bgHex: '#0F172A', minRatio: 7.0, targetLevel: 'AAA' },
-  { name: 'Dark: Focus Ring on slate-900 (rose-300 vs slate-900)', fgHex: '#FDA4AF', bgHex: '#0F172A', minRatio: 3.0, targetLevel: 'AA Non-text' },
-  { name: 'Dark: Error Text on slate-900 (red-400 vs slate-900)', fgHex: '#F87171', bgHex: '#0F172A', minRatio: 4.5, targetLevel: 'AA' },
-  { name: 'Dark: Success Text on slate-900 (emerald-500 vs slate-900)', fgHex: '#10B981', bgHex: '#0F172A', minRatio: 4.5, targetLevel: 'AA' },
-  { name: 'Dark: Warning Text on slate-900 (amber-500 vs slate-900)', fgHex: '#F59E0B', bgHex: '#0F172A', minRatio: 4.5, targetLevel: 'AA' },
-  { name: 'Dark: Info Text on slate-900 (sky-500 vs slate-900)', fgHex: '#0EA5E9', bgHex: '#0F172A', minRatio: 4.5, targetLevel: 'AA' },
-  { name: 'Dark: Text Primary on slate-900 (slate-50 vs slate-900)', fgHex: '#F8FAFC', bgHex: '#0F172A', minRatio: 7.0, targetLevel: 'AAA' },
-  { name: 'Dark: Text Secondary on slate-900 (slate-200 vs slate-900)', fgHex: '#E2E8F0', bgHex: '#0F172A', minRatio: 7.0, targetLevel: 'AAA' },
-  { name: 'Dark: Text Muted on slate-900 (slate-400 vs slate-900)', fgHex: '#94A3B8', bgHex: '#0F172A', minRatio: 4.5, targetLevel: 'AA' },
-  { name: 'Dark: Border Interactive on slate-900 (slate-500 vs slate-900)', fgHex: '#64748B', bgHex: '#0F172A', minRatio: 3.0, targetLevel: 'AA Non-text' }
+  // Default Dark Theme (Velvet Midpoint Oxblood & Pale Champagne Gold & Warm Antique Ivory)
+  { name: 'Dark: On-Brand on Fill (velvet-oxblood vs champagne-gold)', fgHex: '#3C0911', bgHex: '#FDE68A', minRatio: 4.5, targetLevel: 'AA' },
+  { name: 'Dark: Brand Text on Velvet (champagne-gold vs velvet-oxblood)', fgHex: '#FDE68A', bgHex: '#3C0911', minRatio: 7.0, targetLevel: 'AAA' },
+  { name: 'Dark: Focus Ring on Velvet (champagne-gold vs velvet-oxblood)', fgHex: '#FDE68A', bgHex: '#3C0911', minRatio: 3.0, targetLevel: 'AA Non-text' },
+  { name: 'Dark: Error Text on Velvet (red-400 vs velvet-oxblood)', fgHex: '#F87171', bgHex: '#3C0911', minRatio: 4.5, targetLevel: 'AA' },
+  { name: 'Dark: Success Text on Velvet (emerald-500 vs velvet-oxblood)', fgHex: '#10B981', bgHex: '#3C0911', minRatio: 4.5, targetLevel: 'AA' },
+  { name: 'Dark: Warning Text on Velvet (amber-500 vs velvet-oxblood)', fgHex: '#F59E0B', bgHex: '#3C0911', minRatio: 4.5, targetLevel: 'AA' },
+  { name: 'Dark: Info Text on Velvet (sky-500 vs velvet-oxblood)', fgHex: '#0EA5E9', bgHex: '#3C0911', minRatio: 4.5, targetLevel: 'AA' },
+  { name: 'Dark: Text Primary on Velvet (warm-ivory vs velvet-oxblood)', fgHex: '#F7F4EE', bgHex: '#3C0911', minRatio: 7.0, targetLevel: 'AAA' },
+  { name: 'Dark: Text Secondary on Velvet (warm-ivory-secondary vs velvet-oxblood)', fgHex: '#E5DFD3', bgHex: '#3C0911', minRatio: 7.0, targetLevel: 'AAA' },
+  { name: 'Dark: Text Muted on Velvet (warm-ivory-muted vs velvet-oxblood)', fgHex: '#B8ADA0', bgHex: '#3C0911', minRatio: 4.5, targetLevel: 'AA' },
+  { name: 'Dark: Border Interactive on Velvet (champagne-gold vs velvet-oxblood)', fgHex: '#FDE68A', bgHex: '#3C0911', minRatio: 3.0, targetLevel: 'AA Non-text' },
+
+  // Default Color Blind Theme (Universal CVD Okabe-Ito Cobalt Navy & Amber on White)
+  { name: 'ColorBlind: Brand Fill on White (cb-cobalt-800 vs white)', fgHex: '#003E7E', bgHex: '#FFFFFF', minRatio: 7.0, targetLevel: 'AAA' },
+  { name: 'ColorBlind: Brand Text on slate-50 (cb-cobalt-800 vs slate-50)', fgHex: '#003E7E', bgHex: '#F8FAFC', minRatio: 7.0, targetLevel: 'AAA' },
+  { name: 'ColorBlind: Focus Ring on White (cb-cobalt-800 vs white)', fgHex: '#003E7E', bgHex: '#FFFFFF', minRatio: 3.0, targetLevel: 'AA Non-text' },
+  { name: 'ColorBlind: Error Text on White (cb-rust-700 vs white)', fgHex: '#880000', bgHex: '#FFFFFF', minRatio: 4.5, targetLevel: 'AA' },
+  { name: 'ColorBlind: Success Text on White (cb-teal-700 vs white)', fgHex: '#004D40', bgHex: '#FFFFFF', minRatio: 4.5, targetLevel: 'AA' },
+  { name: 'ColorBlind: Warning Text on White (cb-amber-700 vs white)', fgHex: '#9A3412', bgHex: '#FFFFFF', minRatio: 4.5, targetLevel: 'AA' },
+  { name: 'ColorBlind: Info Text on White (cb-sky-700 vs white)', fgHex: '#005085', bgHex: '#FFFFFF', minRatio: 4.5, targetLevel: 'AA' },
+  { name: 'ColorBlind: Text Primary on White (slate-900 vs white)', fgHex: '#0F172A', bgHex: '#FFFFFF', minRatio: 7.0, targetLevel: 'AAA' },
+  { name: 'ColorBlind: Text Secondary on White (slate-800 vs white)', fgHex: '#1E293B', bgHex: '#FFFFFF', minRatio: 4.5, targetLevel: 'AA' },
+  { name: 'ColorBlind: Text Muted on White (slate-700 vs white)', fgHex: '#334155', bgHex: '#FFFFFF', minRatio: 4.5, targetLevel: 'AA' },
+  { name: 'ColorBlind: Border Interactive on White (cb-cobalt-800 vs white)', fgHex: '#003E7E', bgHex: '#FFFFFF', minRatio: 3.0, targetLevel: 'AA Non-text' }
 ]
 
 function extractMixinBody(content: string, mixinName: string): string {
@@ -126,7 +139,7 @@ function extractMixinBody(content: string, mixinName: string): string {
 }
 
 function checkThemeSymmetry(): boolean {
-  console.log('--- Checking Token Symmetry (TOK-04) ---')
+  console.log('--- Checking Token Symmetry (TOK-04) Across 3 Default Themes ---')
   const semanticScssPath = path.resolve(__dirname, '../src/styles/tokens/_semantic.scss')
   const content = fs.readFileSync(semanticScssPath, 'utf-8')
 
@@ -143,23 +156,37 @@ function checkThemeSymmetry(): boolean {
 
   const lightTokens = extractTokens('light-theme-tokens')
   const darkTokens = extractTokens('dark-theme-tokens')
+  const colorblindTokens = extractTokens('colorblind-theme-tokens')
 
   let hasErrors = false
-  for (const token of lightTokens) {
-    if (!darkTokens.has(token)) {
-      console.error(`FAIL: Token ${token} is defined in light-theme-tokens but missing in dark-theme-tokens.`)
-      hasErrors = true
-    }
-  }
-  for (const token of darkTokens) {
-    if (!lightTokens.has(token)) {
-      console.error(`FAIL: Token ${token} is defined in dark-theme-tokens but missing in light-theme-tokens.`)
-      hasErrors = true
+  const allThemes: { name: string; tokens: Set<string> }[] = [
+    { name: 'light-theme-tokens', tokens: lightTokens },
+    { name: 'dark-theme-tokens', tokens: darkTokens },
+    { name: 'colorblind-theme-tokens', tokens: colorblindTokens }
+  ]
+
+  for (let i = 0; i < allThemes.length; i++) {
+    for (let j = i + 1; j < allThemes.length; j++) {
+      const themeA = allThemes[i]
+      const themeB = allThemes[j]
+      if (!themeA || !themeB) continue
+      for (const token of themeA.tokens) {
+        if (!themeB.tokens.has(token)) {
+          console.error(`FAIL: Token ${token} is defined in ${themeA.name} but missing in ${themeB.name}.`)
+          hasErrors = true
+        }
+      }
+      for (const token of themeB.tokens) {
+        if (!themeA.tokens.has(token)) {
+          console.error(`FAIL: Token ${token} is defined in ${themeB.name} but missing in ${themeA.name}.`)
+          hasErrors = true
+        }
+      }
     }
   }
 
   if (!hasErrors) {
-    console.log(`PASS: All ${lightTokens.size} semantic tokens are symmetrically defined in light and dark themes.`)
+    console.log(`PASS: All ${lightTokens.size} semantic tokens are symmetrically defined across Light, Dark, and Color Blind themes.`)
   }
   return !hasErrors
 }
@@ -187,17 +214,23 @@ function checkPerceptualSeparation(): boolean {
   console.log('\n--- Checking Brand vs Error Perceptual Separation (A11Y-03, TEST-11) ---')
   let passed = true
 
-  // Light theme: rose-800 (#9F1239) vs red-600 (#DC2626)
-  const dELight = deltaEOklab('#9F1239', '#DC2626')
+  // Light theme: print-red (#750008) vs red-700 (#B91C1C)
+  const dELight = deltaEOklab('#750008', '#B91C1C')
   const passLight = dELight >= 10.0
   console.log(`${passLight ? 'PASS' : 'FAIL'}: Light theme brand vs error ΔE(OKLab) = ${dELight.toFixed(1)} (required ≥ 10.0)`)
   if (!passLight) passed = false
 
-  // Dark theme text: rose-300 (#FDA4AF) vs red-400 (#F87171)
-  const dEDark = deltaEOklab('#FDA4AF', '#F87171')
+  // Dark theme text: champagne-gold (#FDE68A) vs red-400 (#F87171)
+  const dEDark = deltaEOklab('#FDE68A', '#F87171')
   const passDark = dEDark >= 10.0
   console.log(`${passDark ? 'PASS' : 'FAIL'}: Dark theme brand vs error text ΔE(OKLab) = ${dEDark.toFixed(1)} (required ≥ 10.0)`)
   if (!passDark) passed = false
+
+  // Color Blind theme: cb-cobalt-800 (#003E7E) vs cb-rust-700 (#880000)
+  const dECb = deltaEOklab('#003E7E', '#880000')
+  const passCb = dECb >= 10.0
+  console.log(`${passCb ? 'PASS' : 'FAIL'}: Color Blind theme brand vs error ΔE(OKLab) = ${dECb.toFixed(1)} (required ≥ 10.0)`)
+  if (!passCb) passed = false
 
   return passed
 }

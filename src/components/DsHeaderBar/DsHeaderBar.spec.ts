@@ -66,6 +66,34 @@ describe('DsHeaderBar', () => {
     expect(wrapper.emitted('update:theme')?.[1]).toEqual(['light'])
   })
 
+  it('supports 3-way theme cycling across light, dark, and colorblind modes', async () => {
+    const wrapper = mount(DsHeaderBar, {
+      props: {
+        theme: 'light',
+        availableThemes: ['light', 'dark', 'colorblind']
+      }
+    })
+
+    const themeBtn = wrapper.find('.ds-header-bar__theme-toggle')
+    expect(themeBtn.attributes('aria-label')).toBe('Switch to dark theme')
+
+    // Click from light -> dark
+    await themeBtn.trigger('click')
+    expect(wrapper.emitted('update:theme')?.[0]).toEqual(['dark'])
+
+    // Update to dark -> next is colorblind
+    await wrapper.setProps({ theme: 'dark' })
+    expect(themeBtn.attributes('aria-label')).toBe('Switch to color blind theme')
+    await themeBtn.trigger('click')
+    expect(wrapper.emitted('update:theme')?.[1]).toEqual(['colorblind'])
+
+    // Update to colorblind -> next is light
+    await wrapper.setProps({ theme: 'colorblind' })
+    expect(themeBtn.attributes('aria-label')).toBe('Switch to light theme')
+    await themeBtn.trigger('click')
+    expect(wrapper.emitted('update:theme')?.[2]).toEqual(['light'])
+  })
+
   it('hides theme toggle when showThemeToggle is false', () => {
     const wrapper = mount(DsHeaderBar, {
       props: { showThemeToggle: false }

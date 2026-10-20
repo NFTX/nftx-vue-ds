@@ -40,9 +40,15 @@ export const FullDashboard: Story = {
       DsEmptyState
     },
     setup() {
-      const currentTheme = ref<'light' | 'dark'>('light')
+      const currentTheme = ref<'light' | 'dark' | 'colorblind'>('light')
       const searchQuery = ref('')
       const selectedCategory = ref<string | number>('all')
+
+      const themeOptions = [
+        { value: 'light', label: 'Light Mode (Paper & Red)' },
+        { value: 'dark', label: 'Dark Mode (Velvet & Ivory)' },
+        { value: 'colorblind', label: 'Color Blind Mode (CVD Safe)' }
+      ]
 
       const categories = [
         { value: 'all', label: 'All Services', count: 4 },
@@ -69,7 +75,13 @@ export const FullDashboard: Story = {
       })
 
       function toggleTheme() {
-        currentTheme.value = currentTheme.value === 'light' ? 'dark' : 'light'
+        if (currentTheme.value === 'light') {
+          currentTheme.value = 'dark'
+        } else if (currentTheme.value === 'dark') {
+          currentTheme.value = 'colorblind'
+        } else {
+          currentTheme.value = 'light'
+        }
       }
 
       function clearSearch() {
@@ -78,6 +90,7 @@ export const FullDashboard: Story = {
 
       return {
         currentTheme,
+        themeOptions,
         searchQuery,
         selectedCategory,
         categories,
@@ -87,14 +100,16 @@ export const FullDashboard: Story = {
       }
     },
     template: `
-      <div :data-theme="currentTheme" style="min-height: 100vh; background-color: var(--ds-color-bg-base); color: var(--ds-color-text-primary);">
+      <div :data-theme="currentTheme" style="min-height: 100vh; background-color: var(--ds-color-bg-base); color: var(--ds-color-text-primary); transition: background-color 200ms ease, color 200ms ease;">
         <DsSkipLink target-id="main-content">Skip to homelab services</DsSkipLink>
 
         <DsHeaderBar
           title="Homelab Hub"
           subtitle="Local Ingress Gateway"
           :theme="currentTheme"
+          :available-themes="['light', 'dark', 'colorblind']"
           :sticky="true"
+          @update:theme="(val) => currentTheme = val"
           @toggle-theme="toggleTheme"
         >
           <template #search>
@@ -107,7 +122,24 @@ export const FullDashboard: Story = {
         </DsHeaderBar>
 
         <main id="main-content" style="padding-block: var(--ds-space-6); padding-inline: var(--ds-space-4); max-inline-size: 80rem; margin-inline: auto;">
-          <section aria-label="Service Category Filters" style="margin-block-end: var(--ds-space-6);">
+          <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--ds-space-4); margin-block-end: var(--ds-space-6);">
+            <section aria-label="Service Category Filters">
+              <DsChipGroup
+                v-model="selectedCategory"
+                :options="categories"
+                label="Filter services by category"
+              />
+            </section>
+
+            <section aria-label="Theme Selection" style="display: flex; align-items: center; gap: var(--ds-space-2);">
+              <span style="font-size: var(--ds-font-size-xs); font-weight: 600; color: var(--ds-color-text-muted); text-transform: uppercase;">Theme:</span>
+              <DsChipGroup
+                v-model="currentTheme"
+                :options="themeOptions"
+                label="Select active theme"
+              />
+            </section>
+          </div>
             <DsChipGroup
               v-model="selectedCategory"
               :options="categories"

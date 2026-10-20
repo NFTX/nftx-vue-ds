@@ -3,19 +3,20 @@
 
 @layer ds.tokens, ds.base, ds.components;
 
+// 1. Default Light Mode: Validated Editorial Rubric & Paper
 @mixin light-theme-tokens {
-  // Brand tokens (Crimson-Wine, rose-800 light)
-  --ds-color-brand-fill: #{p.$rose-800};
-  --ds-color-brand-fill-hover: #{p.$rose-900};
-  --ds-color-brand-fill-active: #{p.$rose-950};
-  --ds-color-brand-text: #{p.$rose-800};
+  // Brand tokens (Print Ink Red on Warm Paper)
+  --ds-color-brand-fill: #{p.$print-red};
+  --ds-color-brand-fill-hover: #{p.$print-red-hover};
+  --ds-color-brand-fill-active: #{p.$print-red-active};
+  --ds-color-brand-text: #{p.$print-red};
   --ds-color-on-brand: #{p.$white};
-  --ds-color-brand-surface: #{p.$rose-50};
-  --ds-color-brand-border: #{p.$rose-200};
-  --ds-color-focus-ring: #{p.$rose-800};
+  --ds-color-brand-surface: #{p.$print-red-surface};
+  --ds-color-brand-border: #{p.$print-red-border};
+  --ds-color-focus-ring: #{p.$print-red};
 
-  // Error tokens (True Red, red-600)
-  --ds-color-text-error: #{p.$red-600};
+  // Error tokens (True Red, red-700 text for AA/AAA on warm paper/surface)
+  --ds-color-text-error: #{p.$red-700};
   --ds-color-error-fill: #{p.$red-600};
   --ds-color-error-fill-hover: #{p.$red-700};
   --ds-color-on-error: #{p.$white};
@@ -46,30 +47,31 @@
   --ds-color-info-surface: #{p.$sky-50};
   --ds-color-info-border: #{p.$sky-100};
 
-  // Neutrals (Slate scale)
-  --ds-color-bg-base: #{p.$white};
-  --ds-color-bg-surface: #{p.$slate-50};
+  // Neutrals (Warm Paper & Deep Charcoal)
+  --ds-color-bg-base: #{p.$warm-paper};
+  --ds-color-bg-surface: #{p.$warm-paper-surface};
   --ds-color-bg-elevated: #{p.$white};
-  --ds-color-bg-muted: #{p.$slate-100};
-  --ds-color-border-default: #{p.$slate-200};
-  --ds-color-border-subtle: #{p.$slate-100};
+  --ds-color-bg-muted: #{p.$warm-paper-muted};
+  --ds-color-border-default: #{p.$warm-paper-border};
+  --ds-color-border-subtle: #{p.$warm-paper-border-subtle};
   --ds-color-border-interactive: #{p.$slate-500};
-  --ds-color-text-primary: #{p.$slate-900};
+  --ds-color-text-primary: #{p.$slate-800};
   --ds-color-text-secondary: #{p.$slate-700};
   --ds-color-text-muted: #{p.$slate-600};
-  --ds-color-text-inverse: #{p.$white};
+  --ds-color-text-inverse: #{p.$warm-paper};
 }
 
+// 2. Default Dark Mode: Validated Velvet Midpoint Oxblood & Pale Champagne Gold
 @mixin dark-theme-tokens {
-  // Brand tokens (Crimson-Wine, rose-700 fill, rose-300 text/focus)
-  --ds-color-brand-fill: #{p.$rose-700};
-  --ds-color-brand-fill-hover: #{p.$rose-800};
-  --ds-color-brand-fill-active: #{p.$rose-900};
-  --ds-color-brand-text: #{p.$rose-300};
-  --ds-color-on-brand: #{p.$white};
-  --ds-color-brand-surface: #{p.$rose-950};
-  --ds-color-brand-border: #{p.$rose-400};
-  --ds-color-focus-ring: #{p.$rose-300};
+  // Brand tokens (Pale Champagne Gold illumination on Velvet Oxblood)
+  --ds-color-brand-fill: #{p.$champagne-gold};
+  --ds-color-brand-fill-hover: #{p.$champagne-gold-hover};
+  --ds-color-brand-fill-active: #{p.$champagne-gold-active};
+  --ds-color-brand-text: #{p.$champagne-gold};
+  --ds-color-on-brand: #{p.$velvet-oxblood};
+  --ds-color-brand-surface: #{p.$velvet-elevated};
+  --ds-color-brand-border: #{p.$champagne-gold};
+  --ds-color-focus-ring: #{p.$champagne-gold};
 
   // Error tokens (True Red, red-400 text, red-600 fill)
   --ds-color-text-error: #{p.$red-400};
@@ -103,7 +105,168 @@
   --ds-color-info-surface: #{p.$sky-950};
   --ds-color-info-border: #{p.$sky-950};
 
-  // Neutrals (Slate scale)
+  // Neutrals (Velvet Oxblood & Anti-glare Warm Antique Ivory)
+  --ds-color-bg-base: #{p.$velvet-oxblood};
+  --ds-color-bg-surface: #{p.$velvet-surface};
+  --ds-color-bg-elevated: #{p.$velvet-elevated};
+  --ds-color-bg-muted: #{p.$velvet-muted};
+  --ds-color-border-default: #{p.$velvet-border};
+  --ds-color-border-subtle: #{p.$velvet-border-subtle};
+  --ds-color-border-interactive: #{p.$champagne-gold};
+  --ds-color-text-primary: #{p.$warm-ivory};
+  --ds-color-text-secondary: #{p.$warm-ivory-secondary};
+  --ds-color-text-muted: #{p.$warm-ivory-muted};
+  --ds-color-text-inverse: #{p.$velvet-oxblood};
+}
+
+// 3. Default Color Blind Mode: Okabe-Ito Universal CVD Palette (Worst-Case Universal Design)
+@mixin colorblind-theme-tokens {
+  // Brand tokens (Universal CVD Okabe-Ito Cobalt Navy on Crisp White)
+  --ds-color-brand-fill: #{p.$cb-cobalt-800};
+  --ds-color-brand-fill-hover: #{p.$cb-cobalt-900};
+  --ds-color-brand-fill-active: #{p.$cb-cobalt-950};
+  --ds-color-brand-text: #{p.$cb-cobalt-800};
+  --ds-color-on-brand: #{p.$white};
+  --ds-color-brand-surface: #{p.$cb-cobalt-surface};
+  --ds-color-brand-border: #{p.$cb-cobalt-border};
+  --ds-color-focus-ring: #{p.$cb-cobalt-800};
+
+  // Error tokens (Deep Rust/Burgundy, high luminance separation, non-red-green)
+  --ds-color-text-error: #{p.$cb-rust-700};
+  --ds-color-error-fill: #{p.$cb-rust-700};
+  --ds-color-error-fill-hover: #{p.$cb-rust-800};
+  --ds-color-on-error: #{p.$white};
+  --ds-color-error-surface: #{p.$cb-rust-surface};
+  --ds-color-error-border: #{p.$cb-rust-700};
+
+  // Success tokens (Deep Pine-Teal / Okabe-Ito Bluish Green, never raw grass green)
+  --ds-color-text-success: #{p.$cb-teal-700};
+  --ds-color-success-fill: #{p.$cb-teal-700};
+  --ds-color-success-fill-hover: #{p.$cb-teal-800};
+  --ds-color-on-success: #{p.$white};
+  --ds-color-success-surface: #{p.$cb-teal-surface};
+  --ds-color-success-border: #{p.$cb-teal-700};
+
+  // Warning tokens (High-Luminance Amber / Orange-Honey)
+  --ds-color-text-warning: #{p.$cb-amber-700};
+  --ds-color-warning-fill: #{p.$cb-amber-600};
+  --ds-color-warning-fill-hover: #{p.$cb-amber-700};
+  --ds-color-on-warning: #{p.$white};
+  --ds-color-warning-surface: #{p.$cb-amber-surface};
+  --ds-color-warning-border: #{p.$cb-amber-700};
+
+  // Info tokens (Okabe-Ito Sky Blue)
+  --ds-color-text-info: #{p.$cb-sky-700};
+  --ds-color-info-fill: #{p.$cb-sky-600};
+  --ds-color-info-fill-hover: #{p.$cb-sky-700};
+  --ds-color-on-info: #{p.$white};
+  --ds-color-info-surface: #{p.$cb-sky-surface};
+  --ds-color-info-border: #{p.$cb-sky-700};
+
+  // Neutrals (Crisp Pure White Canvas with Jet Slate Text & High-Contrast Boundaries)
+  --ds-color-bg-base: #{p.$white};
+  --ds-color-bg-surface: #{p.$slate-50};
+  --ds-color-bg-elevated: #{p.$white};
+  --ds-color-bg-muted: #{p.$slate-100};
+  --ds-color-border-default: #{p.$cb-border-dark};
+  --ds-color-border-subtle: #{p.$cb-border-subtle};
+  --ds-color-border-interactive: #{p.$cb-cobalt-800};
+  --ds-color-text-primary: #{p.$slate-900};
+  --ds-color-text-secondary: #{p.$slate-800};
+  --ds-color-text-muted: #{p.$slate-700};
+  --ds-color-text-inverse: #{p.$white};
+}
+
+// 4. Opt-in Legacy Slate Themes (Cold Tech Aesthetic)
+@mixin slate-light-tokens {
+  --ds-color-brand-fill: #{p.$rose-800};
+  --ds-color-brand-fill-hover: #{p.$rose-900};
+  --ds-color-brand-fill-active: #{p.$rose-950};
+  --ds-color-brand-text: #{p.$rose-800};
+  --ds-color-on-brand: #{p.$white};
+  --ds-color-brand-surface: #{p.$rose-50};
+  --ds-color-brand-border: #{p.$rose-200};
+  --ds-color-focus-ring: #{p.$rose-800};
+
+  --ds-color-text-error: #{p.$red-600};
+  --ds-color-error-fill: #{p.$red-600};
+  --ds-color-error-fill-hover: #{p.$red-700};
+  --ds-color-on-error: #{p.$white};
+  --ds-color-error-surface: #{p.$red-50};
+  --ds-color-error-border: #{p.$red-200};
+
+  --ds-color-text-success: #{p.$emerald-700};
+  --ds-color-success-fill: #{p.$emerald-700};
+  --ds-color-success-fill-hover: #{p.$emerald-600};
+  --ds-color-on-success: #{p.$white};
+  --ds-color-success-surface: #{p.$emerald-50};
+  --ds-color-success-border: #{p.$emerald-100};
+
+  --ds-color-text-warning: #{p.$amber-700};
+  --ds-color-warning-fill: #{p.$amber-700};
+  --ds-color-warning-fill-hover: #{p.$amber-600};
+  --ds-color-on-warning: #{p.$white};
+  --ds-color-warning-surface: #{p.$amber-50};
+  --ds-color-warning-border: #{p.$amber-100};
+
+  --ds-color-text-info: #{p.$sky-700};
+  --ds-color-info-fill: #{p.$sky-700};
+  --ds-color-info-fill-hover: #{p.$sky-600};
+  --ds-color-on-info: #{p.$white};
+  --ds-color-info-surface: #{p.$sky-50};
+  --ds-color-info-border: #{p.$sky-100};
+
+  --ds-color-bg-base: #{p.$white};
+  --ds-color-bg-surface: #{p.$slate-50};
+  --ds-color-bg-elevated: #{p.$white};
+  --ds-color-bg-muted: #{p.$slate-100};
+  --ds-color-border-default: #{p.$slate-200};
+  --ds-color-border-subtle: #{p.$slate-100};
+  --ds-color-border-interactive: #{p.$slate-500};
+  --ds-color-text-primary: #{p.$slate-900};
+  --ds-color-text-secondary: #{p.$slate-700};
+  --ds-color-text-muted: #{p.$slate-600};
+  --ds-color-text-inverse: #{p.$white};
+}
+
+@mixin slate-dark-tokens {
+  --ds-color-brand-fill: #{p.$rose-700};
+  --ds-color-brand-fill-hover: #{p.$rose-800};
+  --ds-color-brand-fill-active: #{p.$rose-900};
+  --ds-color-brand-text: #{p.$rose-300};
+  --ds-color-on-brand: #{p.$white};
+  --ds-color-brand-surface: #{p.$rose-950};
+  --ds-color-brand-border: #{p.$rose-400};
+  --ds-color-focus-ring: #{p.$rose-300};
+
+  --ds-color-text-error: #{p.$red-400};
+  --ds-color-error-fill: #{p.$red-600};
+  --ds-color-error-fill-hover: #{p.$red-700};
+  --ds-color-on-error: #{p.$white};
+  --ds-color-error-surface: #{p.$red-950};
+  --ds-color-error-border: #{p.$red-800};
+
+  --ds-color-text-success: #{p.$emerald-500};
+  --ds-color-success-fill: #{p.$emerald-600};
+  --ds-color-success-fill-hover: #{p.$emerald-700};
+  --ds-color-on-success: #{p.$white};
+  --ds-color-success-surface: #{p.$emerald-950};
+  --ds-color-success-border: #{p.$emerald-950};
+
+  --ds-color-text-warning: #{p.$amber-500};
+  --ds-color-warning-fill: #{p.$amber-600};
+  --ds-color-warning-fill-hover: #{p.$amber-700};
+  --ds-color-on-warning: #{p.$white};
+  --ds-color-warning-surface: #{p.$amber-950};
+  --ds-color-warning-border: #{p.$amber-950};
+
+  --ds-color-text-info: #{p.$sky-500};
+  --ds-color-info-fill: #{p.$sky-600};
+  --ds-color-info-fill-hover: #{p.$sky-700};
+  --ds-color-on-info: #{p.$white};
+  --ds-color-info-surface: #{p.$sky-950};
+  --ds-color-info-border: #{p.$sky-950};
+
   --ds-color-bg-base: #{p.$slate-900};
   --ds-color-bg-surface: #{p.$slate-950};
   --ds-color-bg-elevated: #{p.$slate-800};
@@ -179,6 +342,19 @@
     @include dark-theme-tokens;
   }
 
+  [data-theme='colorblind'],
+  [data-theme='color-blind'] {
+    @include colorblind-theme-tokens;
+  }
+
+  [data-theme='slate-light'] {
+    @include slate-light-tokens;
+  }
+
+  [data-theme='slate-dark'] {
+    @include slate-dark-tokens;
+  }
+
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme]) {
       @include dark-theme-tokens;
@@ -196,7 +372,9 @@
   @media (forced-colors: active) {
     :root,
     [data-theme='light'],
-    [data-theme='dark'] {
+    [data-theme='dark'],
+    [data-theme='colorblind'],
+    [data-theme='color-blind'] {
       --ds-color-focus-ring: Highlight;
       --ds-color-border-default: CanvasText;
       --ds-color-border-interactive: ButtonText;

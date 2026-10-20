@@ -2,7 +2,7 @@
 import { computed, ref, useId } from 'vue'
 import { DsIcon } from '@/components/DsIcon'
 
-export type DsThemeMode = 'light' | 'dark' | 'auto'
+export type DsThemeMode = 'light' | 'dark' | 'colorblind' | 'auto'
 
 export interface DsHeaderBarProps {
   /**
@@ -26,6 +26,11 @@ export interface DsHeaderBarProps {
    */
   theme?: DsThemeMode
   /**
+   * Allowed themes to cycle through when clicking the theme toggle.
+   * @default ['light', 'dark']
+   */
+  availableThemes?: DsThemeMode[]
+  /**
    * Whether to display the integrated theme toggle button.
    * @default true
    */
@@ -48,6 +53,7 @@ const props = withDefaults(defineProps<DsHeaderBarProps>(), {
   subtitle: undefined,
   sticky: false,
   theme: 'light',
+  availableThemes: () => ['light', 'dark'],
   showThemeToggle: true,
   mobileMenuOpen: undefined
 })
@@ -64,15 +70,44 @@ const isMobileOpen = computed<boolean>(() => {
   return internalMobileOpen.value
 })
 
-const isDarkTheme = computed<boolean>(() => props.theme === 'dark')
+const activeThemes = computed<DsThemeMode[]>(() => {
+  return props.availableThemes && props.availableThemes.length > 0
+    ? props.availableThemes
+    : ['light', 'dark']
+})
+
+const nextTheme = computed<DsThemeMode>(() => {
+  const current = props.theme
+  const themes = activeThemes.value
+  const currentIndex = themes.indexOf(current)
+  if (currentIndex !== -1) {
+    const candidate = themes[(currentIndex + 1) % themes.length]
+    if (candidate) return candidate
+  }
+  if (current === 'colorblind') return 'light'
+  return current === 'dark' ? 'light' : 'dark'
+})
 
 const themeToggleLabel = computed<string>(() => {
-  return isDarkTheme.value ? 'Switch to light theme' : 'Switch to dark theme'
+  switch (nextTheme.value) {
+    case 'dark':
+      return 'Switch to dark theme'
+    case 'colorblind':
+      return 'Switch to color blind theme'
+    case 'light':
+    default:
+      return 'Switch to light theme'
+  }
+})
+
+const currentThemeIcon = computed<string>(() => {
+  if (props.theme === 'dark') return 'sun'
+  if (props.theme === 'colorblind') return 'eye'
+  return 'moon'
 })
 
 function handleThemeToggle(): void {
-  const nextTheme: DsThemeMode = isDarkTheme.value ? 'light' : 'dark'
-  emit('update:theme', nextTheme)
+  emit('update:theme', nextTheme.value)
   emit('toggle-theme')
 }
 
