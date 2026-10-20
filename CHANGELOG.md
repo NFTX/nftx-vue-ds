@@ -33,6 +33,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Full migration of `/workspace/Projects/portal` homelab dashboard to `@nftx/vue-ds`.
   - Replaced legacy headers, filters, cards, and automation sections with `DsHeaderBar`, `DsSearchBar`, `DsChipGroup`, `DsCardGrid`, `DsCard`, `DsBadge`, `DsEmptyState`, and `DsSpinner`.
   - Mapped portal CSS variables directly to design system semantic tokens (`--ds-color-*`).
+- **Production Readiness & Static Distribution (Phase 6):**
+  - Static Storybook build verified (`npm run build-storybook`) with Foundations MDX documentation, component autodocs, and full-page layout demo.
+  - Final quality gate verification passed across all 7 CI commands.
 
 ## [0.1.0] - 2026-10-19
 
