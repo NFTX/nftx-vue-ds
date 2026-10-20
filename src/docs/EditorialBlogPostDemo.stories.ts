@@ -14,7 +14,8 @@ import { DsLink } from '@/components/DsLink'
  * Supports testing:
  * 1. Candidate Print Ink Red (#750008) for light/paper modes.
  * 2. Illuminated Gold & Amber options for dark mode titling.
- * 3. Chromatic Dark Mode Canvas: testing Deep Oxblood (#580D1A) and Blackened Wine (#1F0508) as base backgrounds.
+ * 3. Chromatic Dark Mode Canvas: testing Deep Oxblood (#580D1A), intermediate Velvet Midpoint (#3C0911),
+ *    Antique Morocco (#33080E), and Blackened Wine (#1F0508) as base backgrounds.
  */
 const meta = {
   title: 'Pages/EditorialBlogPostDemo',
@@ -44,8 +45,18 @@ export const EditorialArticleValidation: Story = {
       const selectedTag = ref('typography')
 
       // Surface Options (Including Chromatic Oxblood Dark Canvases)
-      type SurfaceId = 'white' | 'paper' | 'dark-slate' | 'oxblood-direct' | 'oxblood-blackened'
+      type SurfaceId =
+        | 'white'
+        | 'paper'
+        | 'dark-slate'
+        | 'oxblood-direct'
+        | 'oxblood-velvet'
+        | 'oxblood-morocco'
+        | 'oxblood-blackened'
+        | 'custom-canvas'
+
       const activeSurface = ref<SurfaceId>('white')
+      const customCanvasHex = ref('#3C0911')
 
       // Dark Mode Titling Strategy (Defaults to Gilded Manuscript Gold)
       const selectedDarkAccent = ref('#F3C77C')
@@ -56,8 +67,10 @@ export const EditorialArticleValidation: Story = {
         { id: 'white', label: 'Pure White', hex: '#FFFFFF', desc: 'Modern high-contrast light' },
         { id: 'paper', label: 'Warm Paper', hex: '#FAF8F5', desc: 'Archival book paper / vellum' },
         { id: 'dark-slate', label: 'Dark Slate', hex: '#0F172A', desc: 'Standard neutral dark mode' },
-        { id: 'oxblood-direct', label: 'Deep Oxblood Canvas', hex: '#580D1A', desc: 'User candidate as base dark canvas' },
-        { id: 'oxblood-blackened', label: 'Wine Night Canvas', hex: '#1F0508', desc: 'Blackened oxblood chromatic dark' }
+        { id: 'oxblood-direct', label: 'Deep Oxblood', hex: '#580D1A', desc: 'Original oxblood canvas (lighter)' },
+        { id: 'oxblood-velvet', label: '⭐ Velvet Midpoint', hex: '#3C0911', desc: 'Exact 50% midpoint between Oxblood & Wine Night' },
+        { id: 'oxblood-morocco', label: 'Antique Morocco', hex: '#33080E', desc: '65% deeper blend, matching slate depth' },
+        { id: 'oxblood-blackened', label: 'Wine Night', hex: '#1F0508', desc: 'Blackened wine chromatic dark (darker)' }
       ]
 
       const lightPresets = [
@@ -81,34 +94,6 @@ export const EditorialArticleValidation: Story = {
         { value: 'illumination', label: 'Gold Illumination' },
         { value: 'chromatic-dark', label: 'Oxblood Dark Mode' }
       ]
-
-      const isDarkMode = computed(() => {
-        return activeSurface.value !== 'white' && activeSurface.value !== 'paper'
-      })
-
-      function selectLightPreset(hex: string) {
-        selectedColor.value = hex
-        customColorInput.value = hex
-      }
-
-      function onLightCustomInput(event: Event) {
-        const target = event.target as HTMLInputElement
-        selectedColor.value = target.value
-        customColorInput.value = target.value
-      }
-
-      function selectDarkPreset(hex: string) {
-        darkHandlingMode.value = 'palette'
-        selectedDarkAccent.value = hex
-        customDarkAccentInput.value = hex
-      }
-
-      function onDarkCustomInput(event: Event) {
-        darkHandlingMode.value = 'palette'
-        const target = event.target as HTMLInputElement
-        selectedDarkAccent.value = target.value
-        customDarkAccentInput.value = target.value
-      }
 
       // Mathematical Color Analysis
       function srgbToLinear(c: number): number {
@@ -166,22 +151,48 @@ export const EditorialArticleValidation: Story = {
         if (activeSurface.value === 'paper') return '#FAF8F5'
         if (activeSurface.value === 'dark-slate') return '#0F172A'
         if (activeSurface.value === 'oxblood-direct') return '#580D1A'
+        if (activeSurface.value === 'oxblood-velvet') return '#3C0911'
+        if (activeSurface.value === 'oxblood-morocco') return '#33080E'
         if (activeSurface.value === 'oxblood-blackened') return '#1F0508'
+        if (activeSurface.value === 'custom-canvas') return customCanvasHex.value
         return '#FFFFFF'
+      })
+
+      const isDarkMode = computed(() => {
+        if (activeSurface.value === 'white' || activeSurface.value === 'paper') return false
+        if (activeSurface.value === 'custom-canvas') return relativeLuminance(customCanvasHex.value) < 0.2
+        return true
       })
 
       const surfaceCardBg = computed(() => {
         if (activeSurface.value === 'oxblood-direct') return '#440913'
+        if (activeSurface.value === 'oxblood-velvet') return '#2E060D'
+        if (activeSurface.value === 'oxblood-morocco') return '#26050A'
         if (activeSurface.value === 'oxblood-blackened') return '#29070B'
         if (activeSurface.value === 'dark-slate') return '#1E293B'
+        if (activeSurface.value === 'custom-canvas') return '#22080D'
         return '#FFFFFF'
       })
 
       const surfaceCardBorder = computed(() => {
         if (activeSurface.value === 'oxblood-direct') return '#781524'
+        if (activeSurface.value === 'oxblood-velvet') return '#5A0E1A'
+        if (activeSurface.value === 'oxblood-morocco') return '#4D0C16'
         if (activeSurface.value === 'oxblood-blackened') return '#4C0D15'
         if (activeSurface.value === 'dark-slate') return '#334155'
+        if (activeSurface.value === 'custom-canvas') return '#5A0E1A'
         return '#E2E8F0'
+      })
+
+      const pullquoteBg = computed(() => {
+        if (activeSurface.value === 'oxblood-direct') return '#3F0812'
+        if (activeSurface.value === 'oxblood-velvet') return '#2C060C'
+        if (activeSurface.value === 'oxblood-morocco') return '#240409'
+        if (activeSurface.value === 'oxblood-blackened') return '#25060A'
+        if (activeSurface.value === 'dark-slate') return '#1E293B'
+        if (activeSurface.value === 'paper') return '#F1EDE6'
+        if (activeSurface.value === 'custom-canvas') return '#240409'
+        return '#FDF2F4'
       })
 
       const surfaceText = computed(() => {
@@ -208,11 +219,42 @@ export const EditorialArticleValidation: Story = {
       const bodyContrastVsSurface = computed(() => calculateContrast(surfaceText.value, surfaceBg.value).toFixed(2))
       const deltaEVsError = computed(() => calculateDeltaE(selectedColor.value, '#DC2626').toFixed(1))
 
+      function selectLightPreset(hex: string) {
+        selectedColor.value = hex
+        customColorInput.value = hex
+      }
+
+      function onLightCustomInput(event: Event) {
+        const target = event.target as HTMLInputElement
+        selectedColor.value = target.value
+        customColorInput.value = target.value
+      }
+
+      function selectDarkPreset(hex: string) {
+        darkHandlingMode.value = 'palette'
+        selectedDarkAccent.value = hex
+        customDarkAccentInput.value = hex
+      }
+
+      function onDarkCustomInput(event: Event) {
+        darkHandlingMode.value = 'palette'
+        const target = event.target as HTMLInputElement
+        selectedDarkAccent.value = target.value
+        customDarkAccentInput.value = target.value
+      }
+
+      function onCanvasCustomInput(event: Event) {
+        activeSurface.value = 'custom-canvas'
+        const target = event.target as HTMLInputElement
+        customCanvasHex.value = target.value
+      }
+
       return {
         selectedColor,
         customColorInput,
         activeSurface,
         surfaceOptions,
+        customCanvasHex,
         selectedDarkAccent,
         customDarkAccentInput,
         darkHandlingMode,
@@ -225,9 +267,11 @@ export const EditorialArticleValidation: Story = {
         onLightCustomInput,
         selectDarkPreset,
         onDarkCustomInput,
+        onCanvasCustomInput,
         surfaceBg,
         surfaceCardBg,
         surfaceCardBorder,
+        pullquoteBg,
         surfaceText,
         surfaceSubtext,
         activeTitleColor,
@@ -268,7 +312,7 @@ export const EditorialArticleValidation: Story = {
           <div style="max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 0.85rem;">
             <!-- Top Controls Row: Surface & Colors -->
             <div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between;">
-              <!-- Surface Picker with Oxblood Dark Options -->
+              <!-- Surface Picker with Oxblood Intermediate Canvases -->
               <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem;">
                 <span style="font-weight: 700; color: #CBD5E1; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em;">Surface Canvas:</span>
                 <button
@@ -294,6 +338,18 @@ export const EditorialArticleValidation: Story = {
                   <span :style="{ display: 'inline-block', width: '10px', height: '10px', borderRadius: '50%', backgroundColor: surf.hex, border: '1px solid #FFF' }" />
                   {{ surf.label }}
                 </button>
+
+                <!-- Custom Canvas Color Picker -->
+                <label style="display: inline-flex; align-items: center; gap: 0.25rem; cursor: pointer; color: #CBD5E1; font-size: 0.8125rem; margin-left: 0.25rem;">
+                  <span>Custom:</span>
+                  <input
+                    type="color"
+                    :value="customCanvasHex"
+                    @input="onCanvasCustomInput"
+                    aria-label="Pick custom surface canvas hex color"
+                    style="width: 26px; height: 26px; border: none; border-radius: 4px; cursor: pointer; background: transparent;"
+                  />
+                </label>
               </div>
 
               <!-- Light Mode Primary Ink Color Presets (when in light/paper surface) -->
@@ -473,7 +529,7 @@ export const EditorialArticleValidation: Story = {
                     textTransform: 'uppercase'
                   }"
                 >
-                  {{ isDarkMode ? (activeSurface.startsWith('oxblood') ? '✨ Oxblood Canvas & Gold Leaf' : '✨ Illuminated Gold & Slate') : 'Foundations & Inks' }}
+                  {{ isDarkMode ? (activeSurface.startsWith('oxblood') ? '✨ Oxblood Velvet & Gold Leaf' : '✨ Illuminated Gold & Slate') : 'Foundations & Inks' }}
                 </span>
                 <span :style="{ color: surfaceSubtext, fontSize: '0.875rem' }">October 20, 2026 · 6 min read</span>
               </div>
@@ -504,7 +560,7 @@ export const EditorialArticleValidation: Story = {
                   fontStyle: 'italic'
                 }"
               >
-                Screen phosphors emit additive light, whereas physical ink absorbs it. Whether set on archival paper by day, or on an oxblood morocco leather ground illuminated by burnished gold leaf, typography must communicate gravitas.
+                Screen phosphors emit additive light, whereas physical ink absorbs it. Whether set on archival paper by day, or on a velvet oxblood morocco ground illuminated by burnished gold leaf, typography must communicate gravitas.
               </p>
 
               <!-- Byline -->
@@ -525,7 +581,7 @@ export const EditorialArticleValidation: Story = {
                 </div>
                 <div>
                   <div :style="{ fontWeight: '600', color: surfaceText }">Editorial Design Guild</div>
-                  <div>Historical typography & chromatic dark canvas study</div>
+                  <div>Historical typography & velvet oxblood canvas study</div>
                 </div>
               </div>
             </header>
@@ -579,7 +635,7 @@ export const EditorialArticleValidation: Story = {
                   margin: '2.25rem 0',
                   padding: '1.25rem 1.75rem',
                   borderLeft: '4px solid ' + activeTitleColor,
-                  backgroundColor: activeSurface === 'oxblood-direct' ? '#3F0812' : (activeSurface === 'oxblood-blackened' ? '#25060A' : (activeSurface === 'dark-slate' ? '#1E293B' : (activeSurface === 'paper' ? '#F1EDE6' : '#FDF2F4'))),
+                  backgroundColor: pullquoteBg,
                   borderRadius: '0 0.5rem 0.5rem 0',
                   fontStyle: 'italic',
                   fontSize: '1.25rem',
@@ -607,15 +663,15 @@ export const EditorialArticleValidation: Story = {
                   transition: 'color 0.2s ease'
                 }"
               >
-                2. Chromatic Dark Mode: The Deep Oxblood Canvas
+                2. Chromatic Dark Canvas: Finding the Sweet Spot (#3C0911)
               </h2>
 
               <p style="margin-bottom: 1.75rem;">
-                Most dark modes default to cold, sterile slate gray (<code>#0F172A</code>). However, in luxury publishing and classical bookbinding, volumes were often bound in rich, dyed <strong>oxblood morocco leather</strong>.
+                Finding the ideal chromatic dark surface requires balancing two forces: <strong>chromatic presence</strong> (the warmth that tells the eye "this is rich oxblood") versus <strong>contrast headroom</strong> (ensuring the background is dark enough for light text to breathe).
               </p>
 
               <p style="margin-bottom: 1.75rem;">
-                When the dark surface itself is infused with Deep Oxblood (<code>#580D1A</code>) or Blackened Wine (<code>#1F0508</code>), the interface shifts from a generic technical dark mode to an atmospheric, tactile canvas.
+                While the original Deep Oxblood (<code>#580D1A</code>) can feel slightly vibrant, and Wine Night (<code>#1F0508</code>) nears total black, the exact midpoint—<strong>Velvet Oxblood (<code>#3C0911</code>)</strong>—hits the sweet spot. It carries noticeable wine-red depth while providing an extraordinary <strong>16.2:1 AAA</strong> contrast ratio against ivory text, and <strong>10.7:1 AAA</strong> against gilded gold leaf.
               </p>
 
               <!-- Historical Callout Box -->
@@ -624,21 +680,21 @@ export const EditorialArticleValidation: Story = {
                   padding: '1.25rem 1.5rem',
                   borderRadius: '0.5rem',
                   border: '1px solid ' + (isDarkMode ? '#B45309' : '#CBD5E1'),
-                  backgroundColor: activeSurface === 'oxblood-direct' ? '#3F0812' : (activeSurface === 'oxblood-blackened' ? '#25060A' : (activeSurface === 'dark-slate' ? '#1E293B' : (activeSurface === 'paper' ? '#F5EFEB' : '#F8FAFC'))),
+                  backgroundColor: pullquoteBg,
                   marginBottom: '2rem',
                   fontFamily: 'system-ui, sans-serif',
                   fontSize: '0.9375rem'
                 }"
               >
                 <div style="font-weight: 700; margin-bottom: 0.5rem; color: #0369A1; display: flex; align-items: center; gap: 0.5rem;">
-                  <span>🏛️ The Optics of an Oxblood Dark Canvas</span>
+                  <span>🏛️ Active Canvas Analytics ({{ surfaceBg }})</span>
                 </div>
                 <p style="margin: 0 0 0.5rem; line-height: 1.5;">
-                  Evaluating the contrast ratios on the active canvas (<code>{{ surfaceBg }}</code>):
+                  Metrics calculated against the active surface canvas:
                 </p>
                 <ul style="margin: 0; padding-left: 1.25rem; line-height: 1.6;">
-                  <li><strong>Body Ivory Text:</strong> Yields <strong>{{ bodyContrastVsSurface }}:1 (AAA)</strong> contrast—crisp, effortless legibility.</li>
-                  <li><strong>Gilded Gold Titling:</strong> Yields <strong>{{ contrastVsSurface }}:1 (AAA)</strong> contrast, creating a warm candlelight-on-leather atmosphere without any pink or neon tones.</li>
+                  <li><strong>Ivory Body Text ({{ surfaceText }}):</strong> Produces <strong>{{ bodyContrastVsSurface }}:1 (AAA)</strong> contrast—crisp, effortless legibility for long-form reading.</li>
+                  <li><strong>Gilded Gold Titling ({{ activeTitleColor }}):</strong> Produces <strong>{{ contrastVsSurface }}:1 (AAA)</strong> contrast, creating a warm candlelight-on-leather atmosphere without any pink or neon tones.</li>
                   <li><strong>Raw Red (Uninverted):</strong> If you place raw <code>#750008</code> directly on this dark background, it drops to ~1.2:1 (proving why gold titling is mathematically essential).</li>
                 </ul>
               </div>
