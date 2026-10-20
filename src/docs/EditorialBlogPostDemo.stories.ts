@@ -11,8 +11,10 @@ import { DsLink } from '@/components/DsLink'
 
 /**
  * Editorial Blogpost Story for real-world contextual color validation.
- * Allows comparing candidate print ink red (#750008) against existing design system
- * tokens and testing Illuminated Gold / Yellow variants for Dark Mode.
+ * Supports testing:
+ * 1. Candidate Print Ink Red (#750008) for light/paper modes.
+ * 2. Illuminated Gold & Amber options for dark mode titling.
+ * 3. Chromatic Dark Mode Canvas: testing Deep Oxblood (#580D1A) and Blackened Wine (#1F0508) as base backgrounds.
  */
 const meta = {
   title: 'Pages/EditorialBlogPostDemo',
@@ -39,13 +41,24 @@ export const EditorialArticleValidation: Story = {
       // Light / Print Ink Base Color
       const selectedColor = ref('#750008')
       const customColorInput = ref('#750008')
-      const activeSurface = ref<'white' | 'paper' | 'dark'>('white')
       const selectedTag = ref('typography')
 
-      // Dark Mode Strategy State (Defaults to Gilded Manuscript Gold)
+      // Surface Options (Including Chromatic Oxblood Dark Canvases)
+      type SurfaceId = 'white' | 'paper' | 'dark-slate' | 'oxblood-direct' | 'oxblood-blackened'
+      const activeSurface = ref<SurfaceId>('white')
+
+      // Dark Mode Titling Strategy (Defaults to Gilded Manuscript Gold)
       const selectedDarkAccent = ref('#F3C77C')
       const customDarkAccentInput = ref('#F3C77C')
       const darkHandlingMode = ref<'palette' | 'direct-raw'>('palette')
+
+      const surfaceOptions: { id: SurfaceId; label: string; hex: string; desc: string }[] = [
+        { id: 'white', label: 'Pure White', hex: '#FFFFFF', desc: 'Modern high-contrast light' },
+        { id: 'paper', label: 'Warm Paper', hex: '#FAF8F5', desc: 'Archival book paper / vellum' },
+        { id: 'dark-slate', label: 'Dark Slate', hex: '#0F172A', desc: 'Standard neutral dark mode' },
+        { id: 'oxblood-direct', label: 'Deep Oxblood Canvas', hex: '#580D1A', desc: 'User candidate as base dark canvas' },
+        { id: 'oxblood-blackened', label: 'Wine Night Canvas', hex: '#1F0508', desc: 'Blackened oxblood chromatic dark' }
+      ]
 
       const lightPresets = [
         { id: 'print-red', label: 'Print Ink Red (Target)', hex: '#750008', role: 'Classical rubric / editorial book title' },
@@ -55,19 +68,23 @@ export const EditorialArticleValidation: Story = {
       ]
 
       const darkGoldPresets = [
-        { id: 'gilded-gold', label: 'Gilded Leaf Gold', hex: '#F3C77C', desc: 'Illuminated manuscript gold leaf (11.3:1 AAA)' },
-        { id: 'amber-gold', label: 'Luminous Amber', hex: '#FBBF24', desc: 'Radiant modern amber gold (10.7:1 AAA)' },
-        { id: 'antique-gold', label: 'Antique Ochre Gold', hex: '#E2B357', desc: 'Historical bookbinder gold (9.2:1 AAA)' },
-        { id: 'champagne', label: 'Pale Champagne', hex: '#FDE68A', desc: 'Soft parchment highlight (14.3:1 AAA)' },
-        { id: 'pale-rose', label: 'Pale Rose (Old)', hex: '#FDA4AF', desc: 'Desaturated rose-300 tint (9.4:1 AAA)' }
+        { id: 'gilded-gold', label: 'Gilded Leaf Gold', hex: '#F3C77C', desc: 'Illuminated manuscript gold leaf (AAA)' },
+        { id: 'amber-gold', label: 'Luminous Amber', hex: '#FBBF24', desc: 'Radiant modern amber gold (AAA)' },
+        { id: 'antique-gold', label: 'Antique Ochre Gold', hex: '#E2B357', desc: 'Historical bookbinder gold (AAA)' },
+        { id: 'champagne', label: 'Pale Champagne', hex: '#FDE68A', desc: 'Soft parchment highlight (AAA)' },
+        { id: 'pale-rose', label: 'Pale Rose (Old)', hex: '#FDA4AF', desc: 'Desaturated rose-300 tint (AAA)' }
       ]
 
       const articleTags = [
         { value: 'typography', label: 'Editorial Typography' },
         { value: 'inks', label: 'Print Inks & Pigments' },
         { value: 'illumination', label: 'Gold Illumination' },
-        { value: 'contrast', label: 'WCAG 2.2 Contrast' }
+        { value: 'chromatic-dark', label: 'Oxblood Dark Mode' }
       ]
+
+      const isDarkMode = computed(() => {
+        return activeSurface.value !== 'white' && activeSurface.value !== 'paper'
+      })
 
       function selectLightPreset(hex: string) {
         selectedColor.value = hex
@@ -147,25 +164,40 @@ export const EditorialArticleValidation: Story = {
 
       const surfaceBg = computed(() => {
         if (activeSurface.value === 'paper') return '#FAF8F5'
-        if (activeSurface.value === 'dark') return '#0F172A'
+        if (activeSurface.value === 'dark-slate') return '#0F172A'
+        if (activeSurface.value === 'oxblood-direct') return '#580D1A'
+        if (activeSurface.value === 'oxblood-blackened') return '#1F0508'
         return '#FFFFFF'
       })
 
+      const surfaceCardBg = computed(() => {
+        if (activeSurface.value === 'oxblood-direct') return '#440913'
+        if (activeSurface.value === 'oxblood-blackened') return '#29070B'
+        if (activeSurface.value === 'dark-slate') return '#1E293B'
+        return '#FFFFFF'
+      })
+
+      const surfaceCardBorder = computed(() => {
+        if (activeSurface.value === 'oxblood-direct') return '#781524'
+        if (activeSurface.value === 'oxblood-blackened') return '#4C0D15'
+        if (activeSurface.value === 'dark-slate') return '#334155'
+        return '#E2E8F0'
+      })
+
       const surfaceText = computed(() => {
-        if (activeSurface.value === 'dark') return '#E2E8F0'
+        if (isDarkMode.value) return '#F8FAFC'
         if (activeSurface.value === 'paper') return '#1E293B'
         return '#0F172A'
       })
 
       const surfaceSubtext = computed(() => {
-        if (activeSurface.value === 'dark') return '#94A3B8'
-        if (activeSurface.value === 'paper') return '#475569'
+        if (isDarkMode.value) return '#CBD5E1'
         return '#475569'
       })
 
       // Active title & accent color based on theme
       const activeTitleColor = computed(() => {
-        if (activeSurface.value === 'dark') {
+        if (isDarkMode.value) {
           return darkHandlingMode.value === 'direct-raw' ? selectedColor.value : selectedDarkAccent.value
         }
         return selectedColor.value
@@ -173,12 +205,14 @@ export const EditorialArticleValidation: Story = {
 
       const contrastVsWhite = computed(() => calculateContrast(selectedColor.value, '#FFFFFF').toFixed(2))
       const contrastVsSurface = computed(() => calculateContrast(activeTitleColor.value, surfaceBg.value).toFixed(2))
+      const bodyContrastVsSurface = computed(() => calculateContrast(surfaceText.value, surfaceBg.value).toFixed(2))
       const deltaEVsError = computed(() => calculateDeltaE(selectedColor.value, '#DC2626').toFixed(1))
 
       return {
         selectedColor,
         customColorInput,
         activeSurface,
+        surfaceOptions,
         selectedDarkAccent,
         customDarkAccentInput,
         darkHandlingMode,
@@ -186,16 +220,20 @@ export const EditorialArticleValidation: Story = {
         lightPresets,
         darkGoldPresets,
         articleTags,
+        isDarkMode,
         selectLightPreset,
         onLightCustomInput,
         selectDarkPreset,
         onDarkCustomInput,
         surfaceBg,
+        surfaceCardBg,
+        surfaceCardBorder,
         surfaceText,
         surfaceSubtext,
         activeTitleColor,
         contrastVsWhite,
         contrastVsSurface,
+        bodyContrastVsSurface,
         deltaEVsError
       }
     },
@@ -230,55 +268,36 @@ export const EditorialArticleValidation: Story = {
           <div style="max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 0.85rem;">
             <!-- Top Controls Row: Surface & Colors -->
             <div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between;">
-              <!-- Surface Picker -->
-              <div style="display: flex; align-items: center; gap: 0.4rem;">
-                <span style="font-weight: 700; color: #CBD5E1; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em;">Surface:</span>
+              <!-- Surface Picker with Oxblood Dark Options -->
+              <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem;">
+                <span style="font-weight: 700; color: #CBD5E1; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em;">Surface Canvas:</span>
                 <button
+                  v-for="surf in surfaceOptions"
+                  :key="surf.id"
                   type="button"
-                  @click="activeSurface = 'white'"
+                  :aria-pressed="activeSurface === surf.id"
+                  @click="activeSurface = surf.id"
                   :style="{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.35rem',
                     padding: '0.35rem 0.65rem',
                     borderRadius: '0.375rem',
-                    background: activeSurface === 'white' ? '#FFFFFF' : '#1E293B',
-                    color: activeSurface === 'white' ? '#0F172A' : '#CBD5E1',
-                    border: activeSurface === 'white' ? '2px solid #38BDF8' : '1px solid #475569',
+                    background: activeSurface === surf.id ? (surf.id.startsWith('oxblood') ? '#7F1D1D' : (surf.id === 'white' ? '#FFFFFF' : '#1E293B')) : '#0F172A',
+                    color: activeSurface === surf.id ? (surf.id === 'white' ? '#0F172A' : '#FFFFFF') : '#CBD5E1',
+                    border: activeSurface === surf.id ? '2px solid #F3C77C' : '1px solid #475569',
                     cursor: 'pointer',
-                    fontWeight: activeSurface === 'white' ? '700' : '400',
+                    fontWeight: activeSurface === surf.id ? '700' : '400',
                     fontSize: '0.8125rem'
                   }"
-                >Pure White</button>
-                <button
-                  type="button"
-                  @click="activeSurface = 'paper'"
-                  :style="{
-                    padding: '0.35rem 0.65rem',
-                    borderRadius: '0.375rem',
-                    background: activeSurface === 'paper' ? '#FAF8F5' : '#1E293B',
-                    color: activeSurface === 'paper' ? '#1E293B' : '#CBD5E1',
-                    border: activeSurface === 'paper' ? '2px solid #E2B357' : '1px solid #475569',
-                    cursor: 'pointer',
-                    fontWeight: activeSurface === 'paper' ? '700' : '400',
-                    fontSize: '0.8125rem'
-                  }"
-                >Warm Paper (#FAF8F5)</button>
-                <button
-                  type="button"
-                  @click="activeSurface = 'dark'"
-                  :style="{
-                    padding: '0.35rem 0.65rem',
-                    borderRadius: '0.375rem',
-                    background: activeSurface === 'dark' ? '#0369A1' : '#1E293B',
-                    color: '#FFFFFF',
-                    border: activeSurface === 'dark' ? '2px solid #38BDF8' : '1px solid #475569',
-                    cursor: 'pointer',
-                    fontWeight: activeSurface === 'dark' ? '700' : '400',
-                    fontSize: '0.8125rem'
-                  }"
-                >Dark Slate (#0F172A)</button>
+                >
+                  <span :style="{ display: 'inline-block', width: '10px', height: '10px', borderRadius: '50%', backgroundColor: surf.hex, border: '1px solid #FFF' }" />
+                  {{ surf.label }}
+                </button>
               </div>
 
               <!-- Light Mode Primary Ink Color Presets (when in light/paper surface) -->
-              <div v-if="activeSurface !== 'dark'" style="display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem;">
+              <div v-if="!isDarkMode" style="display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem;">
                 <span style="font-weight: 700; color: #CBD5E1; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em;">Print Red:</span>
                 <button
                   v-for="preset in lightPresets"
@@ -316,7 +335,7 @@ export const EditorialArticleValidation: Story = {
 
               <!-- Dark Mode Gold & Accent Presets (when in dark mode) -->
               <div v-else style="display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem;">
-                <span style="font-weight: 700; color: #F3C77C; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em;">✨ Dark Mode Accent:</span>
+                <span style="font-weight: 700; color: #F3C77C; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em;">✨ Titling Accent:</span>
                 <button
                   v-for="preset in darkGoldPresets"
                   :key="preset.id"
@@ -353,7 +372,7 @@ export const EditorialArticleValidation: Story = {
                     cursor: 'pointer',
                     fontSize: '0.8125rem'
                   }"
-                >Raw Red (1.5:1 Fail)</button>
+                >Raw Red (Low Contrast)</button>
 
                 <label style="display: inline-flex; align-items: center; gap: 0.25rem; cursor: pointer; color: #CBD5E1; font-size: 0.8125rem;">
                   <span>Custom:</span>
@@ -371,22 +390,28 @@ export const EditorialArticleValidation: Story = {
             <!-- Mathematical Metrics Bar -->
             <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 1.25rem; font-size: 0.8125rem; border-top: 1px solid #334155; padding-top: 0.5rem;">
               <div>
-                <span style="color: #CBD5E1;">Active Title Color:</span>
-                <code style="background: #1E293B; padding: 0.15rem 0.4rem; border-radius: 4px; margin-left: 0.25rem; color: #F8FAFC; border: 1px solid #475569;">{{ activeTitleColor }}</code>
+                <span style="color: #CBD5E1;">Canvas:</span>
+                <code style="background: #1E293B; padding: 0.15rem 0.4rem; border-radius: 4px; margin-left: 0.25rem; color: #F8FAFC; border: 1px solid #475569;">{{ surfaceBg }}</code>
               </div>
               <div>
-                <span style="color: #CBD5E1;">Contrast vs Current Surface:</span>
+                <span style="color: #CBD5E1;">Title Contrast vs Canvas:</span>
                 <strong :style="{ color: Number(contrastVsSurface) >= 7 ? '#4ADE80' : Number(contrastVsSurface) >= 4.5 ? '#FACC15' : '#F87171', marginLeft: '0.25rem' }">
                   {{ contrastVsSurface }}:1 ({{ Number(contrastVsSurface) >= 7 ? 'AAA Pass' : Number(contrastVsSurface) >= 4.5 ? 'AA Pass' : 'Fail' }})
                 </strong>
               </div>
-              <div v-if="activeSurface !== 'dark'">
-                <span style="color: #CBD5E1;">Contrast vs White:</span>
-                <strong style="color: #4ADE80; marginLeft: '0.25rem';">{{ contrastVsWhite }}:1 (AAA)</strong>
+              <div>
+                <span style="color: #CBD5E1;">Body Text Contrast:</span>
+                <strong style="color: #4ADE80; margin-left: 0.25rem;">{{ bodyContrastVsSurface }}:1 (AAA)</strong>
               </div>
-              <div v-if="activeSurface === 'dark'">
-                <span style="color: #CBD5E1;">Aesthetic Mode:</span>
-                <strong style="color: #F3C77C; marginLeft: '0.25rem';">Illuminated Gold Leaf (Manuscript Heritage)</strong>
+              <div v-if="!isDarkMode">
+                <span style="color: #CBD5E1;">Print Red vs White:</span>
+                <strong style="color: #4ADE80; margin-left: 0.25rem;">{{ contrastVsWhite }}:1 (AAA)</strong>
+              </div>
+              <div v-else>
+                <span style="color: #CBD5E1;">Palette Heritage:</span>
+                <strong style="color: #F3C77C; margin-left: 0.25rem;">
+                  {{ activeSurface.startsWith('oxblood') ? 'Oxblood Morocco Velvet + Gold Leaf' : 'Slate Ground + Gold Leaf' }}
+                </strong>
               </div>
               <div>
                 <span style="color: #CBD5E1;">Separation from Error Red (#DC2626):</span>
@@ -402,7 +427,7 @@ export const EditorialArticleValidation: Story = {
         <DsHeaderBar
           title="The Typographic Journal"
           subtitle="Design Systems & Print Heritage"
-          :theme="activeSurface === 'dark' ? 'dark' : 'light'"
+          :theme="isDarkMode ? 'dark' : 'light'"
           :show-theme-toggle="false"
         >
           <template #brand>
@@ -415,8 +440,8 @@ export const EditorialArticleValidation: Story = {
                   width: '32px',
                   height: '32px',
                   borderRadius: '4px',
-                  backgroundColor: activeSurface === 'dark' ? activeTitleColor : selectedColor,
-                  color: activeSurface === 'dark' ? '#0F172A' : '#FFFFFF',
+                  backgroundColor: isDarkMode ? activeTitleColor : selectedColor,
+                  color: isDarkMode ? '#0F172A' : '#FFFFFF',
                   fontWeight: '700',
                   fontFamily: 'serif',
                   fontSize: '1.25rem'
@@ -440,15 +465,15 @@ export const EditorialArticleValidation: Story = {
                     display: 'inline-block',
                     padding: '0.25rem 0.75rem',
                     borderRadius: '9999px',
-                    backgroundColor: activeSurface === 'dark' ? activeTitleColor : selectedColor,
-                    color: activeSurface === 'dark' ? '#0F172A' : '#FFFFFF',
+                    backgroundColor: isDarkMode ? activeTitleColor : selectedColor,
+                    color: isDarkMode ? '#0F172A' : '#FFFFFF',
                     fontSize: '0.75rem',
                     fontWeight: '700',
                     letterSpacing: '0.05em',
                     textTransform: 'uppercase'
                   }"
                 >
-                  {{ activeSurface === 'dark' ? '✨ Illuminated Gold & Red' : 'Foundations & Inks' }}
+                  {{ isDarkMode ? (activeSurface.startsWith('oxblood') ? '✨ Oxblood Canvas & Gold Leaf' : '✨ Illuminated Gold & Slate') : 'Foundations & Inks' }}
                 </span>
                 <span :style="{ color: surfaceSubtext, fontSize: '0.875rem' }">October 20, 2026 · 6 min read</span>
               </div>
@@ -479,7 +504,7 @@ export const EditorialArticleValidation: Story = {
                   fontStyle: 'italic'
                 }"
               >
-                Screen phosphors emit additive light, whereas physical ink absorbs it. Transferring the deep density of rubricator red by day—and gilded manuscript gold by night—creates an authentic, authoritative reading experience.
+                Screen phosphors emit additive light, whereas physical ink absorbs it. Whether set on archival paper by day, or on an oxblood morocco leather ground illuminated by burnished gold leaf, typography must communicate gravitas.
               </p>
 
               <!-- Byline -->
@@ -489,18 +514,18 @@ export const EditorialArticleValidation: Story = {
                   alignItems: 'center',
                   gap: '1rem',
                   paddingTop: '1rem',
-                  borderTop: '1px solid ' + (activeSurface === 'dark' ? '#334155' : '#E2E8F0'),
+                  borderTop: '1px solid ' + (isDarkMode ? '#475569' : '#E2E8F0'),
                   fontFamily: 'system-ui, sans-serif',
                   fontSize: '0.875rem',
                   color: surfaceSubtext
                 }"
               >
-                <div :style="{ width: '40px', height: '40px', borderRadius: '50%', background: activeSurface === 'dark' ? '#334155' : '#475569', display: 'flex', alignItems: 'center', justifyContent: 'center', color: activeSurface === 'dark' ? activeTitleColor : '#FFF', fontWeight: '700' }">
+                <div :style="{ width: '40px', height: '40px', borderRadius: '50%', background: isDarkMode ? '#440913' : '#475569', border: '1px solid ' + (isDarkMode ? activeTitleColor : 'transparent'), display: 'flex', alignItems: 'center', justifyContent: 'center', color: isDarkMode ? activeTitleColor : '#FFF', fontWeight: '700' }">
                   ED
                 </div>
                 <div>
                   <div :style="{ fontWeight: '600', color: surfaceText }">Editorial Design Guild</div>
-                  <div>Historical typography & dark mode illumination study</div>
+                  <div>Historical typography & chromatic dark canvas study</div>
                 </div>
               </div>
             </header>
@@ -554,13 +579,13 @@ export const EditorialArticleValidation: Story = {
                   margin: '2.25rem 0',
                   padding: '1.25rem 1.75rem',
                   borderLeft: '4px solid ' + activeTitleColor,
-                  backgroundColor: activeSurface === 'dark' ? '#1E293B' : (activeSurface === 'paper' ? '#F1EDE6' : '#FDF2F4'),
+                  backgroundColor: activeSurface === 'oxblood-direct' ? '#3F0812' : (activeSurface === 'oxblood-blackened' ? '#25060A' : (activeSurface === 'dark-slate' ? '#1E293B' : (activeSurface === 'paper' ? '#F1EDE6' : '#FDF2F4'))),
                   borderRadius: '0 0.5rem 0.5rem 0',
                   fontStyle: 'italic',
                   fontSize: '1.25rem',
                   lineHeight: '1.6',
                   color: surfaceText,
-                  transition: 'border-color 0.2s ease'
+                  transition: 'border-color 0.2s ease, background-color 0.2s ease'
                 }"
               >
                 “A title rendered in deep ink red feels grounded and authoritative. It speaks with the quiet permanence of an archival volume rather than the shrill urgency of an error modal.”
@@ -570,7 +595,7 @@ export const EditorialArticleValidation: Story = {
                 Crucially, in the perceptual color space (OKLab), the perceptual distance between <code>#750008</code> and standard error red (<code>#DC2626</code>) is <strong>ΔE = {{ deltaEVsError }}</strong>. Because human vision requires a ΔE of at least <code>10.0</code> to immediately differentiate two shades as functionally distinct categories, this deep ink red guarantees that users will never confuse a brand heading or publication title with an error message.
               </p>
 
-              <!-- Section 2: Dark Mode Solution (H2) -->
+              <!-- Section 2: Chromatic Oxblood Dark Mode (H2) -->
               <h2
                 :style="{
                   color: activeTitleColor,
@@ -582,15 +607,15 @@ export const EditorialArticleValidation: Story = {
                   transition: 'color 0.2s ease'
                 }"
               >
-                2. Replacing Pale Pink with Gilded Manuscript Gold
+                2. Chromatic Dark Mode: The Deep Oxblood Canvas
               </h2>
 
               <p style="margin-bottom: 1.75rem;">
-                When converting a deep crimson or wine ink to dark mode, standard automated tools often produce a desaturated, chalky light rose (such as <code>#FDA4AF</code>). While accessible, it can feel unintentionally pastel or "pink" rather than editorial and authoritative.
+                Most dark modes default to cold, sterile slate gray (<code>#0F172A</code>). However, in luxury publishing and classical bookbinding, volumes were often bound in rich, dyed <strong>oxblood morocco leather</strong>.
               </p>
 
               <p style="margin-bottom: 1.75rem;">
-                In the history of manuscript illumination, scribes working on dark, dyed vellum did not lighten red cinnabar into pink chalk. Instead, they illuminated headings with <strong>burnished gold leaf</strong> (<em>aurum librarium</em>).
+                When the dark surface itself is infused with Deep Oxblood (<code>#580D1A</code>) or Blackened Wine (<code>#1F0508</code>), the interface shifts from a generic technical dark mode to an atmospheric, tactile canvas.
               </p>
 
               <!-- Historical Callout Box -->
@@ -598,22 +623,23 @@ export const EditorialArticleValidation: Story = {
                 :style="{
                   padding: '1.25rem 1.5rem',
                   borderRadius: '0.5rem',
-                  border: '1px solid ' + (activeSurface === 'dark' ? '#D97706' : '#CBD5E1'),
-                  backgroundColor: activeSurface === 'dark' ? '#1E293B' : (activeSurface === 'paper' ? '#F5EFEB' : '#F8FAFC'),
+                  border: '1px solid ' + (isDarkMode ? '#B45309' : '#CBD5E1'),
+                  backgroundColor: activeSurface === 'oxblood-direct' ? '#3F0812' : (activeSurface === 'oxblood-blackened' ? '#25060A' : (activeSurface === 'dark-slate' ? '#1E293B' : (activeSurface === 'paper' ? '#F5EFEB' : '#F8FAFC'))),
                   marginBottom: '2rem',
                   fontFamily: 'system-ui, sans-serif',
                   fontSize: '0.9375rem'
                 }"
               >
                 <div style="font-weight: 700; margin-bottom: 0.5rem; color: #0369A1; display: flex; align-items: center; gap: 0.5rem;">
-                  <span>🏛️ The Heritage of Burgundy & Gilded Gold</span>
+                  <span>🏛️ The Optics of an Oxblood Dark Canvas</span>
                 </div>
                 <p style="margin: 0 0 0.5rem; line-height: 1.5;">
-                  Deep red and gilded gold are natural aesthetic partners across centuries of fine bookbinding:
+                  Evaluating the contrast ratios on the active canvas (<code>{{ surfaceBg }}</code>):
                 </p>
                 <ul style="margin: 0; padding-left: 1.25rem; line-height: 1.6;">
-                  <li><strong>Light & Paper Theme:</strong> Headings use the commanding density of physical print ink (<strong>{{ selectedColor }}</strong>), achieving <strong>11.9:1 AAA</strong> contrast.</li>
-                  <li><strong>Dark Slate Theme:</strong> Headings illuminate with Gilded Leaf Gold (<strong>{{ selectedDarkAccent }}</strong>), achieving <strong>{{ contrastVsSurface }}:1 AAA</strong> contrast without any pink undertones.</li>
+                  <li><strong>Body Ivory Text:</strong> Yields <strong>{{ bodyContrastVsSurface }}:1 (AAA)</strong> contrast—crisp, effortless legibility.</li>
+                  <li><strong>Gilded Gold Titling:</strong> Yields <strong>{{ contrastVsSurface }}:1 (AAA)</strong> contrast, creating a warm candlelight-on-leather atmosphere without any pink or neon tones.</li>
+                  <li><strong>Raw Red (Uninverted):</strong> If you place raw <code>#750008</code> directly on this dark background, it drops to ~1.2:1 (proving why gold titling is mathematically essential).</li>
                 </ul>
               </div>
 
@@ -623,13 +649,13 @@ export const EditorialArticleValidation: Story = {
                   margin: '2.5rem 0',
                   padding: '1.5rem',
                   borderRadius: '0.5rem',
-                  border: '1px solid ' + (activeSurface === 'dark' ? '#334155' : '#E2E8F0'),
-                  backgroundColor: activeSurface === 'dark' ? '#1E293B' : (activeSurface === 'paper' ? '#FFFFFF' : '#FDFDFD'),
+                  border: '1px solid ' + surfaceCardBorder,
+                  backgroundColor: surfaceCardBg,
                   fontFamily: 'system-ui, sans-serif'
                 }"
               >
                 <h3 :style="{ margin: '0 0 1rem', fontSize: '1.125rem', color: activeTitleColor }">
-                  Interactive Components in the Active Palette
+                  Interactive Components on {{ activeSurface }}
                 </h3>
 
                 <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; margin-bottom: 1.5rem;">
@@ -641,14 +667,14 @@ export const EditorialArticleValidation: Story = {
                       alignItems: 'center',
                       padding: '0.5rem 1.1rem',
                       borderRadius: '0.375rem',
-                      backgroundColor: activeSurface === 'dark' ? activeTitleColor : selectedColor,
-                      color: activeSurface === 'dark' ? '#0F172A' : '#FFFFFF',
+                      backgroundColor: isDarkMode ? activeTitleColor : selectedColor,
+                      color: isDarkMode ? '#0F172A' : '#FFFFFF',
                       border: 'none',
                       fontWeight: '700',
                       cursor: 'pointer'
                     }"
                   >
-                    {{ activeSurface === 'dark' ? '✨ Gilded Action (' + activeTitleColor + ')' : 'Primary Ink Button (' + selectedColor + ')' }}
+                    {{ isDarkMode ? '✨ Gilded Action (' + activeTitleColor + ')' : 'Primary Ink Button (' + selectedColor + ')' }}
                   </button>
 
                   <!-- Secondary Outline Button -->
@@ -671,7 +697,7 @@ export const EditorialArticleValidation: Story = {
 
                   <!-- Crimson Wax Seal Button (only in dark mode to show coexistence) -->
                   <button
-                    v-if="activeSurface === 'dark'"
+                    v-if="isDarkMode"
                     type="button"
                     :style="{
                       display: 'inline-flex',
@@ -720,7 +746,7 @@ export const EditorialArticleValidation: Story = {
               :style="{
                 marginTop: '4rem',
                 paddingTop: '2rem',
-                borderTop: '1px solid ' + (activeSurface === 'dark' ? '#334155' : '#CBD5E1'),
+                borderTop: '1px solid ' + (isDarkMode ? '#475569' : '#CBD5E1'),
                 fontFamily: 'system-ui, sans-serif'
               }"
             >
@@ -730,7 +756,11 @@ export const EditorialArticleValidation: Story = {
 
               <DsCardGrid min-col-width="16rem" gap="md">
                 <li>
-                  <DsCard variant="outlined" padding="md">
+                  <DsCard
+                    variant="outlined"
+                    padding="md"
+                    :style="{ backgroundColor: surfaceCardBg, borderColor: surfaceCardBorder }"
+                  >
                     <template #header>
                       <span :style="{ fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase', color: activeTitleColor }">Historical Rubrication</span>
                     </template>
@@ -743,12 +773,16 @@ export const EditorialArticleValidation: Story = {
                   </DsCard>
                 </li>
                 <li>
-                  <DsCard variant="outlined" padding="md">
+                  <DsCard
+                    variant="outlined"
+                    padding="md"
+                    :style="{ backgroundColor: surfaceCardBg, borderColor: surfaceCardBorder }"
+                  >
                     <template #header>
-                      <span :style="{ fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase', color: activeTitleColor }">Illumination & Codicology</span>
+                      <span :style="{ fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase', color: activeTitleColor }">Chromatic Dark Surfaces</span>
                     </template>
                     <h4 :style="{ margin: '0.25rem 0 0.5rem', fontSize: '1rem', color: surfaceText }">
-                      Gilded Leaf on Dark Grounds
+                      Oxblood Morocco & Gold Leaf
                     </h4>
                     <p :style="{ fontSize: '0.875rem', color: surfaceSubtext, margin: 0 }">
                       The optics of burnished gold leaf paired with crimson leather bindings in low-light environments.
