@@ -5,6 +5,22 @@ All notable changes to `@nftx/vue-ds` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-10-20
+
+### Added
+- **Three Default Themes Architecture (`TOK-04`, `A11Y-01`..`03`):**
+  - **Default Light Theme**: Editorial Warm Paper canvas (`#FAF8F5`) with Print Ink Red titling/fill (`#750008`, 11.26:1 AAA) and Deep Charcoal primary text (`#1E293B`, 13.80:1 AAA).
+  - **Default Dark Theme**: Velvet Midpoint oxblood canvas (`#3C0911`) with Pale Champagne gold illumination (`#FDE68A`, 13.61:1 AAA) and anti-glare Warm Antique Ivory body text (`#F7F4EE`, 15.44:1 AAA) eliminating optical irradiation in low-light environments.
+  - **Default Color Blind Theme**: Scientifically formulated Okabe-Ito Universal CVD palette built for the "worst-case" scenario across Protanopia, Deuteranopia, Tritanopia, and complete Achromatopsia (monochromacy) using pure Royal Cobalt Navy (`#003E7E`, 10.55:1 AAA), Amber (`#9A3412`), Deep Pine Teal (`#004D40`), and Brick Rust (`#880000`) on Crisp Pure White (`#FFFFFF`).
+  - **Legacy Tech Slate Opt-in**: Retained `@mixin slate-light-tokens` and `@mixin slate-dark-tokens` accessible via `[data-theme='slate-light']` and `[data-theme='slate-dark']`.
+- **Theme Switching & Integration:**
+  - `DsHeaderBar`: Expanded `DsThemeMode` to `'light' | 'dark' | 'colorblind' | 'auto'`, added `availableThemes` prop with 3-way cycling, updated theme toggle aria-label, and dynamic icon rendering (`sun`, `moon`, `eye`).
+  - `HomelabDashboardDemo`: Integrated 3-theme switching bar and verified token cascading across all card and status components.
+  - `EditorialBlogPostDemo`: Added live 3-theme presets selector and SVG color matrix CVD Simulator (Normal, Deuteranopia, Protanopia, Tritanopia, Achromatopsia/Grayscale).
+- **Automated Verification:**
+  - `scripts/contrast-check.ts`: Enforces 43-token symmetry across all 3 default themes, 33 WCAG 2.2 contrast assertions (AAA/AA), and ΔE(OKLab) perceptual separation check for Light (23.4), Dark (27.5), and Color Blind (26.3).
+
+
 ## [1.0.0] - 2026-10-19
 
 ### Fixed

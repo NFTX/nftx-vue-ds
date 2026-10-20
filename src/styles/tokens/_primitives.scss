@@ -67,6 +67,53 @@ $slate-950: #020617;
 $white: #FFFFFF;
 $black: #000000;
 
+// Editorial Rubric & Paper Palette (Validated Light Archetype)
+$print-red: #750008;
+$print-red-hover: #5C0006;
+$print-red-active: #450005;
+$print-red-surface: #FDF2F2;
+$print-red-border: #F6D0D4;
+$warm-paper: #FAF8F5;
+$warm-paper-surface: #F4EFEB;
+$warm-paper-muted: #ECE5DC;
+$warm-paper-border: #D8D1C5;
+$warm-paper-border-subtle: #E8E2D8;
+
+// Velvet Oxblood & Champagne Illumination Palette (Validated Dark Archetype)
+$velvet-oxblood: #3C0911;
+$velvet-surface: #2B050B;
+$velvet-elevated: #4E0D17;
+$velvet-muted: #34070E;
+$velvet-border: #5E1420;
+$velvet-border-subtle: #450912;
+$champagne-gold: #FDE68A;
+$champagne-gold-hover: #FCD34D;
+$champagne-gold-active: #F59E0B;
+$warm-ivory: #F7F4EE;
+$warm-ivory-secondary: #E5DFD3;
+$warm-ivory-muted: #B8ADA0;
+
+// Okabe-Ito Universal Color Blind Palette (Worst-Case Universal CVD)
+$cb-cobalt-800: #003E7E;
+$cb-cobalt-900: #002B56;
+$cb-cobalt-950: #001D3B;
+$cb-cobalt-surface: #EFF6FC;
+$cb-cobalt-border: #003E7E;
+$cb-rust-700: #880000;
+$cb-rust-800: #700000;
+$cb-rust-surface: #FFF0F0;
+$cb-teal-700: #004D40;
+$cb-teal-800: #00382E;
+$cb-teal-surface: #EEFAF7;
+$cb-amber-700: #9A3412;
+$cb-amber-600: #C26700;
+$cb-amber-surface: #FFF8EE;
+$cb-sky-700: #005085;
+$cb-sky-600: #0072B2;
+$cb-sky-surface: #F0F8FF;
+$cb-border-dark: #0F172A;
+$cb-border-subtle: #475569;
+
 // Spacing base (4px scale in rem units)
 $space-1: 0.25rem; // 4px
 $space-2: 0.5rem;  // 8px

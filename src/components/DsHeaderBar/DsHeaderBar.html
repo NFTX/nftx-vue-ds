@@ -42,7 +42,7 @@
         :aria-label="themeToggleLabel"
         @click="handleThemeToggle"
       >
-        <DsIcon :icon="isDarkTheme ? 'sun' : 'moon'" size="md" aria-hidden="true" />
+        <DsIcon :icon="currentThemeIcon" size="md" aria-hidden="true" />
       </button>
 
       <!-- Responsive Mobile Menu Toggle -->

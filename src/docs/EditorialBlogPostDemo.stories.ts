@@ -55,8 +55,45 @@ export const EditorialArticleValidation: Story = {
         | 'oxblood-blackened'
         | 'custom-canvas'
 
-      const activeSurface = ref<SurfaceId>('white')
+      const activeSurface = ref<SurfaceId>('paper')
       const customCanvasHex = ref('#3C0911')
+
+      // 3 Default Themes & CVD Simulator
+      type ThemePresetId = 'default-light' | 'default-dark' | 'default-colorblind'
+      const activeThemePreset = ref<ThemePresetId>('default-light')
+
+      type CvdFilterId = 'none' | 'deuteranopia' | 'protanopia' | 'tritanopia' | 'achromatopsia'
+      const activeCvdFilter = ref<CvdFilterId>('none')
+
+      const cvdFilterOptions: { id: CvdFilterId; label: string; desc: string }[] = [
+        { id: 'none', label: 'Normal Vision', desc: 'Standard full-spectrum vision' },
+        { id: 'deuteranopia', label: 'Deuteranopia (~6%)', desc: 'M-cone deficient (red/green confusion)' },
+        { id: 'protanopia', label: 'Protanopia (~2%)', desc: 'L-cone deficient (red appears dark)' },
+        { id: 'tritanopia', label: 'Tritanopia (<0.01%)', desc: 'S-cone deficient (blue/yellow confusion)' },
+        { id: 'achromatopsia', label: '⭐ Achromatopsia (Worst-Case)', desc: 'Total color blindness (pure luminance)' }
+      ]
+
+      function applyThemePreset(preset: ThemePresetId) {
+        activeThemePreset.value = preset
+        if (preset === 'default-light') {
+          activeSurface.value = 'paper'
+          selectedColor.value = '#750008'
+          customColorInput.value = '#750008'
+          darkBodyMode.value = 'ivory'
+        } else if (preset === 'default-dark') {
+          activeSurface.value = 'oxblood-velvet'
+          selectedDarkAccent.value = '#FDE68A'
+          customDarkAccentInput.value = '#FDE68A'
+          darkHandlingMode.value = 'palette'
+          darkBodyMode.value = 'ivory'
+        } else if (preset === 'default-colorblind') {
+          activeSurface.value = 'white'
+          selectedColor.value = '#003E7E'
+          customColorInput.value = '#003E7E'
+          selectedDarkAccent.value = '#003E7E'
+          darkHandlingMode.value = 'palette'
+        }
+      }
 
       // Dark Mode Titling Strategy (Defaults to Pale Champagne Gold)
       const selectedDarkAccent = ref('#FDE68A')
@@ -284,7 +321,11 @@ export const EditorialArticleValidation: Story = {
         contrastVsWhite,
         contrastVsSurface,
         bodyContrastVsSurface,
-        deltaEVsError
+        deltaEVsError,
+        activeThemePreset,
+        applyThemePreset,
+        activeCvdFilter,
+        cvdFilterOptions
       }
     },
     template: `
@@ -295,9 +336,23 @@ export const EditorialArticleValidation: Story = {
           color: surfaceText,
           minHeight: '100vh',
           fontFamily: 'Charter, Georgia, Cambria, \\'Times New Roman\\', Times, serif',
+          filter: activeCvdFilter === 'achromatopsia' ? 'grayscale(100%)' : (activeCvdFilter === 'none' ? 'none' : 'url(#' + activeCvdFilter + ')'),
           transition: 'background-color 0.2s ease, color 0.2s ease'
         }"
       >
+        <!-- CVD SVG Filter Matrix Definitions -->
+        <svg style="position: absolute; width: 0; height: 0; overflow: hidden;" aria-hidden="true">
+          <filter id="protanopia">
+            <feColorMatrix type="matrix" values="0.567, 0.433, 0, 0, 0   0.558, 0.442, 0, 0, 0   0, 0.242, 0.758, 0, 0   0, 0, 0, 1, 0" />
+          </filter>
+          <filter id="deuteranopia">
+            <feColorMatrix type="matrix" values="0.625, 0.375, 0, 0, 0   0.7, 0.3, 0, 0, 0   0, 0.3, 0.7, 0, 0   0, 0, 0, 1, 0" />
+          </filter>
+          <filter id="tritanopia">
+            <feColorMatrix type="matrix" values="0.95, 0.05, 0, 0, 0   0, 0.433, 0.567, 0, 0   0, 0.475, 0.525, 0, 0   0, 0, 0, 1, 0" />
+          </filter>
+        </svg>
+
         <!-- Persistent Interactive Validation Toolbar -->
         <aside
           role="region"
@@ -316,6 +371,103 @@ export const EditorialArticleValidation: Story = {
           "
         >
           <div style="max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 0.85rem;">
+            <!-- Primary Row: 3 Default Themes & CVD Simulator -->
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.75rem; padding-bottom: 0.65rem; border-bottom: 1px solid #334155;">
+              <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem;">
+                <span style="font-weight: 700; color: #FDE68A; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.06em;">Default System Themes:</span>
+                <button
+                  type="button"
+                  :aria-pressed="activeThemePreset === 'default-light'"
+                  @click="applyThemePreset('default-light')"
+                  :style="{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.35rem',
+                    padding: '0.4rem 0.75rem',
+                    borderRadius: '0.375rem',
+                    background: activeThemePreset === 'default-light' ? '#750008' : '#1E293B',
+                    color: '#FFFFFF',
+                    border: activeThemePreset === 'default-light' ? '2px solid #FDE68A' : '1px solid #475569',
+                    fontWeight: activeThemePreset === 'default-light' ? '700' : '500',
+                    cursor: 'pointer',
+                    fontSize: '0.8125rem'
+                  }"
+                >
+                  <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #FAF8F5; border: 1px solid #750008;" />
+                  Default Light (Paper & Ink Red)
+                </button>
+
+                <button
+                  type="button"
+                  :aria-pressed="activeThemePreset === 'default-dark'"
+                  @click="applyThemePreset('default-dark')"
+                  :style="{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.35rem',
+                    padding: '0.4rem 0.75rem',
+                    borderRadius: '0.375rem',
+                    background: activeThemePreset === 'default-dark' ? '#3C0911' : '#1E293B',
+                    color: '#FDE68A',
+                    border: activeThemePreset === 'default-dark' ? '2px solid #FDE68A' : '1px solid #475569',
+                    fontWeight: activeThemePreset === 'default-dark' ? '700' : '500',
+                    cursor: 'pointer',
+                    fontSize: '0.8125rem'
+                  }"
+                >
+                  <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #FDE68A; border: 1px solid #3C0911;" />
+                  Default Dark (Velvet & Champagne)
+                </button>
+
+                <button
+                  type="button"
+                  :aria-pressed="activeThemePreset === 'default-colorblind'"
+                  @click="applyThemePreset('default-colorblind')"
+                  :style="{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.35rem',
+                    padding: '0.4rem 0.75rem',
+                    borderRadius: '0.375rem',
+                    background: activeThemePreset === 'default-colorblind' ? '#003E7E' : '#1E293B',
+                    color: '#FFFFFF',
+                    border: activeThemePreset === 'default-colorblind' ? '2px solid #38BDF8' : '1px solid #475569',
+                    fontWeight: activeThemePreset === 'default-colorblind' ? '700' : '500',
+                    cursor: 'pointer',
+                    fontSize: '0.8125rem'
+                  }"
+                >
+                  <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #003E7E; border: 1px solid #FFF;" />
+                  Default Color Blind (CVD Universal)
+                </button>
+              </div>
+
+              <!-- CVD Vision Simulator Controls -->
+              <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem;">
+                <span style="font-weight: 700; color: #94A3B8; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em;">CVD Simulator:</span>
+                <button
+                  v-for="filter in cvdFilterOptions"
+                  :key="filter.id"
+                  type="button"
+                  :aria-pressed="activeCvdFilter === filter.id"
+                  @click="activeCvdFilter = filter.id"
+                  :title="filter.desc"
+                  :style="{
+                    padding: '0.25rem 0.5rem',
+                    borderRadius: '0.25rem',
+                    background: activeCvdFilter === filter.id ? (filter.id === 'achromatopsia' ? '#F59E0B' : '#0369A1') : '#1E293B',
+                    color: activeCvdFilter === filter.id ? (filter.id === 'achromatopsia' ? '#0F172A' : '#FFFFFF') : '#94A3B8',
+                    border: activeCvdFilter === filter.id ? '1px solid #FFFFFF' : '1px solid #334155',
+                    fontSize: '0.75rem',
+                    fontWeight: activeCvdFilter === filter.id ? '700' : '400',
+                    cursor: 'pointer'
+                  }"
+                >
+                  {{ filter.label }}
+                </button>
+              </div>
+            </div>
+
             <!-- Top Controls Row: Surface & Colors -->
             <div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between;">
               <!-- Surface Picker with Oxblood Intermediate Canvases -->
