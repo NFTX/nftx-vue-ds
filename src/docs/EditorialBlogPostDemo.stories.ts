@@ -12,7 +12,7 @@ import { DsLink } from '@/components/DsLink'
 /**
  * Editorial Blogpost Story for real-world contextual color validation.
  * Allows comparing candidate print ink red (#750008) against existing design system
- * tokens across typographic hierarchy (h1, h2, drop-cap, pull-quote, links, CTAs).
+ * tokens and testing Illuminated Gold / Yellow variants for Dark Mode.
  */
 const meta = {
   title: 'Pages/EditorialBlogPostDemo',
@@ -36,36 +36,61 @@ export const EditorialArticleValidation: Story = {
       DsLink
     },
     setup() {
-      // Color & Theme state
+      // Light / Print Ink Base Color
       const selectedColor = ref('#750008')
       const customColorInput = ref('#750008')
       const activeSurface = ref<'white' | 'paper' | 'dark'>('white')
-      const darkHandling = ref<'inverted' | 'direct'>('inverted')
       const selectedTag = ref('typography')
 
-      const presets = [
+      // Dark Mode Strategy State (Defaults to Gilded Manuscript Gold)
+      const selectedDarkAccent = ref('#F3C77C')
+      const customDarkAccentInput = ref('#F3C77C')
+      const darkHandlingMode = ref<'palette' | 'direct-raw'>('palette')
+
+      const lightPresets = [
         { id: 'print-red', label: 'Print Ink Red (Target)', hex: '#750008', role: 'Classical rubric / editorial book title' },
-        { id: 'rose-800', label: 'Current System Base', hex: '#9F1239', role: 'Existing @nftx/vue-ds rose-800' },
+        { id: 'rose-800', label: 'Current Base (Rose-800)', hex: '#9F1239', role: 'Existing @nftx/vue-ds base' },
         { id: 'oxblood', label: 'Deep Oxblood', hex: '#580D1A', role: 'Heavy vintage iron oxide red' },
-        { id: 'rose-700', label: 'Digital Crimson', hex: '#BE123C', role: 'Existing dark mode button fill' }
+        { id: 'rose-700', label: 'Digital Crimson', hex: '#BE123C', role: 'Bright digital crimson' }
+      ]
+
+      const darkGoldPresets = [
+        { id: 'gilded-gold', label: 'Gilded Leaf Gold', hex: '#F3C77C', desc: 'Illuminated manuscript gold leaf (11.3:1 AAA)' },
+        { id: 'amber-gold', label: 'Luminous Amber', hex: '#FBBF24', desc: 'Radiant modern amber gold (10.7:1 AAA)' },
+        { id: 'antique-gold', label: 'Antique Ochre Gold', hex: '#E2B357', desc: 'Historical bookbinder gold (9.2:1 AAA)' },
+        { id: 'champagne', label: 'Pale Champagne', hex: '#FDE68A', desc: 'Soft parchment highlight (14.3:1 AAA)' },
+        { id: 'pale-rose', label: 'Pale Rose (Old)', hex: '#FDA4AF', desc: 'Desaturated rose-300 tint (9.4:1 AAA)' }
       ]
 
       const articleTags = [
         { value: 'typography', label: 'Editorial Typography' },
         { value: 'inks', label: 'Print Inks & Pigments' },
-        { value: 'contrast', label: 'WCAG 2.2 Contrast' },
-        { value: 'systems', label: 'Design Tokens' }
+        { value: 'illumination', label: 'Gold Illumination' },
+        { value: 'contrast', label: 'WCAG 2.2 Contrast' }
       ]
 
-      function selectPreset(hex: string) {
+      function selectLightPreset(hex: string) {
         selectedColor.value = hex
         customColorInput.value = hex
       }
 
-      function onCustomInput(event: Event) {
+      function onLightCustomInput(event: Event) {
         const target = event.target as HTMLInputElement
         selectedColor.value = target.value
         customColorInput.value = target.value
+      }
+
+      function selectDarkPreset(hex: string) {
+        darkHandlingMode.value = 'palette'
+        selectedDarkAccent.value = hex
+        customDarkAccentInput.value = hex
+      }
+
+      function onDarkCustomInput(event: Event) {
+        darkHandlingMode.value = 'palette'
+        const target = event.target as HTMLInputElement
+        selectedDarkAccent.value = target.value
+        customDarkAccentInput.value = target.value
       }
 
       // Mathematical Color Analysis
@@ -138,10 +163,10 @@ export const EditorialArticleValidation: Story = {
         return '#475569'
       })
 
-      // In dark mode: if inverted, use accessible light rose (#FDA4AF), else use raw selected color
+      // Active title & accent color based on theme
       const activeTitleColor = computed(() => {
         if (activeSurface.value === 'dark') {
-          return darkHandling.value === 'inverted' ? '#FDA4AF' : selectedColor.value
+          return darkHandlingMode.value === 'direct-raw' ? selectedColor.value : selectedDarkAccent.value
         }
         return selectedColor.value
       })
@@ -154,12 +179,17 @@ export const EditorialArticleValidation: Story = {
         selectedColor,
         customColorInput,
         activeSurface,
-        darkHandling,
+        selectedDarkAccent,
+        customDarkAccentInput,
+        darkHandlingMode,
         selectedTag,
-        presets,
+        lightPresets,
+        darkGoldPresets,
         articleTags,
-        selectPreset,
-        onCustomInput,
+        selectLightPreset,
+        onLightCustomInput,
+        selectDarkPreset,
+        onDarkCustomInput,
         surfaceBg,
         surfaceText,
         surfaceSubtext,
@@ -188,8 +218,8 @@ export const EditorialArticleValidation: Story = {
             position: sticky;
             top: 0;
             z-index: 100;
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(8px);
+            background: rgba(15, 23, 42, 0.96);
+            backdrop-filter: blur(10px);
             color: #F8FAFC;
             padding: 1rem 1.5rem;
             border-bottom: 1px solid #334155;
@@ -197,143 +227,171 @@ export const EditorialArticleValidation: Story = {
             font-size: 0.875rem;
           "
         >
-          <div style="max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between;">
-            <!-- Color Presets -->
-            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem;">
-              <span style="font-weight: 600; color: #94A3B8; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em;">Color:</span>
-              <button
-                v-for="preset in presets"
-                :key="preset.id"
-                type="button"
-                :aria-pressed="selectedColor === preset.hex"
-                @click="selectPreset(preset.hex)"
-                :style="{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.4rem',
-                  padding: '0.35rem 0.65rem',
-                  borderRadius: '0.375rem',
-                  border: selectedColor === preset.hex ? '2px solid #38BDF8' : '1px solid #475569',
-                  background: selectedColor === preset.hex ? '#1E293B' : '#0F172A',
-                  color: '#FFFFFF',
-                  cursor: 'pointer',
-                  fontSize: '0.8125rem'
-                }"
-              >
-                <span :style="{ display: 'inline-block', width: '12px', height: '12px', borderRadius: '50%', backgroundColor: preset.hex, border: '1px solid #FFF' }" />
-                {{ preset.label }} ({{ preset.hex }})
-              </button>
-
-              <!-- Color picker input -->
-              <label style="display: inline-flex; align-items: center; gap: 0.35rem; margin-left: 0.5rem; cursor: pointer; color: #CBD5E1;">
-                <span>Picker:</span>
-                <input
-                  type="color"
-                  :value="customColorInput"
-                  @input="onCustomInput"
-                  aria-label="Pick custom test hex color"
-                  style="width: 28px; height: 28px; border: none; border-radius: 4px; cursor: pointer; background: transparent;"
-                />
-              </label>
-            </div>
-
-            <!-- Surface & Inversion controls -->
-            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem;">
-              <div style="display: flex; align-items: center; gap: 0.35rem;">
-                <span style="font-weight: 600; color: #94A3B8; text-transform: uppercase; font-size: 0.75rem;">Surface:</span>
+          <div style="max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 0.85rem;">
+            <!-- Top Controls Row: Surface & Colors -->
+            <div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between;">
+              <!-- Surface Picker -->
+              <div style="display: flex; align-items: center; gap: 0.4rem;">
+                <span style="font-weight: 700; color: #CBD5E1; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em;">Surface:</span>
                 <button
                   type="button"
                   @click="activeSurface = 'white'"
                   :style="{
-                    padding: '0.3rem 0.5rem',
-                    borderRadius: '0.25rem',
+                    padding: '0.35rem 0.65rem',
+                    borderRadius: '0.375rem',
                     background: activeSurface === 'white' ? '#FFFFFF' : '#1E293B',
-                    color: activeSurface === 'white' ? '#0F172A' : '#94A3B8',
-                    border: '1px solid #475569',
+                    color: activeSurface === 'white' ? '#0F172A' : '#CBD5E1',
+                    border: activeSurface === 'white' ? '2px solid #38BDF8' : '1px solid #475569',
                     cursor: 'pointer',
-                    fontWeight: activeSurface === 'white' ? '700' : '400'
+                    fontWeight: activeSurface === 'white' ? '700' : '400',
+                    fontSize: '0.8125rem'
                   }"
-                >White</button>
+                >Pure White</button>
                 <button
                   type="button"
                   @click="activeSurface = 'paper'"
                   :style="{
-                    padding: '0.3rem 0.5rem',
-                    borderRadius: '0.25rem',
+                    padding: '0.35rem 0.65rem',
+                    borderRadius: '0.375rem',
                     background: activeSurface === 'paper' ? '#FAF8F5' : '#1E293B',
-                    color: activeSurface === 'paper' ? '#1E293B' : '#94A3B8',
-                    border: '1px solid #475569',
+                    color: activeSurface === 'paper' ? '#1E293B' : '#CBD5E1',
+                    border: activeSurface === 'paper' ? '2px solid #E2B357' : '1px solid #475569',
                     cursor: 'pointer',
-                    fontWeight: activeSurface === 'paper' ? '700' : '400'
+                    fontWeight: activeSurface === 'paper' ? '700' : '400',
+                    fontSize: '0.8125rem'
                   }"
-                >Warm Paper</button>
+                >Warm Paper (#FAF8F5)</button>
                 <button
                   type="button"
                   @click="activeSurface = 'dark'"
                   :style="{
-                    padding: '0.3rem 0.5rem',
-                    borderRadius: '0.25rem',
+                    padding: '0.35rem 0.65rem',
+                    borderRadius: '0.375rem',
                     background: activeSurface === 'dark' ? '#0369A1' : '#1E293B',
                     color: '#FFFFFF',
-                    border: '1px solid #475569',
+                    border: activeSurface === 'dark' ? '2px solid #38BDF8' : '1px solid #475569',
                     cursor: 'pointer',
-                    fontWeight: activeSurface === 'dark' ? '700' : '400'
+                    fontWeight: activeSurface === 'dark' ? '700' : '400',
+                    fontSize: '0.8125rem'
                   }"
-                >Dark Slate</button>
+                >Dark Slate (#0F172A)</button>
               </div>
 
-              <!-- Dark mode behavior toggle (only visible when dark) -->
-              <div v-if="activeSurface === 'dark'" style="display: flex; align-items: center; gap: 0.35rem; background: #1E293B; padding: 0.2rem 0.5rem; border-radius: 0.25rem; border: 1px solid #0369A1;">
-                <span style="font-size: 0.75rem; color: #38BDF8;">Dark Mode Text:</span>
+              <!-- Light Mode Primary Ink Color Presets (when in light/paper surface) -->
+              <div v-if="activeSurface !== 'dark'" style="display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem;">
+                <span style="font-weight: 700; color: #CBD5E1; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em;">Print Red:</span>
+                <button
+                  v-for="preset in lightPresets"
+                  :key="preset.id"
+                  type="button"
+                  :aria-pressed="selectedColor === preset.hex"
+                  @click="selectLightPreset(preset.hex)"
+                  :style="{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.35rem',
+                    padding: '0.3rem 0.55rem',
+                    borderRadius: '0.375rem',
+                    border: selectedColor === preset.hex ? '2px solid #F3C77C' : '1px solid #475569',
+                    background: selectedColor === preset.hex ? '#1E293B' : '#0F172A',
+                    color: '#FFFFFF',
+                    cursor: 'pointer',
+                    fontSize: '0.8125rem'
+                  }"
+                >
+                  <span :style="{ display: 'inline-block', width: '11px', height: '11px', borderRadius: '50%', backgroundColor: preset.hex, border: '1px solid #FFF' }" />
+                  {{ preset.label }}
+                </button>
+                <label style="display: inline-flex; align-items: center; gap: 0.25rem; cursor: pointer; color: #CBD5E1; font-size: 0.8125rem;">
+                  <span>Custom:</span>
+                  <input
+                    type="color"
+                    :value="customColorInput"
+                    @input="onLightCustomInput"
+                    aria-label="Pick custom test print red hex color"
+                    style="width: 26px; height: 26px; border: none; border-radius: 4px; cursor: pointer; background: transparent;"
+                  />
+                </label>
+              </div>
+
+              <!-- Dark Mode Gold & Accent Presets (when in dark mode) -->
+              <div v-else style="display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem;">
+                <span style="font-weight: 700; color: #F3C77C; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em;">✨ Dark Mode Accent:</span>
+                <button
+                  v-for="preset in darkGoldPresets"
+                  :key="preset.id"
+                  type="button"
+                  :aria-pressed="darkHandlingMode === 'palette' && selectedDarkAccent === preset.hex"
+                  @click="selectDarkPreset(preset.hex)"
+                  :style="{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.35rem',
+                    padding: '0.3rem 0.55rem',
+                    borderRadius: '0.375rem',
+                    border: (darkHandlingMode === 'palette' && selectedDarkAccent === preset.hex) ? '2px solid #F3C77C' : '1px solid #475569',
+                    background: (darkHandlingMode === 'palette' && selectedDarkAccent === preset.hex) ? '#334155' : '#1E293B',
+                    color: '#FFFFFF',
+                    cursor: 'pointer',
+                    fontSize: '0.8125rem'
+                  }"
+                >
+                  <span :style="{ display: 'inline-block', width: '11px', height: '11px', borderRadius: '50%', backgroundColor: preset.hex, border: '1px solid #FFF' }" />
+                  {{ preset.label }}
+                </button>
+
+                <!-- Direct raw test -->
                 <button
                   type="button"
-                  @click="darkHandling = 'inverted'"
+                  @click="darkHandlingMode = 'direct-raw'"
                   :style="{
-                    padding: '0.15rem 0.4rem',
-                    borderRadius: '0.2rem',
-                    background: darkHandling === 'inverted' ? '#0369A1' : 'transparent',
-                    color: '#FFF',
-                    border: 'none',
+                    padding: '0.3rem 0.55rem',
+                    borderRadius: '0.375rem',
+                    border: darkHandlingMode === 'direct-raw' ? '2px solid #DC2626' : '1px solid #475569',
+                    background: darkHandlingMode === 'direct-raw' ? '#7F1D1D' : '#1E293B',
+                    color: '#FFFFFF',
                     cursor: 'pointer',
-                    fontSize: '0.75rem'
+                    fontSize: '0.8125rem'
                   }"
-                >Tonal Inversion (AAA)</button>
-                <button
-                  type="button"
-                  @click="darkHandling = 'direct'"
-                  :style="{
-                    padding: '0.15rem 0.4rem',
-                    borderRadius: '0.2rem',
-                    background: darkHandling === 'direct' ? '#DC2626' : 'transparent',
-                    color: '#FFF',
-                    border: 'none',
-                    cursor: 'pointer',
-                    fontSize: '0.75rem'
-                  }"
-                >Direct Raw Hex (1.5:1 Fail)</button>
+                >Raw Red (1.5:1 Fail)</button>
+
+                <label style="display: inline-flex; align-items: center; gap: 0.25rem; cursor: pointer; color: #CBD5E1; font-size: 0.8125rem;">
+                  <span>Custom:</span>
+                  <input
+                    type="color"
+                    :value="customDarkAccentInput"
+                    @input="onDarkCustomInput"
+                    aria-label="Pick custom dark mode accent hex color"
+                    style="width: 26px; height: 26px; border: none; border-radius: 4px; cursor: pointer; background: transparent;"
+                  />
+                </label>
               </div>
             </div>
 
             <!-- Mathematical Metrics Bar -->
-            <div style="display: flex; align-items: center; gap: 1.25rem; font-size: 0.8125rem; border-top: 1px solid #334155; padding-top: 0.5rem; width: 100%;">
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 1.25rem; font-size: 0.8125rem; border-top: 1px solid #334155; padding-top: 0.5rem;">
               <div>
-                <span style="color: #94A3B8;">Selected:</span>
-                <code style="background: #1E293B; padding: 0.1rem 0.3rem; border-radius: 3px; margin-left: 0.25rem; color: #F1F5F9;">{{ selectedColor }}</code>
+                <span style="color: #CBD5E1;">Active Title Color:</span>
+                <code style="background: #1E293B; padding: 0.15rem 0.4rem; border-radius: 4px; margin-left: 0.25rem; color: #F8FAFC; border: 1px solid #475569;">{{ activeTitleColor }}</code>
               </div>
               <div>
-                <span style="color: #94A3B8;">Contrast vs Current Surface:</span>
+                <span style="color: #CBD5E1;">Contrast vs Current Surface:</span>
                 <strong :style="{ color: Number(contrastVsSurface) >= 7 ? '#4ADE80' : Number(contrastVsSurface) >= 4.5 ? '#FACC15' : '#F87171', marginLeft: '0.25rem' }">
                   {{ contrastVsSurface }}:1 ({{ Number(contrastVsSurface) >= 7 ? 'AAA Pass' : Number(contrastVsSurface) >= 4.5 ? 'AA Pass' : 'Fail' }})
                 </strong>
               </div>
-              <div>
-                <span style="color: #94A3B8;">Contrast vs White:</span>
-                <strong style="color: #4ADE80; margin-left: 0.25rem;">{{ contrastVsWhite }}:1 (AAA)</strong>
+              <div v-if="activeSurface !== 'dark'">
+                <span style="color: #CBD5E1;">Contrast vs White:</span>
+                <strong style="color: #4ADE80; marginLeft: '0.25rem';">{{ contrastVsWhite }}:1 (AAA)</strong>
+              </div>
+              <div v-if="activeSurface === 'dark'">
+                <span style="color: #CBD5E1;">Aesthetic Mode:</span>
+                <strong style="color: #F3C77C; marginLeft: '0.25rem';">Illuminated Gold Leaf (Manuscript Heritage)</strong>
               </div>
               <div>
-                <span style="color: #94A3B8;">Perceptual Separation vs Error Red (#DC2626):</span>
+                <span style="color: #CBD5E1;">Separation from Error Red (#DC2626):</span>
                 <strong :style="{ color: Number(deltaEVsError) >= 10 ? '#4ADE80' : '#F87171', marginLeft: '0.25rem' }">
-                  ΔE = {{ deltaEVsError }} ({{ Number(deltaEVsError) >= 10 ? 'Safe ≥ 10' : 'Too close to error red' }})
+                  ΔE = {{ deltaEVsError }} ({{ Number(deltaEVsError) >= 10 ? 'Safe ≥ 10' : 'Warning' }})
                 </strong>
               </div>
             </div>
@@ -357,8 +415,8 @@ export const EditorialArticleValidation: Story = {
                   width: '32px',
                   height: '32px',
                   borderRadius: '4px',
-                  backgroundColor: activeTitleColor,
-                  color: '#FFFFFF',
+                  backgroundColor: activeSurface === 'dark' ? activeTitleColor : selectedColor,
+                  color: activeSurface === 'dark' ? '#0F172A' : '#FFFFFF',
                   fontWeight: '700',
                   fontFamily: 'serif',
                   fontSize: '1.25rem'
@@ -380,17 +438,17 @@ export const EditorialArticleValidation: Story = {
                 <span
                   :style="{
                     display: 'inline-block',
-                    padding: '0.2rem 0.65rem',
+                    padding: '0.25rem 0.75rem',
                     borderRadius: '9999px',
-                    backgroundColor: activeTitleColor,
-                    color: '#FFFFFF',
+                    backgroundColor: activeSurface === 'dark' ? activeTitleColor : selectedColor,
+                    color: activeSurface === 'dark' ? '#0F172A' : '#FFFFFF',
                     fontSize: '0.75rem',
-                    fontWeight: '600',
+                    fontWeight: '700',
                     letterSpacing: '0.05em',
                     textTransform: 'uppercase'
                   }"
                 >
-                  Foundations & Inks
+                  {{ activeSurface === 'dark' ? '✨ Illuminated Gold & Red' : 'Foundations & Inks' }}
                 </span>
                 <span :style="{ color: surfaceSubtext, fontSize: '0.875rem' }">October 20, 2026 · 6 min read</span>
               </div>
@@ -421,7 +479,7 @@ export const EditorialArticleValidation: Story = {
                   fontStyle: 'italic'
                 }"
               >
-                Screen phosphors emit additive light, whereas physical ink absorbs it. Transferring the deep, velvety density of historical rubricator ink into a modern web design system changes how readers perceive authority.
+                Screen phosphors emit additive light, whereas physical ink absorbs it. Transferring the deep density of rubricator red by day—and gilded manuscript gold by night—creates an authentic, authoritative reading experience.
               </p>
 
               <!-- Byline -->
@@ -437,12 +495,12 @@ export const EditorialArticleValidation: Story = {
                   color: surfaceSubtext
                 }"
               >
-                <div style="width: 40px; height: 40px; border-radius: 50%; background: #475569; display: flex; align-items: center; justify-content: center; color: #FFF; font-weight: 600;">
+                <div :style="{ width: '40px', height: '40px', borderRadius: '50%', background: activeSurface === 'dark' ? '#334155' : '#475569', display: 'flex', alignItems: 'center', justifyContent: 'center', color: activeSurface === 'dark' ? activeTitleColor : '#FFF', fontWeight: '700' }">
                   ED
                 </div>
                 <div>
                   <div :style="{ fontWeight: '600', color: surfaceText }">Editorial Design Guild</div>
-                  <div>Research note on color contrast and perceptual gravity</div>
+                  <div>Historical typography & dark mode illumination study</div>
                 </div>
               </div>
             </header>
@@ -512,7 +570,7 @@ export const EditorialArticleValidation: Story = {
                 Crucially, in the perceptual color space (OKLab), the perceptual distance between <code>#750008</code> and standard error red (<code>#DC2626</code>) is <strong>ΔE = {{ deltaEVsError }}</strong>. Because human vision requires a ΔE of at least <code>10.0</code> to immediately differentiate two shades as functionally distinct categories, this deep ink red guarantees that users will never confuse a brand heading or publication title with an error message.
               </p>
 
-              <!-- Section 2 (H2) -->
+              <!-- Section 2: Dark Mode Solution (H2) -->
               <h2
                 :style="{
                   color: activeTitleColor,
@@ -524,18 +582,23 @@ export const EditorialArticleValidation: Story = {
                   transition: 'color 0.2s ease'
                 }"
               >
-                2. Understanding the Light vs. Dark Mode Contrast Inversion
+                2. Replacing Pale Pink with Gilded Manuscript Gold
               </h2>
 
               <p style="margin-bottom: 1.75rem;">
-                Why can't we simply apply <code>#750008</code> to dark mode? In light mode, <code>#750008</code> works because it is a very dark pigment on a bright background. On a dark surface (<code>#0F172A</code>), placing a dark pigment creates a contrast ratio of only <strong>1.50:1</strong>, which is completely unreadable.
+                When converting a deep crimson or wine ink to dark mode, standard automated tools often produce a desaturated, chalky light rose (such as <code>#FDA4AF</code>). While accessible, it can feel unintentionally pastel or "pink" rather than editorial and authoritative.
               </p>
 
+              <p style="margin-bottom: 1.75rem;">
+                In the history of manuscript illumination, scribes working on dark, dyed vellum did not lighten red cinnabar into pink chalk. Instead, they illuminated headings with <strong>burnished gold leaf</strong> (<em>aurum librarium</em>).
+              </p>
+
+              <!-- Historical Callout Box -->
               <div
                 :style="{
                   padding: '1.25rem 1.5rem',
                   borderRadius: '0.5rem',
-                  border: '1px solid ' + (activeSurface === 'dark' ? '#334155' : '#CBD5E1'),
+                  border: '1px solid ' + (activeSurface === 'dark' ? '#D97706' : '#CBD5E1'),
                   backgroundColor: activeSurface === 'dark' ? '#1E293B' : (activeSurface === 'paper' ? '#F5EFEB' : '#F8FAFC'),
                   marginBottom: '2rem',
                   fontFamily: 'system-ui, sans-serif',
@@ -543,14 +606,14 @@ export const EditorialArticleValidation: Story = {
                 }"
               >
                 <div style="font-weight: 700; margin-bottom: 0.5rem; color: #0369A1; display: flex; align-items: center; gap: 0.5rem;">
-                  <span>💡 How Design Systems Solve This: Tonal Inversion</span>
+                  <span>🏛️ The Heritage of Burgundy & Gilded Gold</span>
                 </div>
                 <p style="margin: 0 0 0.5rem; line-height: 1.5;">
-                  A design system separates <strong>primitive colors</strong> (e.g. <code>#750008</code>) from <strong>semantic tokens</strong> (e.g. <code>--ds-color-brand-text</code>).
+                  Deep red and gilded gold are natural aesthetic partners across centuries of fine bookbinding:
                 </p>
                 <ul style="margin: 0; padding-left: 1.25rem; line-height: 1.6;">
-                  <li><strong>In Light Theme:</strong> <code>--ds-color-brand-text</code> maps to the deep ink tone (<strong>{{ selectedColor }}</strong>), yielding 11.9:1 contrast (AAA).</li>
-                  <li><strong>In Dark Theme:</strong> <code>--ds-color-brand-text</code> automatically maps to an illuminated tint of the same hue family (e.g. <code>#FDA4AF</code> rose-300), yielding 9.44:1 contrast (AAA).</li>
+                  <li><strong>Light & Paper Theme:</strong> Headings use the commanding density of physical print ink (<strong>{{ selectedColor }}</strong>), achieving <strong>11.9:1 AAA</strong> contrast.</li>
+                  <li><strong>Dark Slate Theme:</strong> Headings illuminate with Gilded Leaf Gold (<strong>{{ selectedDarkAccent }}</strong>), achieving <strong>{{ contrastVsSurface }}:1 AAA</strong> contrast without any pink undertones.</li>
                 </ul>
               </div>
 
@@ -566,33 +629,35 @@ export const EditorialArticleValidation: Story = {
                 }"
               >
                 <h3 :style="{ margin: '0 0 1rem', fontSize: '1.125rem', color: activeTitleColor }">
-                  Interactive Design System Components in This Color
+                  Interactive Components in the Active Palette
                 </h3>
 
                 <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; margin-bottom: 1.5rem;">
+                  <!-- Primary Action Button -->
                   <button
                     type="button"
                     :style="{
                       display: 'inline-flex',
                       alignItems: 'center',
-                      padding: '0.5rem 1rem',
+                      padding: '0.5rem 1.1rem',
                       borderRadius: '0.375rem',
-                      backgroundColor: selectedColor,
-                      color: '#FFFFFF',
+                      backgroundColor: activeSurface === 'dark' ? activeTitleColor : selectedColor,
+                      color: activeSurface === 'dark' ? '#0F172A' : '#FFFFFF',
                       border: 'none',
-                      fontWeight: '600',
+                      fontWeight: '700',
                       cursor: 'pointer'
                     }"
                   >
-                    Primary Button ({{ selectedColor }})
+                    {{ activeSurface === 'dark' ? '✨ Gilded Action (' + activeTitleColor + ')' : 'Primary Ink Button (' + selectedColor + ')' }}
                   </button>
 
+                  <!-- Secondary Outline Button -->
                   <button
                     type="button"
                     :style="{
                       display: 'inline-flex',
                       alignItems: 'center',
-                      padding: '0.5rem 1rem',
+                      padding: '0.5rem 1.1rem',
                       borderRadius: '0.375rem',
                       backgroundColor: 'transparent',
                       color: activeTitleColor,
@@ -601,7 +666,26 @@ export const EditorialArticleValidation: Story = {
                       cursor: 'pointer'
                     }"
                   >
-                    Secondary Button
+                    Secondary Outline
+                  </button>
+
+                  <!-- Crimson Wax Seal Button (only in dark mode to show coexistence) -->
+                  <button
+                    v-if="activeSurface === 'dark'"
+                    type="button"
+                    :style="{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      padding: '0.5rem 1.1rem',
+                      borderRadius: '0.375rem',
+                      backgroundColor: selectedColor,
+                      color: '#FFFFFF',
+                      border: '1px solid ' + activeTitleColor,
+                      fontWeight: '600',
+                      cursor: 'pointer'
+                    }"
+                  >
+                    Ink Red Seal ({{ selectedColor }})
                   </button>
 
                   <a
@@ -619,7 +703,7 @@ export const EditorialArticleValidation: Story = {
                 </div>
 
                 <div>
-                  <div style="font-size: 0.8125rem; font-weight: 600; color: #64748B; margin-bottom: 0.5rem;">
+                  <div :style="{ fontSize: '0.8125rem', fontWeight: '600', color: surfaceSubtext, marginBottom: '0.5rem' }">
                     Article Topics (DsChipGroup):
                   </div>
                   <DsChipGroup
@@ -632,7 +716,14 @@ export const EditorialArticleValidation: Story = {
             </div>
 
             <!-- Further Reading Section (Cards) -->
-            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid #CBD5E1; font-family: system-ui, sans-serif;">
+            <footer
+              :style="{
+                marginTop: '4rem',
+                paddingTop: '2rem',
+                borderTop: '1px solid ' + (activeSurface === 'dark' ? '#334155' : '#CBD5E1'),
+                fontFamily: 'system-ui, sans-serif'
+              }"
+            >
               <h3 :style="{ color: activeTitleColor, fontSize: '1.25rem', marginBottom: '1.25rem' }">
                 Related Articles & Research
               </h3>
@@ -654,13 +745,13 @@ export const EditorialArticleValidation: Story = {
                 <li>
                   <DsCard variant="outlined" padding="md">
                     <template #header>
-                      <span :style="{ fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase', color: activeTitleColor }">Accessibility Engineering</span>
+                      <span :style="{ fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase', color: activeTitleColor }">Illumination & Codicology</span>
                     </template>
                     <h4 :style="{ margin: '0.25rem 0 0.5rem', fontSize: '1rem', color: surfaceText }">
-                      WCAG 2.2 Relative Luminance
+                      Gilded Leaf on Dark Grounds
                     </h4>
                     <p :style="{ fontSize: '0.875rem', color: surfaceSubtext, margin: 0 }">
-                      Linearizing sRGB gamma to predict perceived text contrast across high-DPI displays.
+                      The optics of burnished gold leaf paired with crimson leather bindings in low-light environments.
                     </p>
                   </DsCard>
                 </li>
