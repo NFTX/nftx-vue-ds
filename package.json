@@ -38,7 +38,8 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "test:smoke": "node --experimental-strip-types scripts/smoke-consumer.ts",
-    "verify": "npm run lint && npm run typecheck && npm run test:tokens && npm run test:unit && npm run test:storybook && npm run build && npm run test:smoke"
+    "verify": "npm run lint && npm run typecheck && npm run test:tokens && npm run test:unit && npm run test:storybook && npm run build && npm run test:smoke",
+    "stage:publish": "npm run verify && npm stage publish"
   },
   "repository": {
     "type": "git",
