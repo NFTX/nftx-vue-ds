@@ -1,6 +1,6 @@
-# Agent Instructions & Repository Guidelines (`@nftx/vue-ds`)
+# Agent Instructions & Repository Guidelines (`@nftx-dev/vue-ds`)
 
-This document defines operating instructions for AI coding agents working within `@nftx/vue-ds` and client applications (such as `/workspace/Projects/portal`).
+This document defines operating instructions for AI coding agents working within `@nftx-dev/vue-ds` and client applications (such as `/workspace/Projects/portal`).
 
 ---
 
@@ -35,7 +35,7 @@ The reference consumer application for this library is located at `/workspace/Pr
 
 ## 🎨 3. The 3 Default Themes System
 
-`@nftx/vue-ds` provides three mathematically verified default themes:
+`@nftx-dev/vue-ds` provides three mathematically verified default themes:
 1. **Light Mode (`data-theme="light"`):** Warm Paper canvas (`#FAF8F5`) + Print Ink Red (`#750008`) + Deep Charcoal text (`#1E293B`).
 2. **Dark Mode (`data-theme="dark"`):** Velvet Oxblood canvas (`#3C0911`) + Pale Champagne Gold (`#FDE68A`) + Warm Antique Ivory anti-glare body text (`#F7F4EE`).
 3. **Color Blind Mode (`data-theme="colorblind"`):** Universal CVD Okabe-Ito Cobalt Navy (`#003E7E`) + Amber (`#9A3412`) + Deep Pine Teal (`#004D40`) + Brick Rust (`#880000`) on Crisp Pure White (`#FFFFFF`).
@@ -49,7 +49,7 @@ The reference consumer application for this library is located at `/workspace/Pr
 
 ## 🛠️ 4. Internal Library Maintenance Rules
 
-If an agent is instructed to modify or extend `@nftx/vue-ds` itself, the following constraints are strictly binding:
+If an agent is instructed to modify or extend `@nftx-dev/vue-ds` itself, the following constraints are strictly binding:
 
 1. **Zero External Headless UI Libraries:** Never install `reka-ui`, `radix-vue`, `@headlessui/vue`, `@floating-ui/dom`, or Popper. Always use native browser elements (`<dialog>`, native `[popover]`, CSS Anchor Positioning, `:has()`) plus the in-house composables under `src/composables/a11y/`.
 2. **Component File Architecture:** Every component lives in its own dedicated directory under `src/components/Ds{Name}/` with the 6-file structure:

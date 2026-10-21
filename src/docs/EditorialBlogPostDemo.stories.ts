@@ -113,7 +113,7 @@ export const EditorialArticleValidation: Story = {
 
       const lightPresets = [
         { id: 'print-red', label: 'Print Ink Red (Target)', hex: '#750008', role: 'Classical rubric / editorial book title' },
-        { id: 'rose-800', label: 'Current Base (Rose-800)', hex: '#9F1239', role: 'Existing @nftx/vue-ds base' },
+        { id: 'rose-800', label: 'Current Base (Rose-800)', hex: '#9F1239', role: 'Existing @nftx-dev/vue-ds base' },
         { id: 'oxblood', label: 'Deep Oxblood', hex: '#580D1A', role: 'Heavy vintage iron oxide red' },
         { id: 'rose-700', label: 'Digital Crimson', hex: '#BE123C', role: 'Bright digital crimson' }
       ]

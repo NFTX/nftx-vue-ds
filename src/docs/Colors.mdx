@@ -4,7 +4,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # Color System & Three Default Themes Architecture
 
-`@nftx/vue-ds` delivers a resilient, mathematically verified three-theme color architecture out of the box:
+`@nftx-dev/vue-ds` delivers a resilient, mathematically verified three-theme color architecture out of the box:
 1. **Light Mode (Default)**: Classical "Warm Paper" canvas (`#FAF8F5`) with "Print Ink Red" titling/accents (`#750008`) and deep charcoal body text (`#1E293B`).
 2. **Dark Mode (Default)**: Luminous "Velvet Midpoint" oxblood canvas (`#3C0911`) with "Pale Champagne" gilded accents (`#FDE68A`) and "Warm Antique Ivory" body text (`#F7F4EE`) designed to eliminate glare and optical irradiation.
 3. **Color Blind Mode (Default)**: Scientifically formulated Okabe-Ito Color Universal Design (CUD) palette built for the **"worst-case" scenario** across Protanopia, Deuteranopia, Tritanopia, and complete Achromatopsia (monochromacy).
@@ -89,7 +89,7 @@ Any consumer application or web page switches themes by setting `data-theme` on 
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { DsHeaderBar, type DsThemeMode } from '@nftx/vue-ds'
+import { DsHeaderBar, type DsThemeMode } from '@nftx-dev/vue-ds'
 
 const activeTheme = ref<DsThemeMode>('light')
 </script>
@@ -109,7 +109,7 @@ const activeTheme = ref<DsThemeMode>('light')
 
 ## 5. How Consumers Overwrite Theme Tokens
 
-All styles in `@nftx/vue-ds` consume semantic CSS custom properties (`var(--ds-color-...)`). Consumers can override any individual token or entire themes at root, theme, or component scope without touching the library source:
+All styles in `@nftx-dev/vue-ds` consume semantic CSS custom properties (`var(--ds-color-...)`). Consumers can override any individual token or entire themes at root, theme, or component scope without touching the library source:
 
 ```scss
 /* Custom Light Mode Overwrite */

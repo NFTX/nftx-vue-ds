@@ -39,7 +39,7 @@ function runSmokeTest(): void {
   assertNoUnresolvedAliasesInTypes(distDir)
 
   // 2. Pack the library
-  console.log('\n--- Packing @nftx/vue-ds via npm pack ---')
+  console.log('\n--- Packing @nftx-dev/vue-ds via npm pack ---')
   const packOutput = execSync('npm pack --json', { cwd: rootDir, encoding: 'utf-8' })
   const packJson = JSON.parse(packOutput)
   const tarballName = packJson[0].filename
@@ -58,7 +58,7 @@ function runSmokeTest(): void {
       type: 'module',
       dependencies: {
         vue: '^3.5.0',
-        '@nftx/vue-ds': `file:${tarballPath}`
+        '@nftx-dev/vue-ds': `file:${tarballPath}`
       }
     }
     fs.writeFileSync(path.join(tempDir, 'package.json'), JSON.stringify(consumerPkg, null, 2), 'utf-8')
@@ -103,8 +103,8 @@ declare module '*.css' {
     )
 
     const consumerMainTs = `
-import '@nftx/vue-ds/styles.css'
-import '@nftx/vue-ds/tokens.css'
+import '@nftx-dev/vue-ds/styles.css'
+import '@nftx-dev/vue-ds/tokens.css'
 import { createApp } from 'vue'
 import App from './App.vue'
 
@@ -114,7 +114,7 @@ createApp(App).mount('#app')
 
     const consumerAppVue = `
 <script setup lang="ts">
-import { DsVisuallyHidden, type DsVisuallyHiddenProps } from '@nftx/vue-ds'
+import { DsVisuallyHidden, type DsVisuallyHiddenProps } from '@nftx-dev/vue-ds'
 
 const props: DsVisuallyHiddenProps = { as: 'span' }
 </script>
@@ -145,14 +145,14 @@ const props: DsVisuallyHiddenProps = { as: 'span' }
 
     // Install packed tarball and dependencies cleanly using local cache/install
     console.log('\n--- Unpacking and installing into fixture ---')
-    // Unpack tarball directly into node_modules/@nftx/vue-ds
+    // Unpack tarball directly into node_modules/@nftx-dev/vue-ds
     const tempNodeModules = path.join(tempDir, 'node_modules')
     fs.mkdirSync(tempNodeModules, { recursive: true })
 
     // Symlink root node_modules dependencies (vue, vite, @vitejs/plugin-vue, etc.)
     const rootNodeModules = path.join(rootDir, 'node_modules')
     for (const dep of fs.readdirSync(rootNodeModules)) {
-      if (dep === '.bin' || dep === '@nftx') continue
+      if (dep === '.bin' || dep === '@nftx' || dep === '@nftx-dev') continue
       const srcDep = path.join(rootNodeModules, dep)
       const destDep = path.join(tempNodeModules, dep)
       try {
@@ -162,8 +162,8 @@ const props: DsVisuallyHiddenProps = { as: 'span' }
       }
     }
 
-    // Unpack package tarball to node_modules/@nftx/vue-ds
-    const pkgDest = path.join(tempNodeModules, '@nftx/vue-ds')
+    // Unpack package tarball to node_modules/@nftx-dev/vue-ds
+    const pkgDest = path.join(tempNodeModules, '@nftx-dev/vue-ds')
     fs.mkdirSync(pkgDest, { recursive: true })
     execSync(`tar -xzf "${tarballPath}" --strip-components=1 -C "${pkgDest}"`, { stdio: 'inherit' })
 
