@@ -10,6 +10,11 @@ coverage/
 .vitest/
 *.tgz
 
+# Environment & local credentials
+.env
+.env.*
+.npmrc
+
 # Logs & OS metadata
 *.log
 npm-debug.log*
