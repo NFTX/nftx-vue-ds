@@ -291,6 +291,44 @@ This document tracks the phased implementation, quality gates, and verification 
 | 8 | `npm run build-storybook` | Static Storybook site generation | **PASS** (Clean output in `storybook-static/`) |
 | 9 | `npm run build` in `portal` | Consumer compilation & typecheck | **PASS** (vue-tsc + vite build 0 errors, 1.96s) |
 
+---
+
+## Phase 7: Client Integration, Consumer Documentation & Portal Validation
+
+**Status:** Completed & Verified  
+**Date:** 2026-10-21  
+
+### Summary of Work Delivered
+1. **Three Default Themes Finalization (`TOK-04`, `A11Y-01`..`03`):**
+   - **Light Mode Default:** Warm Paper canvas (`#FAF8F5`) + Print Ink Red (`#750008`, 11.26:1 AAA) + Deep Charcoal text (`#1E293B`, 13.80:1 AAA).
+   - **Dark Mode Default:** Velvet Midpoint oxblood canvas (`#3C0911`) + Pale Champagne Gold illumination (`#FDE68A`, 13.61:1 AAA) + Warm Antique Ivory anti-glare body text (`#F7F4EE`, 15.44:1 AAA).
+   - **Color Blind Mode Default:** Scientifically engineered Okabe-Ito Universal CVD palette for the worst-case scenario across Protanopia, Deuteranopia, Tritanopia, and complete Achromatopsia/monochromacy using pure Royal Cobalt Navy (`#003E7E`, 10.55:1 AAA), Amber (`#9A3412`), Deep Pine Teal (`#004D40`), and Brick Rust (`#880000`) on Crisp Pure White (`#FFFFFF`).
+   - Symmetrical 43-token definitions across all three themes in `src/styles/tokens/_semantic.scss`, enforced by `scripts/contrast-check.ts`.
+
+2. **Consumer-First Documentation Architecture (`README.md` & `AGENTS.md`):**
+   - Completely rewrote `README.md` into an actionable, comprehensive guide for client developers: installation, quick start, style imports, the 3 default themes, component usage catalog with code snippets, token override instructions, and Portal validation guide.
+   - Restructured `AGENTS.md` in `Projects/design-system` and created `Projects/portal/AGENTS.md` with an explicit policy: **users must only be guided to how-to-use documentation (`README.md` and Storybook `http://localhost:6006`)**, keeping internal implementation guidelines and history files reserved strictly for library maintainers.
+
+3. **Portal Reference Validation (`Projects/portal`):**
+   - Documented step-by-step validation workflow between design system and Portal.
+   - Updated `Projects/portal/README.md` with `@nftx/vue-ds` integration details and build instructions.
+   - Verified Portal compilation with `npm run build` (`vue-tsc && vite build`), resulting in 0 errors and complete asset generation.
+
+### Verification Scorecard
+
+| Step | Gate Command | Target / Rule | Result |
+| :--- | :--- | :--- | :--- |
+| 1 | `npm run lint` | ESLint 9 + vue-a11y rules | **PASS** (0 errors, 0 warnings) |
+| 2 | `npm run typecheck` | `vue-tsc --noEmit` in `design-system` | **PASS** (0 errors) |
+| 3 | `npm run test:tokens` | 43-token symmetry across 3 themes, 33 contrast checks, OKLab ΔE ≥ 10 | **PASS** (All 43 tokens symmetric, all ratios AAA/AA, ΔE: Light 15.9, Dark 27.5, CB 26.3) |
+| 4 | `npm run test:unit` | Vitest browser mode unit tests with 100% coverage | **PASS** (155/155 tests passed across 29 suites) |
+| 5 | `npm run test:storybook` | Playwright Storybook test runner + axe-core | **PASS** (78/78 tests passed across 26 stories, 0 axe violations) |
+| 6 | `npm run build` | Vite library rollup and `.d.ts` generation | **PASS** (Clean build, dist/ emitted) |
+| 7 | `npm run test:smoke` | Consumer tarball pack and test fixture installation | **PASS** (0 alias leaks, clean consumer build) |
+| 8 | `npm run build-storybook` | Static Storybook distribution site | **PASS** (Clean build in `storybook-static/`) |
+| 9 | `npm run build` in `portal` | Reference client application compilation & typecheck | **PASS** (`vue-tsc && vite build` 0 errors, 3.08s) |
+
+
 
 
 
