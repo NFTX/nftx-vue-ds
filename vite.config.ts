@@ -12,17 +12,33 @@ function buildTokensCssPlugin(): Plugin {
   return {
     name: 'build-tokens-css',
     closeBundle() {
+      const outDir = resolve(__dirname, 'dist')
+      if (!fs.existsSync(outDir)) {
+        fs.mkdirSync(outDir, { recursive: true })
+      }
+
+      // 1. Build standalone tokens.css
       const tokensScssPath = resolve(__dirname, 'src/styles/tokens/tokens.scss')
       if (fs.existsSync(tokensScssPath)) {
-        const outDir = resolve(__dirname, 'dist')
-        if (!fs.existsSync(outDir)) {
-          fs.mkdirSync(outDir, { recursive: true })
-        }
-        const result = sass.compile(tokensScssPath, {
+        const tokensResult = sass.compile(tokensScssPath, {
           style: 'expanded',
           loadPaths: [resolve(__dirname, 'src/styles')]
         })
-        fs.writeFileSync(resolve(outDir, 'tokens.css'), result.css, 'utf-8')
+        fs.writeFileSync(resolve(outDir, 'tokens.css'), tokensResult.css, 'utf-8')
+      }
+
+      // 2. Prepend compiled tokens + base CSS to styles.css so it is the complete standalone bundle
+      const indexScssPath = resolve(__dirname, 'src/styles/_index.scss')
+      if (fs.existsSync(indexScssPath)) {
+        const indexResult = sass.compile(indexScssPath, {
+          style: 'expanded',
+          loadPaths: [resolve(__dirname, 'src/styles')]
+        })
+        const stylesPath = resolve(outDir, 'styles.css')
+        if (fs.existsSync(stylesPath)) {
+          const componentCss = fs.readFileSync(stylesPath, 'utf-8')
+          fs.writeFileSync(stylesPath, `${indexResult.css}\n${componentCss}`, 'utf-8')
+        }
       }
     }
   }
