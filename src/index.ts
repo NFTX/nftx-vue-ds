@@ -1,5 +1,5 @@
 // src/index.ts
-// Public library entry point for @nftx/vue-ds
+// Public library entry point for @nftx-dev/vue-ds
 
 export * from './components/DsVisuallyHidden'
 export * from './components/DsIcon'

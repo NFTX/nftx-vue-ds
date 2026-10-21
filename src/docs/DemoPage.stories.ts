@@ -13,7 +13,7 @@ import { DsEmptyState } from '@/components/DsEmptyState'
 
 /**
  * Full page integration demo demonstrating end-to-end composition of
- * `@nftx/vue-ds` layout organisms, atoms, and molecules.
+ * `@nftx-dev/vue-ds` layout organisms, atoms, and molecules.
  * Conforms to WCAG 2.2 AA landmarks, reflows cleanly at 320px, and passes axe audits.
  */
 const meta = {

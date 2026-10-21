@@ -1,4 +1,4 @@
-# @nftx/vue-ds
+# @nftx-dev/vue-ds
 
 A production-ready Vue 3 + TypeScript component library and design token system built with native browser primitives, strict WCAG 2.2 Level AA/AAA accessibility compliance, and three mathematically verified default themes (**Light**, **Dark**, and **Color Blind**).
 
@@ -37,7 +37,7 @@ In your Vue 3 application:
 
 ```bash
 # If installing from npm (when published):
-npm install @nftx/vue-ds
+npm install @nftx-dev/vue-ds
 
 # If using locally as a monorepo or sibling project:
 npm install file:../design-system
@@ -47,7 +47,7 @@ In your client's `package.json`:
 ```json
 {
   "dependencies": {
-    "@nftx/vue-ds": "file:../design-system",
+    "@nftx-dev/vue-ds": "file:../design-system",
     "vue": "^3.4.0"
   }
 }
@@ -63,15 +63,15 @@ import { createApp } from 'vue'
 import App from './App.vue'
 
 // Import all design system tokens, base reset, and component styles
-import '@nftx/vue-ds/styles.css'
+import '@nftx-dev/vue-ds/styles.css'
 
 createApp(App).mount('#app')
 ```
 
 > **Style Exports Available:**
-> - `@nftx/vue-ds/styles.css` — Complete bundle (Tokens + Base Reset + All Components)
-> - `@nftx/vue-ds/tokens.css` — Design tokens only (for non-Vue pages, landing pages, or portals)
-> - `@nftx/vue-ds/scss` — Raw SCSS mixins and variables for advanced Sass pipelines
+> - `@nftx-dev/vue-ds/styles.css` — Complete bundle (Tokens + Base Reset + All Components)
+> - `@nftx-dev/vue-ds/tokens.css` — Design tokens only (for non-Vue pages, landing pages, or portals)
+> - `@nftx-dev/vue-ds/scss` — Raw SCSS mixins and variables for advanced Sass pipelines
 
 ---
 
@@ -107,7 +107,7 @@ Set the `data-theme` attribute on your `<html>` tag or on any container element:
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { DsHeaderBar, type DsThemeMode } from '@nftx/vue-ds'
+import { DsHeaderBar, type DsThemeMode } from '@nftx-dev/vue-ds'
 
 const currentTheme = ref<DsThemeMode>('light')
 </script>
@@ -128,7 +128,7 @@ const currentTheme = ref<DsThemeMode>('light')
 
 ## 🧩 Component Catalog
 
-All components are exported directly from the package root `@nftx/vue-ds`:
+All components are exported directly from the package root `@nftx-dev/vue-ds`:
 
 | Category | Components | Description |
 | :--- | :--- | :--- |
@@ -146,7 +146,7 @@ All components are exported directly from the package root `@nftx/vue-ds`:
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { DsButton } from '@nftx/vue-ds'
+import { DsButton } from '@nftx-dev/vue-ds'
 
 const isSubmitting = ref(false)
 
@@ -175,7 +175,7 @@ async function handleClick() {
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { DsField, DsInput } from '@nftx/vue-ds'
+import { DsField, DsInput } from '@nftx-dev/vue-ds'
 
 const email = ref('')
 const error = ref('')
@@ -203,7 +203,7 @@ const error = ref('')
 ```vue
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { DsSearchBar, DsCardGrid, DsCard, DsBadge, DsButton } from '@nftx/vue-ds'
+import { DsSearchBar, DsCardGrid, DsCard, DsBadge, DsButton } from '@nftx-dev/vue-ds'
 
 const search = ref('')
 const services = [
@@ -244,7 +244,7 @@ const filtered = computed(() =>
 
 ## 🔍 Validating with Portal (Reference Client)
 
-The `/workspace/Projects/portal` project serves as the real-world reference consumer for `@nftx/vue-ds`. Use it to validate component integration, responsive behavior, and theme switching.
+The `/workspace/Projects/portal` project serves as the real-world reference consumer for `@nftx-dev/vue-ds`. Use it to validate component integration, responsive behavior, and theme switching.
 
 ### Step 1: Build the Design System
 Ensure latest library artifacts and stylesheets are compiled:
