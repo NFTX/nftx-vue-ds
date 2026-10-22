@@ -41,6 +41,31 @@ describe('DsChipGroup', () => {
     expect(wrapper.emitted('update:modelValue')).toHaveLength(2)
   })
 
+  it('prevents clearing active chip in single-select mode when allowEmpty=false and supports scrollable & variant props (ENH-06)', async () => {
+    const wrapper = mount(DsChipGroup, {
+      props: {
+        label: 'Mandatory filter',
+        chips: options,
+        modelValue: 'a',
+        allowEmpty: false,
+        variant: 'surface',
+        scrollable: true
+      }
+    })
+
+    expect(wrapper.classes()).toContain('ds-chip-group--surface')
+    expect(wrapper.classes()).toContain('ds-chip-group--scrollable')
+
+    const chips = wrapper.findAll('button.ds-chip')
+    // Clicking already active chip 'a' when allowEmpty=false is a no-op
+    await chips[0]?.trigger('click')
+    expect(wrapper.emitted('update:modelValue')).toBeUndefined()
+
+    // Clicking 'b' switches selection to 'b'
+    await chips[1]?.trigger('click')
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['b'])
+  })
+
   it('supports multi-select array modelValue and toggles chips on and off', async () => {
     const wrapper = mount(DsChipGroup, {
       props: {

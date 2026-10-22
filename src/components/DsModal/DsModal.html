@@ -22,6 +22,7 @@
         </div>
       </slot>
       <button
+        v-if="isDismissible"
         type="button"
         class="ds-modal__close"
         aria-label="Close dialog"

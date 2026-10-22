@@ -1,6 +1,6 @@
 # Standalone Vue 3 Design System: Architecture & Implementation Plan
 
-`@nftx/vue-ds` is a standalone Vue 3 + TypeScript component library with framework-agnostic design tokens. It targets **WCAG 2.2 Level AA** (AAA where noted), uses a **crimson-wine primary palette**, is mobile-first, and ships with a **Storybook 10 playground**.
+`@nftx-dev/vue-ds` is a standalone Vue 3 + TypeScript component library with framework-agnostic design tokens. It targets **WCAG 2.2 Level AA** (AAA where noted), uses a **crimson-wine primary palette**, is mobile-first, and ships with a **Storybook 10 playground**.
 
 > Revision 3 (2026-10-19). See §11 for the decision log and change history.
 >
@@ -325,7 +325,7 @@ nftx-vue-ds/
 
 ```jsonc
 {
-  "name": "@nftx/vue-ds",
+  "name": "@nftx-dev/vue-ds",
   "type": "module",
   "sideEffects": ["**/*.css"],
   "peerDependencies": { "vue": "^3.5.0" },
@@ -345,9 +345,9 @@ nftx-vue-ds/
 
 ### 7.3 Consumption
 
-- **Now:** consumers install from git by tag (`"@nftx/vue-ds": "github:NFTX/nftx-vue-ds#v0.3.0"`) with a `prepare` build script. No registry infrastructure needed.
+- **Now:** consumers install from git by tag (`"@nftx-dev/vue-ds": "github:NFTX/nftx-vue-ds#v0.3.0"`) with a `prepare` build script. No registry infrastructure needed.
 - **Later (optional):** a private npm registry if multiple consumers make git installs slow.
-- Consumer usage: `import '@nftx/vue-ds/styles.css'` once, then `import { DsButton } from '@nftx/vue-ds'`.
+- Consumer usage: `import '@nftx-dev/vue-ds/styles.css'` once, then `import { DsButton } from '@nftx-dev/vue-ds'`.
 
 ---
 
@@ -450,7 +450,7 @@ flowchart LR
 | D1 | Zero headless UI library dependencies; use native HTML (`<dialog>`, `<select>`, Popover API, CSS Anchor Positioning) + small in-house composables | Full control, zero third-party UI lock-in, smaller bundle, aligned with learning and long-term maintainability |
 | D2 | WCAG 2.2 AA baseline, selective AAA | Measurable, honest conformance claims |
 | D3 | Brand moved to crimson-wine (`rose-800` light / `rose-700` fill + `rose-300` text dark); error stays true red (`red-600` / `red-400`) | Brand vs. error ΔE rose from 2.7–3.8 to 11.8–13.8; brand text becomes AAA in light mode |
-| D4 | Package name `@nftx/vue-ds` | Matches repository; generic, no environment-specific naming |
+| D4 | Package name `@nftx-dev/vue-ds` | Matches repository; generic, no environment-specific naming |
 | D5 | Distribution by git tag; registry later if needed | Zero infrastructure |
 | D6 | Single package with subpath exports (`tokens.css`, `scss`) | KISS; tokens still consumable by non-Vue stacks |
 | D7 | Flat `components/` folder; atomic level only in Storybook | Simpler imports and discoverability |

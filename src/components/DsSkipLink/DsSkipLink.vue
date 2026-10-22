@@ -51,7 +51,10 @@ function handleClick(event: MouseEvent): void {
   }
 
   targetEl.focus()
-  targetEl.scrollIntoView({ behavior: 'smooth' })
+  const prefersReducedMotion = Boolean(
+    globalThis.window?.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+  )
+  targetEl.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth' })
 }
 </script>
 

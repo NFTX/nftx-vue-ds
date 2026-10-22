@@ -1,0 +1,31 @@
+<div :class="alertClasses" :role="alertRole">
+  <div class="ds-alert__icon" aria-hidden="true">
+    <slot name="icon">
+      <DsIcon :name="resolvedIconName" :icon="resolvedIconComponent" size="md" />
+    </slot>
+  </div>
+
+  <div class="ds-alert__content">
+    <div v-if="hasTitle" class="ds-alert__title">
+      <slot name="title">{{ title }}</slot>
+    </div>
+
+    <div v-if="hasBody" class="ds-alert__description">
+      <slot />
+    </div>
+
+    <div v-if="hasActions" class="ds-alert__actions">
+      <slot name="actions" />
+    </div>
+  </div>
+
+  <button
+    v-if="dismissible"
+    type="button"
+    class="ds-alert__close"
+    aria-label="Dismiss alert"
+    @click="handleDismiss"
+  >
+    <DsIcon :icon="X" size="sm" />
+  </button>
+</div>

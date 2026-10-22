@@ -1,6 +1,6 @@
-# Normative Implementation & Validation Guidelines (`@nftx/vue-ds`)
+# Normative Implementation & Validation Guidelines (`@nftx-dev/vue-ds`)
 
-This document is the binding specification for implementing and validating `@nftx/vue-ds`.
+This document is the binding specification for implementing and validating `@nftx-dev/vue-ds`.
 Where [DESIGN_SYSTEM_PLAN.md](./DESIGN_SYSTEM_PLAN.md) defines scope and roadmap, this file defines the rules every file, component, style, story, and test must satisfy.
 
 ---
@@ -273,7 +273,7 @@ Every component and page composition must pass these manual checks prior to phas
 - `TEST-12`: After `npm run build`, pack the library (`npm pack`) and install the tarball into an isolated minimal Vite + Vue + TypeScript fixture project. Run `vue-tsc --noEmit` and `vite build` in that fixture to prove:
   - All package `exports` (`.`, `./styles.css`, `./tokens.css`, `./scss`) resolve cleanly.
   - Generated `.d.ts` files contain zero unresolved `@/*` path aliases (`TS-03`).
-  - Tree-shaking works when importing a single component (`import { DsButton } from '@nftx/vue-ds'`).
+  - Tree-shaking works when importing a single component (`import { DsButton } from '@nftx-dev/vue-ds'`).
 
 ---
 
@@ -311,7 +311,7 @@ A component is complete only when **every** item below is checked:
 
 ## 12. Packaging, Exports & Versioning
 
-- `PKG-01`: Publish as ESM-only (`"type": "module"`) under the name `@nftx/vue-ds` with `"sideEffects": ["**/*.css"]`.
+- `PKG-01`: Publish as ESM-only (`"type": "module"`) under the name `@nftx-dev/vue-ds` with `"sideEffects": ["**/*.css"]`.
 - `PKG-02`: Expose explicit subpath exports in `package.json`:
   - `"."`: `{ "types": "./dist/index.d.ts", "import": "./dist/index.js" }`
   - `"./styles.css"`: `"./dist/styles.css"`

@@ -1,21 +1,28 @@
 <div
   :id="computedId"
   class="ds-chip-group"
+  :class="[
+    `ds-chip-group--${variant}`,
+    { 'ds-chip-group--scrollable': scrollable }
+  ]"
   role="group"
   :aria-label="label"
   @keydown="onKeydown"
   v-bind="$attrs"
 >
   <button
-    v-for="(option, index) in options"
+    v-for="(option, index) in resolvedOptions"
     :key="option.value"
     ref="chipRefs"
     type="button"
     class="ds-chip"
-    :class="{
-      'ds-chip--active': isSelected(option.value),
-      'ds-chip--disabled': option.disabled
-    }"
+    :class="[
+      `ds-chip--${variant}`,
+      {
+        'ds-chip--active': isSelected(option.value),
+        'ds-chip--disabled': option.disabled
+      }
+    ]"
     :aria-pressed="isSelected(option.value)"
     :disabled="option.disabled"
     :tabindex="roving.getTabIndex(index)"

@@ -27,6 +27,29 @@ describe('DsSelect', () => {
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['2'])
   })
 
+  it('preserves numeric option values on change and passes $attrs to <select> only (DS-06, DS-14)', async () => {
+    const numericOptions = [
+      { label: 'Ten', value: 10 },
+      { label: 'Twenty', value: 20 }
+    ]
+    const wrapper = mount(DsSelect, {
+      props: {
+        options: numericOptions,
+        modelValue: 10
+      },
+      attrs: {
+        'data-testid': 'numeric-select'
+      }
+    })
+
+    expect(wrapper.attributes('data-testid')).toBeUndefined()
+    const select = wrapper.find('select')
+    expect(select.attributes('data-testid')).toBe('numeric-select')
+
+    await select.setValue('20')
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([20])
+  })
+
   it('renders placeholder option and supports sizes and explicit ariaInvalid', async () => {
     const wrapper = mount(DsSelect, {
       props: {

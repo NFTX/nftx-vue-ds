@@ -91,11 +91,14 @@
     }
 
     &--elevated {
+      background-color: var(--ds-color-bg-elevated);
+      border-color: var(--ds-color-border-subtle);
       box-shadow: var(--ds-shadow-md);
-      border-color: transparent;
 
-      &:hover {
-        box-shadow: var(--ds-shadow-lg);
+      @media (hover: hover) and (pointer: fine) {
+        &:hover {
+          box-shadow: var(--ds-shadow-lg);
+        }
       }
     }
 
@@ -105,16 +108,10 @@
     }
 
     &--glass {
-      background-color: rgba(255, 255, 255, 0.7);
+      background-color: var(--ds-color-bg-glass);
       backdrop-filter: blur(12px);
-      border-color: rgba(255, 255, 255, 0.3);
+      border-color: var(--ds-color-border-glass);
       box-shadow: var(--ds-shadow-md);
-
-      :global([data-theme='dark']) &,
-      :global(.dark) & {
-        background-color: rgba(15, 23, 42, 0.75);
-        border-color: rgba(255, 255, 255, 0.1);
-      }
 
       @media (prefers-reduced-transparency: reduce) {
         background-color: var(--ds-color-bg-surface);
@@ -122,9 +119,57 @@
       }
     }
 
-    &--clickable:hover {
-      border-color: var(--ds-color-border-hover);
-      transform: translateY(-2px);
+    &--undivided {
+      gap: var(--ds-space-4);
+
+      .ds-card__header {
+        border-block-end: none;
+        margin-block-end: 0;
+        padding-block-end: 0;
+      }
+
+      .ds-card__footer {
+        border-block-start: none;
+        margin-block-start: 0;
+        padding-block-start: 0;
+      }
+    }
+
+    &--accent {
+      border-block-start: 3px solid var(--ds-card-accent, var(--ds-color-brand-fill));
+    }
+
+    &--accent-hover {
+      &::before {
+        content: '';
+        position: absolute;
+        inset-block-start: 0;
+        inset-inline: 0;
+        block-size: 3px;
+        background-color: var(--ds-card-accent, var(--ds-color-brand-fill));
+        opacity: 0;
+        transition: opacity var(--ds-motion-duration-fast) var(--ds-motion-easing-default);
+      }
+
+      &:hover::before,
+      &:focus-within::before {
+        opacity: 1;
+      }
+    }
+
+    &--clickable {
+      @media (hover: hover) and (pointer: fine) {
+        &:hover {
+          border-color: var(--ds-color-border-hover);
+          box-shadow: var(--ds-shadow-lg);
+          transform: translateY(-2px);
+        }
+      }
+
+      &:focus-within {
+        border-color: var(--ds-color-border-hover);
+        box-shadow: var(--ds-shadow-lg);
+      }
     }
 
     @media (forced-colors: active) {

@@ -4,6 +4,10 @@ import { ChevronDown } from 'lucide-vue-next'
 import DsIcon from '@/components/DsIcon/DsIcon.vue'
 import type { DsFieldContext } from '@/components/DsField/DsField.vue'
 
+defineOptions({
+  inheritAttrs: false
+})
+
 export type DsSelectSize = 'sm' | 'md' | 'lg'
 
 export interface DsSelectOption {
@@ -95,7 +99,8 @@ const sizeClass = computed<string>(() => `ds-select-wrapper--${props.size}`)
 
 function handleChange(event: Event): void {
   const target = event.target as HTMLSelectElement
-  model.value = target.value
+  const matched = props.options.find((opt) => String(opt.value) === target.value)
+  model.value = matched ? matched.value : target.value
 }
 </script>
 

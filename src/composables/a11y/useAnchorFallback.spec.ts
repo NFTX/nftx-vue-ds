@@ -109,6 +109,14 @@ describe('useAnchorFallback', () => {
     expect(fallback.style.value).toEqual({})
   })
 
+  it('safely returns isSupported=false when globalThis.CSS is undefined (SSR safety, ARCH-05)', () => {
+    const originalCss = globalThis.CSS
+    vi.stubGlobal('CSS', undefined)
+    const fallback = useAnchorFallback()
+    expect(fallback.isSupported).toBe(false)
+    vi.stubGlobal('CSS', originalCss)
+  })
+
   it('cleans up on component unmount', () => {
     let captured: ReturnType<typeof useAnchorFallback> | null = null
     const TestComp = defineComponent({

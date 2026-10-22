@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { computed, useId } from 'vue'
 
+defineOptions({
+  inheritAttrs: false
+})
+
 export type DsSwitchSize = 'sm' | 'md' | 'lg'
 
 export interface DsSwitchProps {

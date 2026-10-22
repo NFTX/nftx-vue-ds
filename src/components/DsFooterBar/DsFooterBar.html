@@ -1,0 +1,17 @@
+<footer :class="footerClasses">
+  <div class="ds-footer-bar__inner">
+    <div v-if="hasStart" class="ds-footer-bar__start">
+      <slot name="start">
+        <slot />
+      </slot>
+    </div>
+
+    <div v-if="hasCenter" class="ds-footer-bar__center">
+      <slot name="center" />
+    </div>
+
+    <div v-if="hasEnd" class="ds-footer-bar__end">
+      <slot name="end" />
+    </div>
+  </div>
+</footer>

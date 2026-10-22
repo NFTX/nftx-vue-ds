@@ -1,0 +1,28 @@
+<span class="ds-tooltip-container">
+  <span
+    ref="triggerRef"
+    class="ds-tooltip-trigger"
+    :style="anchorStyle"
+    @mouseenter="handleTriggerMouseEnter"
+    @mouseleave="handleTriggerMouseLeave"
+    @focusin="handleFocusIn"
+    @focusout="handleFocusOut"
+  >
+    <slot :tooltip-id="tooltipId" :is-open="isOpen" />
+  </span>
+
+  <div
+    :id="tooltipId"
+    ref="tooltipRef"
+    popover="manual"
+    role="tooltip"
+    class="ds-tooltip"
+    :class="[`ds-tooltip--${placement}`, { 'ds-tooltip--open': isOpen }]"
+    :style="popoverStyle"
+    :aria-hidden="!isOpen ? 'true' : undefined"
+    @mouseenter="handleTooltipMouseEnter"
+    @mouseleave="handleTooltipMouseLeave"
+  >
+    <slot name="content">{{ content }}</slot>
+  </div>
+</span>

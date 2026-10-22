@@ -10,6 +10,7 @@
 
   .ds-menu-trigger {
     @include ts.target-size;
+    anchor-name: var(--ds-menu-anchor-name, --ds-menu-anchor);
     display: inline-flex;
     align-items: center;
     gap: var(--ds-space-2);
@@ -58,29 +59,29 @@
     // Anchor positioning progressive enhancement
     @supports (anchor-name: --ds-menu-anchor) {
       position: absolute;
-      position-anchor: --ds-menu-anchor;
+      position-anchor: var(--ds-menu-anchor-name, --ds-menu-anchor);
 
       &--bottom-start {
-        top: anchor(bottom);
-        left: anchor(left);
+        inset-block-start: anchor(bottom);
+        inset-inline-start: anchor(left);
         margin-block-start: 4px;
       }
 
       &--bottom-end {
-        top: anchor(bottom);
-        right: anchor(right);
+        inset-block-start: anchor(bottom);
+        inset-inline-end: anchor(right);
         margin-block-start: 4px;
       }
 
       &--top-start {
-        bottom: anchor(top);
-        left: anchor(left);
+        inset-block-end: anchor(top);
+        inset-inline-start: anchor(left);
         margin-block-end: 4px;
       }
 
       &--top-end {
-        bottom: anchor(top);
-        right: anchor(right);
+        inset-block-end: anchor(top);
+        inset-inline-end: anchor(right);
         margin-block-end: 4px;
       }
     }
@@ -122,7 +123,7 @@
       &:hover:not(:disabled),
       &:focus-visible {
         background-color: var(--ds-color-error-surface);
-        color: #b91c1c;
+        color: var(--ds-color-text-error);
       }
     }
 

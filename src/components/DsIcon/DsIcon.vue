@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, type Component } from 'vue'
-import * as LucideIcons from 'lucide-vue-next'
+import { resolveIconByName } from './iconRegistry'
 
 export type DsIconSize = 'sm' | 'md' | 'lg' | 'xl' | number
 
@@ -8,7 +8,11 @@ export interface DsIconProps {
   /**
    * Lucide icon component or icon name (PascalCase or kebab-case).
    */
-  icon: Component | string
+  icon?: Component | string
+  /**
+   * Alias for `icon` (Lucide icon component or icon name).
+   */
+  name?: Component | string
   /**
    * Fallback icon component or icon name when the requested icon cannot be resolved.
    */
@@ -19,40 +23,39 @@ export interface DsIconProps {
    */
   size?: DsIconSize
   /**
+   * Explicitly marks icon as decorative (`aria-hidden="true"`).
+   */
+  decorative?: boolean
+  /**
    * Accessible label. When omitted, icon is marked aria-hidden="true".
    */
   ariaLabel?: string
 }
 
 const props = withDefaults(defineProps<DsIconProps>(), {
+  icon: undefined,
+  name: undefined,
   fallback: undefined,
   size: 'md',
+  decorative: undefined,
   ariaLabel: undefined
 })
-
-function toPascalCase(str: string): string {
-  return str
-    .replace(/(^\w|[_\s-]\w)/g, (clear) => clear.replace(/[_\s-]/, '').toUpperCase())
-    .trim()
-}
 
 function resolveSingleIcon(val: Component | string | undefined): Component | string | undefined {
   if (!val) return undefined
   if (typeof val !== 'string') return val
-
-  const trimmed = val.trim()
-  if (!trimmed) return undefined
-
-  const pascalName = toPascalCase(trimmed)
-  const iconDict = LucideIcons as unknown as Record<string, Component>
-  return iconDict[pascalName] || iconDict[`${pascalName}Icon`]
+  return resolveIconByName(val)
 }
 
 const resolvedIcon = computed<Component | string>(() => {
-  return resolveSingleIcon(props.icon) || resolveSingleIcon(props.fallback) || 'span'
+  const primary = props.icon ?? props.name
+  return resolveSingleIcon(primary) || resolveSingleIcon(props.fallback) || 'span'
 })
 
-const isAriaHidden = computed<boolean>(() => !props.ariaLabel)
+const isAriaHidden = computed<boolean>(() => {
+  if (props.decorative === true) return true
+  return !props.ariaLabel
+})
 
 const sizeClass = computed<string | undefined>(() => {
   if (typeof props.size === 'string') {

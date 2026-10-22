@@ -1,0 +1,24 @@
+<span v-if="!block" :class="wrapperClasses">
+  <code ref="codeRef" class="ds-code__content"><slot /></code>
+  <button
+    v-if="copyable"
+    type="button"
+    class="ds-code__copy-btn"
+    :aria-label="copyAriaLabel"
+    @click="handleCopy"
+  >
+    <DsIcon :icon="copied ? Check : Copy" size="sm" />
+  </button>
+</span>
+<div v-else :class="wrapperClasses">
+  <pre class="ds-code__pre"><code ref="codeRef" class="ds-code__content"><slot /></code></pre>
+  <button
+    v-if="copyable"
+    type="button"
+    class="ds-code__copy-btn"
+    :aria-label="copyAriaLabel"
+    @click="handleCopy"
+  >
+    <DsIcon :icon="copied ? Check : Copy" size="sm" />
+  </button>
+</div>

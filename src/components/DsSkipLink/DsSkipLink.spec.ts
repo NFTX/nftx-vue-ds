@@ -62,6 +62,37 @@ describe('DsSkipLink', () => {
     target.remove()
   })
 
+  it('uses behavior="auto" when prefers-reduced-motion: reduce is active (DS-16, A11Y-06)', async () => {
+    const target = document.createElement('main')
+    target.id = 'reduced-motion-target'
+    const scrollIntoViewSpy = vi.fn()
+    target.scrollIntoView = scrollIntoViewSpy
+    document.body.appendChild(target)
+
+    const matchMediaSpy = vi.spyOn(window, 'matchMedia').mockReturnValue({
+      matches: true,
+      media: '(prefers-reduced-motion: reduce)',
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn()
+    })
+
+    const wrapper = mount(DsSkipLink, {
+      props: { targetId: 'reduced-motion-target' },
+      attachTo: document.body
+    })
+
+    await wrapper.find('a').trigger('click')
+    expect(scrollIntoViewSpy).toHaveBeenCalledWith({ behavior: 'auto' })
+
+    matchMediaSpy.mockRestore()
+    wrapper.unmount()
+    target.remove()
+  })
+
   it('preserves existing tabindex on focusable target element', async () => {
     const target = document.createElement('button')
     target.id = 'button-target'

@@ -49,6 +49,21 @@ describe('DsCardGrid', () => {
     expect(wrapper.classes()).toContain('ds-card-grid--dense')
     const styleAttr = wrapper.attributes('style')
     expect(styleAttr).toContain('--ds-card-grid-min-col: 22rem')
+    expect(styleAttr).toContain('--ds-grid-mode: auto-fill')
+  })
+
+  it('supports mode="auto-fit" and minCardWidth alias (DS-08, ENH-07)', () => {
+    const wrapper = mount(DsCardGrid, {
+      props: {
+        mode: 'auto-fit',
+        minCardWidth: '20rem'
+      }
+    })
+
+    expect(wrapper.classes()).toContain('ds-card-grid--auto-fit')
+    const styleAttr = wrapper.attributes('style')
+    expect(styleAttr).toContain('--ds-grid-min-width: 20rem')
+    expect(styleAttr).toContain('--ds-grid-mode: auto-fit')
   })
 
   it('renders items prop using scoped item slot with listitem semantics', () => {

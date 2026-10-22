@@ -114,15 +114,36 @@ createApp(App).mount('#app')
 
     const consumerAppVue = `
 <script setup lang="ts">
-import { DsVisuallyHidden, type DsVisuallyHiddenProps } from '@nftx-dev/vue-ds'
+import {
+  DsVisuallyHidden,
+  DsThemeToggle,
+  DsTag,
+  DsCode,
+  DsKbd,
+  DsAlert,
+  DsDivider,
+  DsTooltip,
+  DsFooterBar,
+  useTheme,
+  type DsVisuallyHiddenProps
+} from '@nftx-dev/vue-ds'
 
 const props: DsVisuallyHiddenProps = { as: 'span' }
+const { theme } = useTheme()
 </script>
 
 <template>
   <main>
     <h1>Consumer Smoke App</h1>
     <DsVisuallyHidden v-bind="props">Accessible screen reader label</DsVisuallyHidden>
+    <DsThemeToggle v-model="theme" />
+    <DsTag prefix="#">homelab</DsTag>
+    <DsCode copyable>./setup-docker.sh</DsCode>
+    <DsKbd shortcut="/" aria-label="Press slash" />
+    <DsAlert variant="info" title="Notice">Ready</DsAlert>
+    <DsDivider variant="dashed" />
+    <DsTooltip content="Hint"><button type="button">Target</button></DsTooltip>
+    <DsFooterBar />
   </main>
 </template>
 `

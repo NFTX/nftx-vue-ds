@@ -1,0 +1,9 @@
+// src/components/DsThemeToggle/DsThemeToggle.scss
+@layer ds.components {
+  .ds-theme-toggle {
+    &__label {
+      font-size: var(--ds-font-size-sm);
+      font-weight: var(--ds-font-weight-medium);
+    }
+  }
+}

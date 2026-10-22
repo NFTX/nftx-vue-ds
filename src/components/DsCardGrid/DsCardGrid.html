@@ -3,7 +3,10 @@
   class="ds-card-grid"
   :class="[
     gapClass,
-    { 'ds-card-grid--dense': dense }
+    {
+      'ds-card-grid--auto-fit': mode === 'auto-fit',
+      'ds-card-grid--dense': dense
+    }
   ]"
   :style="gridStyle"
   role="list"

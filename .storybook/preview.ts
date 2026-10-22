@@ -38,7 +38,10 @@ const preview: Preview = {
     withThemeByDataAttribute({
       themes: {
         light: 'light',
-        dark: 'dark'
+        dark: 'dark',
+        colorblind: 'colorblind',
+        'slate-light': 'slate-light',
+        'slate-dark': 'slate-dark'
       },
       defaultTheme: 'light',
       attributeName: 'data-theme'

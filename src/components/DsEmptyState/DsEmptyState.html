@@ -3,7 +3,7 @@
   :class="variantClass"
   role="region"
   :aria-labelledby="titleId"
-  :aria-describedby="description ? descId : undefined"
+  :aria-describedby="description || $slots.description ? descId : undefined"
   v-bind="$attrs"
 >
   <div v-if="icon || $slots.icon" class="ds-empty-state__icon-wrapper">
@@ -21,13 +21,17 @@
       <slot name="title">{{ title }}</slot>
     </component>
 
-    <p
+    <div
       v-if="description || $slots.description"
       :id="descId"
       class="ds-empty-state__description"
     >
       <slot name="description">{{ description }}</slot>
-    </p>
+    </div>
+
+    <div v-if="$slots.default" class="ds-empty-state__body">
+      <slot />
+    </div>
   </div>
 
   <div
