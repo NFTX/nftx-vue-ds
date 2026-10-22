@@ -100,11 +100,20 @@ const themeToggleLabel = computed<string>(() => {
   }
 })
 
-const currentThemeIcon = computed<string>(() => {
-  if (props.theme === 'dark') return 'sun'
-  if (props.theme === 'colorblind') return 'eye'
-  return 'moon'
+const themeToggleIcon = computed<string>(() => {
+  switch (nextTheme.value) {
+    case 'dark':
+      return 'moon'
+    case 'colorblind':
+      return 'eye'
+    case 'light':
+    default:
+      return 'sun'
+  }
 })
+
+// Backward-compatible alias
+const currentThemeIcon = themeToggleIcon
 
 function handleThemeToggle(): void {
   emit('update:theme', nextTheme.value)

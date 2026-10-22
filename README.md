@@ -36,18 +36,18 @@ A production-ready Vue 3 + TypeScript component library and design token system 
 In your Vue 3 application:
 
 ```bash
-# If installing from npm (when published):
+# Install from npm registry:
 npm install @nftx-dev/vue-ds
 
-# If using locally as a monorepo or sibling project:
-npm install file:../design-system
+# Or install from a local packed tarball (e.g. for air-gapped or staging builds):
+npm install file:./nftx-dev-vue-ds-1.0.1.tgz
 ```
 
 In your client's `package.json`:
 ```json
 {
   "dependencies": {
-    "@nftx-dev/vue-ds": "file:../design-system",
+    "@nftx-dev/vue-ds": "^1.0.0",
     "vue": "^3.4.0"
   }
 }
@@ -55,22 +55,23 @@ In your client's `package.json`:
 
 ### 2. Import Styles in Your Entrypoint
 
-Import the unified stylesheet in your application's entrypoint (`main.ts` or `main.js`):
+Import the stylesheets in your application's entrypoint (`main.ts` or `main.js`):
 
 ```ts
 // src/main.ts
 import { createApp } from 'vue'
 import App from './App.vue'
 
-// Import all design system tokens, base reset, and component styles
+// Import design tokens first, then compiled components and base reset
+import '@nftx-dev/vue-ds/tokens.css'
 import '@nftx-dev/vue-ds/styles.css'
 
 createApp(App).mount('#app')
 ```
 
 > **Style Exports Available:**
+> - `@nftx-dev/vue-ds/tokens.css` — Design tokens (CSS custom properties for all 3 themes)
 > - `@nftx-dev/vue-ds/styles.css` — Complete bundle (Tokens + Base Reset + All Components)
-> - `@nftx-dev/vue-ds/tokens.css` — Design tokens only (for non-Vue pages, landing pages, or portals)
 > - `@nftx-dev/vue-ds/scss` — Raw SCSS mixins and variables for advanced Sass pipelines
 
 ---
@@ -123,6 +124,12 @@ const currentTheme = ref<DsThemeMode>('light')
   </div>
 </template>
 ```
+
+> **Theme Toggle Button Behavior (Target Action):**
+> The toggle button icon, tooltip, and `aria-label` reflect the **target state** that clicking will activate:
+> - In **Light mode**: displays `moon` icon (Label: *"Switch to dark theme"*) &rarr; transitions to **Dark**.
+> - In **Dark mode**: displays `eye` icon (Label: *"Switch to color blind theme"*) &rarr; transitions to **Colorblind**.
+> - In **Colorblind mode**: displays `sun` icon (Label: *"Switch to light theme"*) &rarr; transitions to **Light**.
 
 ---
 
@@ -237,6 +244,24 @@ const filtered = computed(() =>
       </li>
     </DsCardGrid>
   </div>
+</template>
+```
+
+### 4. Semantic Icons with Fallback (`DsIcon`)
+
+`DsIcon` wraps Lucide icons with accessible semantics, flexible name resolution (kebab-case, PascalCase, snake_case), and graceful fallback support:
+
+```vue
+<script setup lang="ts">
+import { DsIcon } from '@nftx-dev/vue-ds'
+</script>
+
+<template>
+  <!-- Resolves Lucide icon by kebab-case, snake_case, or PascalCase -->
+  <DsIcon icon="shield-check" size="lg" aria-hidden="true" />
+
+  <!-- Falls back to "server" if the requested icon name is not found in Lucide -->
+  <DsIcon icon="unknown-custom-service" fallback="server" size="md" aria-label="Service status" />
 </template>
 ```
 

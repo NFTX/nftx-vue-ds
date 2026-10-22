@@ -10,6 +10,10 @@ export interface DsIconProps {
    */
   icon: Component | string
   /**
+   * Fallback icon component or icon name when the requested icon cannot be resolved.
+   */
+  fallback?: Component | string
+  /**
    * Size token or custom number in pixels.
    * @default 'md'
    */
@@ -21,25 +25,31 @@ export interface DsIconProps {
 }
 
 const props = withDefaults(defineProps<DsIconProps>(), {
+  fallback: undefined,
   size: 'md',
   ariaLabel: undefined
 })
 
 function toPascalCase(str: string): string {
   return str
-    .replace(/(^\w|-\w)/g, (clear) => clear.replace('-', '').toUpperCase())
+    .replace(/(^\w|[_\s-]\w)/g, (clear) => clear.replace(/[_\s-]/, '').toUpperCase())
     .trim()
 }
 
-const resolvedIcon = computed<Component | string>(() => {
-  if (typeof props.icon !== 'string') {
-    return props.icon
-  }
+function resolveSingleIcon(val: Component | string | undefined): Component | string | undefined {
+  if (!val) return undefined
+  if (typeof val !== 'string') return val
 
-  const pascalName = toPascalCase(props.icon)
+  const trimmed = val.trim()
+  if (!trimmed) return undefined
+
+  const pascalName = toPascalCase(trimmed)
   const iconDict = LucideIcons as unknown as Record<string, Component>
-  const match = iconDict[pascalName] || iconDict[`${pascalName}Icon`]
-  return match ?? 'span'
+  return iconDict[pascalName] || iconDict[`${pascalName}Icon`]
+}
+
+const resolvedIcon = computed<Component | string>(() => {
+  return resolveSingleIcon(props.icon) || resolveSingleIcon(props.fallback) || 'span'
 })
 
 const isAriaHidden = computed<boolean>(() => !props.ariaLabel)
