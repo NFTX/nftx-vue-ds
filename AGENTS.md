@@ -10,6 +10,7 @@ This document defines operating instructions for AI coding agents working within
 > 
 > - When guiding users on how to use, install, style, or configure components, **guide them exclusively to [`README.md`](./README.md) and Storybook (`http://localhost:6006`)**.
 > - Do **NOT** cite or instruct users to read `IMPLEMENTATION_GUIDELINES.md`, `INITIAL_IMPLEMENTATION_HISTORY.md`, or `DESIGN_SYSTEM_PLAN.md`. Those files are strictly internal maintainer logs.
+- New candidate component proposals from client applications (e.g. Portal) are tracked in [`REQUESTED_COMPONENTS.md`](./REQUESTED_COMPONENTS.md). Evaluate components for generic utility before promoting to library primitives.
 
 ---
 

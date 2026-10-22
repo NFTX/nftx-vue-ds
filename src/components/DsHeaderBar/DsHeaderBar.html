@@ -40,9 +40,10 @@
         type="button"
         class="ds-header-bar__theme-toggle"
         :aria-label="themeToggleLabel"
+        :title="themeToggleLabel"
         @click="handleThemeToggle"
       >
-        <DsIcon :icon="currentThemeIcon" size="md" aria-hidden="true" />
+        <DsIcon :icon="themeToggleIcon" size="md" aria-hidden="true" />
       </button>
 
       <!-- Responsive Mobile Menu Toggle -->

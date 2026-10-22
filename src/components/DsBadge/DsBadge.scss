@@ -28,8 +28,8 @@
     // Sizes
     &--sm {
       font-size: var(--ds-font-size-xs);
-      padding-block: 0.125rem;
-      padding-inline: var(--ds-space-2);
+      padding-block: var(--ds-space-1, 0.25rem);
+      padding-inline: var(--ds-space-2, 0.5rem);
       gap: 0.25rem;
 
       .ds-badge__dot {
