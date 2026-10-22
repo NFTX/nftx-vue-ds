@@ -52,9 +52,16 @@
   --ds-color-bg-surface: #{p.$warm-paper-surface};
   --ds-color-bg-elevated: #{p.$white};
   --ds-color-bg-muted: #{p.$warm-paper-muted};
+  --ds-color-bg-backdrop: rgb(15 23 42 / 0.6);
+  --ds-color-bg-glass: rgb(255 255 255 / 0.85);
   --ds-color-border-default: #{p.$warm-paper-border};
   --ds-color-border-subtle: #{p.$warm-paper-border-subtle};
   --ds-color-border-interactive: #{p.$slate-500};
+  --ds-color-border-hover: #{p.$slate-400};
+  --ds-color-border-focus: #{p.$print-red};
+  --ds-color-border-error: #{p.$red-600};
+  --ds-color-border-glass: rgb(255 255 255 / 0.3);
+  --ds-color-focus-ring-error: #{p.$red-600};
   --ds-color-text-primary: #{p.$slate-800};
   --ds-color-text-secondary: #{p.$slate-700};
   --ds-color-text-muted: #{p.$slate-600};
@@ -110,9 +117,16 @@
   --ds-color-bg-surface: #{p.$velvet-surface};
   --ds-color-bg-elevated: #{p.$velvet-elevated};
   --ds-color-bg-muted: #{p.$velvet-muted};
+  --ds-color-bg-backdrop: rgb(0 0 0 / 0.75);
+  --ds-color-bg-glass: rgb(43 5 11 / 0.85);
   --ds-color-border-default: #{p.$velvet-border};
   --ds-color-border-subtle: #{p.$velvet-border-subtle};
   --ds-color-border-interactive: #{p.$champagne-gold};
+  --ds-color-border-hover: #{p.$champagne-gold};
+  --ds-color-border-focus: #{p.$champagne-gold};
+  --ds-color-border-error: #{p.$red-500};
+  --ds-color-border-glass: rgb(255 255 255 / 0.1);
+  --ds-color-focus-ring-error: #{p.$red-500};
   --ds-color-text-primary: #{p.$warm-ivory};
   --ds-color-text-secondary: #{p.$warm-ivory-secondary};
   --ds-color-text-muted: #{p.$warm-ivory-muted};
@@ -168,9 +182,16 @@
   --ds-color-bg-surface: #{p.$slate-50};
   --ds-color-bg-elevated: #{p.$white};
   --ds-color-bg-muted: #{p.$slate-100};
+  --ds-color-bg-backdrop: rgb(0 0 0 / 0.75);
+  --ds-color-bg-glass: rgb(255 255 255 / 0.9);
   --ds-color-border-default: #{p.$cb-border-dark};
   --ds-color-border-subtle: #{p.$cb-border-subtle};
   --ds-color-border-interactive: #{p.$cb-cobalt-800};
+  --ds-color-border-hover: #{p.$cb-cobalt-800};
+  --ds-color-border-focus: #{p.$cb-sky-600};
+  --ds-color-border-error: #{p.$cb-rust-700};
+  --ds-color-border-glass: #{p.$cb-border-dark};
+  --ds-color-focus-ring-error: #{p.$cb-rust-700};
   --ds-color-text-primary: #{p.$slate-900};
   --ds-color-text-secondary: #{p.$slate-800};
   --ds-color-text-muted: #{p.$slate-700};
@@ -220,9 +241,16 @@
   --ds-color-bg-surface: #{p.$slate-50};
   --ds-color-bg-elevated: #{p.$white};
   --ds-color-bg-muted: #{p.$slate-100};
+  --ds-color-bg-backdrop: rgb(15 23 42 / 0.6);
+  --ds-color-bg-glass: rgb(255 255 255 / 0.85);
   --ds-color-border-default: #{p.$slate-200};
   --ds-color-border-subtle: #{p.$slate-100};
   --ds-color-border-interactive: #{p.$slate-500};
+  --ds-color-border-hover: #{p.$slate-400};
+  --ds-color-border-focus: #{p.$rose-800};
+  --ds-color-border-error: #{p.$red-600};
+  --ds-color-border-glass: rgb(255 255 255 / 0.3);
+  --ds-color-focus-ring-error: #{p.$red-600};
   --ds-color-text-primary: #{p.$slate-900};
   --ds-color-text-secondary: #{p.$slate-700};
   --ds-color-text-muted: #{p.$slate-600};
@@ -271,9 +299,16 @@
   --ds-color-bg-surface: #{p.$slate-950};
   --ds-color-bg-elevated: #{p.$slate-800};
   --ds-color-bg-muted: #{p.$slate-800};
+  --ds-color-bg-backdrop: rgb(0 0 0 / 0.75);
+  --ds-color-bg-glass: rgb(15 23 42 / 0.85);
   --ds-color-border-default: #{p.$slate-700};
   --ds-color-border-subtle: #{p.$slate-800};
   --ds-color-border-interactive: #{p.$slate-500};
+  --ds-color-border-hover: #{p.$slate-500};
+  --ds-color-border-focus: #{p.$rose-300};
+  --ds-color-border-error: #{p.$red-500};
+  --ds-color-border-glass: rgb(255 255 255 / 0.1);
+  --ds-color-focus-ring-error: #{p.$red-500};
   --ds-color-text-primary: #{p.$slate-50};
   --ds-color-text-secondary: #{p.$slate-200};
   --ds-color-text-muted: #{p.$slate-400};
@@ -285,6 +320,13 @@
     // Non-color primitives exposed as CSS custom properties
     --ds-font-family-system: #{p.$font-family-system};
     --ds-font-family-mono: #{p.$font-family-mono};
+    --ds-font-sans: #{p.$font-family-system};
+    --ds-font-mono: #{p.$font-family-mono};
+
+    --ds-font-weight-regular: 400;
+    --ds-font-weight-medium: 500;
+    --ds-font-weight-semibold: 600;
+    --ds-font-weight-bold: 700;
 
     --ds-font-size-xs: #{p.$font-size-xs};
     --ds-font-size-sm: #{p.$font-size-sm};
@@ -320,6 +362,7 @@
     --ds-shadow-sm: #{p.$shadow-sm};
     --ds-shadow-md: #{p.$shadow-md};
     --ds-shadow-lg: #{p.$shadow-lg};
+    --ds-shadow-xl: #{p.$shadow-xl};
 
     --ds-motion-duration-fast: #{p.$motion-duration-fast};
     --ds-motion-duration-base: #{p.$motion-duration-base};
@@ -376,7 +419,11 @@
     [data-theme='colorblind'],
     [data-theme='color-blind'] {
       --ds-color-focus-ring: Highlight;
+      --ds-color-focus-ring-error: Highlight;
       --ds-color-border-default: CanvasText;
+      --ds-color-border-hover: Highlight;
+      --ds-color-border-focus: Highlight;
+      --ds-color-border-error: Highlight;
       --ds-color-border-interactive: ButtonText;
     }
   }

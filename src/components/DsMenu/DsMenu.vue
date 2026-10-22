@@ -48,6 +48,9 @@ const isOpen = ref<boolean>(false)
 const autoId = useId()
 const menuId = computed<string>(() => `ds-menu-${autoId}`)
 const triggerId = computed<string>(() => `ds-menu-trigger-${autoId}`)
+const anchorStyle = computed<Record<string, string>>(() => ({
+  '--ds-menu-anchor-name': `--ds-anchor-${autoId}`
+}))
 
 const triggerRef = ref<HTMLButtonElement | null>(null)
 const popoverRef = ref<HTMLDivElement | null>(null)
@@ -67,7 +70,7 @@ const typeahead = useTypeahead({
   }
 })
 
-function openMenu(): void {
+function openMenu(focusTarget: 'first' | 'last' = 'first'): void {
   if (props.disabled || isOpen.value) return
   focusReturn.saveFocus(triggerRef.value)
   isOpen.value = true
@@ -85,10 +88,19 @@ function openMenu(): void {
       fallback.updatePosition(triggerRef.value, popoverRef.value, props.placement)
     }
 
-    // Focus first enabled item
-    const firstEnabled = props.items.findIndex((item) => !item.disabled)
-    if (firstEnabled >= 0) {
-      roving.focusItem(firstEnabled, itemRefs.value)
+    if (focusTarget === 'last') {
+      for (let i = props.items.length - 1; i >= 0; i--) {
+        if (!props.items[i]?.disabled) {
+          roving.focusItem(i, itemRefs.value)
+          break
+        }
+      }
+    } else {
+      // Focus first enabled item
+      const firstEnabled = props.items.findIndex((item) => !item.disabled)
+      if (firstEnabled >= 0) {
+        roving.focusItem(firstEnabled, itemRefs.value)
+      }
     }
   })
 }
@@ -154,7 +166,10 @@ function handleMenuKeydown(event: KeyboardEvent): void {
 function handleTriggerKeydown(event: KeyboardEvent): void {
   if (event.key === 'ArrowDown' || event.key === 'Enter' || event.key === ' ') {
     event.preventDefault()
-    openMenu()
+    openMenu('first')
+  } else if (event.key === 'ArrowUp') {
+    event.preventDefault()
+    openMenu('last')
   }
 }
 

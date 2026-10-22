@@ -1,0 +1,69 @@
+@layer ds.components {
+  .ds-tooltip-container {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .ds-tooltip-trigger {
+    display: inline-flex;
+    align-items: center;
+    anchor-name: var(--ds-tooltip-anchor-name, --ds-tooltip-anchor);
+  }
+
+  .ds-tooltip {
+    z-index: var(--ds-z-index-overlay);
+    box-sizing: border-box;
+    max-inline-size: 18rem;
+    padding-block: var(--ds-space-1);
+    padding-inline: var(--ds-space-2);
+    border-radius: var(--ds-radius-sm);
+    border: 1px solid var(--ds-color-border-default);
+    background-color: var(--ds-color-bg-elevated);
+    color: var(--ds-color-text-primary);
+    box-shadow: var(--ds-shadow-md);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-font-size-xs);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-line-height-normal);
+    margin: 0;
+    inset: auto;
+
+    &:not(:popover-open):not(.ds-tooltip--open) {
+      display: none;
+    }
+
+    @supports (anchor-name: --ds-tooltip-anchor) {
+      position: absolute;
+      position-anchor: var(--ds-tooltip-anchor-name, --ds-tooltip-anchor);
+
+      &--top {
+        inset-block-end: anchor(top);
+        inset-inline-start: anchor(left);
+        margin-block-end: var(--ds-space-1);
+      }
+
+      &--bottom {
+        inset-block-start: anchor(bottom);
+        inset-inline-start: anchor(left);
+        margin-block-start: var(--ds-space-1);
+      }
+
+      &--left {
+        inset-block-start: anchor(top);
+        inset-inline-end: anchor(left);
+        margin-inline-end: var(--ds-space-1);
+      }
+
+      &--right {
+        inset-block-start: anchor(top);
+        inset-inline-start: anchor(right);
+        margin-inline-start: var(--ds-space-1);
+      }
+    }
+
+    @media (forced-colors: active) {
+      border: 1px solid CanvasText;
+    }
+  }
+}

@@ -5,7 +5,7 @@
 @layer ds.components {
   .ds-toast {
     position: fixed;
-    z-index: 9999;
+    z-index: var(--ds-z-index-toast);
     box-sizing: border-box;
     display: flex;
     align-items: flex-start;

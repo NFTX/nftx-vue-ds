@@ -43,6 +43,42 @@ describe('DsCard', () => {
     expect(link.text()).toBe('Clickable Item')
   })
 
+  it('adds rel="noopener noreferrer" and screen-reader new-tab announcement when target="_blank" (DS-04)', () => {
+    const wrapper = mount(DsCard, {
+      props: {
+        href: 'https://example.com',
+        target: '_blank'
+      },
+      slots: {
+        default: () => 'External Service'
+      }
+    })
+
+    const link = wrapper.find('a.ds-card__link')
+    expect(link.attributes('rel')).toBe('noopener noreferrer')
+    expect(link.text()).toContain('(opens in a new tab)')
+  })
+
+  it('supports divided=false, interactive=true, and accent prop variants (ENH-05)', () => {
+    const wrapper = mount(DsCard, {
+      props: {
+        divided: false,
+        interactive: true,
+        accent: 'hover'
+      },
+      slots: {
+        header: () => 'Undivided Header',
+        default: () => 'Interactive Body',
+        footer: () => 'Undivided Footer'
+      }
+    })
+
+    expect(wrapper.classes()).toContain('ds-card--undivided')
+    expect(wrapper.classes()).toContain('ds-card--interactive')
+    expect(wrapper.classes()).toContain('ds-card--clickable')
+    expect(wrapper.classes()).toContain('ds-card--accent-hover')
+  })
+
   it('is SSR-safe and renders cleanly with renderToString (ARCH-05)', async () => {
     const app = createSSRApp({
       render: () =>

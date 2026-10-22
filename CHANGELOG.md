@@ -1,13 +1,26 @@
 # Changelog
 
-All notable changes to `@nftx/vue-ds` will be documented in this file.
+All notable changes to `@nftx-dev/vue-ds` will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.1.0] - 2026-10-20
+## [1.1.0] - 2026-10-22
 
 ### Added
+- **New Components & Composables (`ENH-01`..`ENH-10`):**
+  - `useTheme` & `DsThemeToggle` (`ENH-01`): Reactive theme management composable with `localStorage` persistence, `matchMedia('(prefers-color-scheme: dark)')` resolution, and standalone `cycle` / `segmented` theme switcher widget.
+  - `DsTag` (`ENH-02`): Compact metadata tag atom (`size="xs" | "sm" | "md"`, `variant="subtle" | "outline" | "ghost" | "solid"`, `mono`, `icon`, `removable`) plus `subtle`, `ghost`, `outline` variants and `shape` prop on `DsBadge`.
+  - `DsCode` & `DsKbd` (`ENH-03`): Monospace inline/block code primitive with copy-to-clipboard live-region announcement (`useAnnouncer`), and tactile keyboard keycap (`<kbd>`) atom.
+  - `DsAlert` (`ENH-04`): Static inline callout banner (`info`, `success`, `warning`, `error`) with automatic `role="status"` / `role="alert"` semantics and optional dismiss action.
+  - `DsCard` Enhancements (`ENH-05`): Added `divided` structural dividers, `interactive` hover/focus-within elevation, and `accent` top border (`brand`, `info`, `success`, `warning`, `error`).
+  - `DsChipGroup` Enhancements (`ENH-06`): Added `allowEmpty` (guaranteeing an active filter when `false`), `variant="surface" | "elevated"`, `scrollable` horizontal strip, and `chips` prop alias.
+  - `DsCardGrid` Enhancements (`ENH-07`): Added `mode="auto-fill" | "auto-fit"` (defaulting to `'auto-fill'` to prevent single-card stretching) and `minCardWidth` prop alias.
+  - `DsDivider` (`ENH-08`): Horizontal and vertical structural separator with optional centered text/slot label.
+  - `DsTooltip` (`ENH-09`): Native Popover + CSS Anchor Positioning tooltip satisfying WCAG 2.2 SC 1.4.13 (Dismissible via `Escape`, Hoverable, Persistent).
+  - `DsFooterBar` (`ENH-10`): Semantic `<footer>` landmark with `start`, `center`, and `end` slots.
+- **Tree-Shaken Curated Icon Registry (`DS-12`):**
+  - Replaced `import * as LucideIcons` barrel import with curated named imports in `src/components/DsIcon/iconRegistry.ts` and exported `registerDsIcons()` for custom icon registration, cutting consumer bundle size by >80%.
 - **Three Default Themes Architecture (`TOK-04`, `A11Y-01`..`03`):**
   - **Default Light Theme**: Editorial Warm Paper canvas (`#FAF8F5`) with Print Ink Red titling/fill (`#750008`, 11.26:1 AAA) and Deep Charcoal primary text (`#1E293B`, 13.80:1 AAA).
   - **Default Dark Theme**: Velvet Midpoint oxblood canvas (`#3C0911`) with Pale Champagne gold illumination (`#FDE68A`, 13.61:1 AAA) and anti-glare Warm Antique Ivory body text (`#F7F4EE`, 15.44:1 AAA) eliminating optical irradiation in low-light environments.
@@ -17,8 +30,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `DsHeaderBar`: Expanded `DsThemeMode` to `'light' | 'dark' | 'colorblind' | 'auto'`, added `availableThemes` prop with 3-way cycling, updated theme toggle aria-label, and dynamic icon rendering (`sun`, `moon`, `eye`).
   - `HomelabDashboardDemo`: Integrated 3-theme switching bar and verified token cascading across all card and status components.
   - `EditorialBlogPostDemo`: Added live 3-theme presets selector and SVG color matrix CVD Simulator (Normal, Deuteranopia, Protanopia, Tritanopia, Achromatopsia/Grayscale).
-- **Automated Verification:**
-  - `scripts/contrast-check.ts`: Enforces 43-token symmetry across all 3 default themes, 33 WCAG 2.2 contrast assertions (AAA/AA), and ΔE(OKLab) perceptual separation check for Light (23.4), Dark (27.5), and Color Blind (26.3).
+- **Automated Verification (`DS-01`, `DS-09`, `DS-17`):**
+  - `scripts/contrast-check.ts`: Enforces 55-token symmetry across all 5 themes, 33 WCAG 2.2 contrast assertions (AAA/AA), ΔE(OKLab) perceptual separation check, zero undefined `var(--ds-*)` token references, and zero hardcoded color literals in component SCSS.
+
+### Fixed
+- **Token Architecture & Styling (`DS-01`, `DS-04`, `DS-09`, `DS-15`):**
+  - Defined `--ds-shadow-xl`, `--ds-font-sans`, `--ds-font-mono`, `--ds-font-weight-*`, `--ds-color-border-hover`, `--ds-color-border-focus`, `--ds-color-border-error`, `--ds-color-focus-ring-error`, `--ds-color-bg-backdrop`, `--ds-color-bg-glass`, and `--ds-color-border-glass` across all themes.
+  - Replaced physical CSS border properties in `DsTabs.scss` with logical `border-block-start` and `border-inline`.
+- **Accessibility & Behavioral Fixes (`DS-02`..`DS-16`):**
+  - `useAnnouncer` (`DS-02`): Lazily mounts singleton `#ds-announcer-polite` and `#ds-announcer-assertive` live regions in `document.body` so `DsToast` and `DsCode` announcements work out of the box.
+  - `DsMenu` & `useAnchorFallback` (`DS-03`): Per-instance `--ds-menu-anchor-name` custom property, SSR-safe `globalThis.CSS?.supports` check, logical `inset-*` properties, and `ArrowUp` opening menu on last enabled item.
+  - `DsCard` (`DS-04`): Added automatic `rel="noopener noreferrer"` and `<DsVisuallyHidden> (opens in a new tab)</DsVisuallyHidden>` on `target="_blank"`.
+  - `DsEmptyState` (`DS-05`): Fixed `#description` slot scoping and `aria-describedby` binding when using slot content.
+  - `DsSelect` & `DsSwitch` (`DS-06`, `DS-14`): Added `inheritAttrs: false` and preserved numeric option value types in `DsSelect`.
+  - `DsModal` (`DS-10`): Added `dismissible` prop (defaulting to `false` when `role="alertdialog"`) to prevent accidental `Escape` dismissal on critical alerts.
+  - `DsToast` (`DS-11`): Replaced `<div>` with `<section>` landmark and hardwired `--ds-z-index-toast`.
+  - `DsButton` (`DS-13`): Added `iconOnly` and `outline` variant support plus dev-mode accessibility warning when `aria-label` is missing on icon-only buttons.
+  - `DsField` (`DS-14`): Preserved `#hint` text in DOM alongside error messages so both remain referenced by `aria-describedby`.
+  - `DsSkipLink` & `DsSearchBar` (`DS-16`): Respected `prefers-reduced-motion: reduce` on skip link scrolling and bound `Escape` to clear search input.
 
 
 ## [1.0.0] - 2026-10-19

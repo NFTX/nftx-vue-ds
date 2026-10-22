@@ -26,6 +26,20 @@ describe('DsSearchBar', () => {
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([''])
   })
 
+  it('clears query and emits clear when Escape key is pressed (DS-16)', async () => {
+    const wrapper = mount(DsSearchBar, {
+      props: {
+        modelValue: 'containers'
+      }
+    })
+
+    const input = wrapper.find<HTMLInputElement>('input[type="search"]')
+    await input.trigger('keydown', { key: 'Escape' })
+
+    expect(wrapper.emitted('clear')).toHaveLength(1)
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([''])
+  })
+
   it('updates model when input value changes', async () => {
     const wrapper = mount(DsSearchBar, {
       props: {

@@ -15,7 +15,7 @@
     overflow: visible;
 
     &::backdrop {
-      background-color: rgba(15, 23, 42, 0.6);
+      background-color: var(--ds-color-bg-backdrop);
       backdrop-filter: blur(4px);
       transition: opacity var(--ds-motion-duration-base) var(--ds-motion-easing-default);
     }

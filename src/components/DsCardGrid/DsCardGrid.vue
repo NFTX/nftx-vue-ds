@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 
 export type DsCardGridGap = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+export type DsCardGridMode = 'auto-fill' | 'auto-fit'
 
 export interface DsCardGridProps {
   /**
@@ -17,10 +18,20 @@ export interface DsCardGridProps {
    */
   minColWidth?: string
   /**
+   * Alias for `minColWidth`.
+   */
+  minCardWidth?: string
+  /**
    * Spacing gap between grid items.
    * @default 'md'
    */
   gap?: DsCardGridGap
+  /**
+   * 'auto-fill' preserves empty column tracks so 1-2 cards do not stretch across 100% width;
+   * 'auto-fit' expands cards to fill row.
+   * @default 'auto-fill'
+   */
+  mode?: DsCardGridMode
   /**
    * Whether grid items should pack compactly to fill holes.
    * @default false
@@ -35,15 +46,20 @@ export interface DsCardGridProps {
 const props = withDefaults(defineProps<DsCardGridProps>(), {
   tag: 'ul',
   minColWidth: '18rem',
+  minCardWidth: undefined,
   gap: 'md',
+  mode: 'auto-fill',
   dense: false,
   items: undefined
 })
 
 const gapClass = computed<string>(() => `ds-card-grid--gap-${props.gap}`)
+const resolvedMinCol = computed<string>(() => props.minCardWidth || props.minColWidth || '18rem')
 
 const gridStyle = computed<Record<string, string>>(() => ({
-  '--ds-card-grid-min-col': props.minColWidth
+  '--ds-card-grid-min-col': resolvedMinCol.value,
+  '--ds-grid-min-width': resolvedMinCol.value,
+  '--ds-grid-mode': props.mode
 }))
 </script>
 

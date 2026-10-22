@@ -39,6 +39,8 @@ describe('DsField', () => {
     expect(slotProps?.ariaInvalid).toBe(true)
     expect(slotProps?.ariaDescribedby).toContain('ds-hint-')
     expect(slotProps?.ariaDescribedby).toContain('ds-error-')
+    expect(wrapper.find('.ds-field__hint').exists()).toBe(true)
+    expect(wrapper.find('.ds-field__hint').text()).toBe('At least 8 chars')
     expect(wrapper.find('.ds-field__error-text').text()).toBe('Password too weak')
     expect(wrapper.find('.ds-field__error').attributes('role')).toBe('alert')
   })

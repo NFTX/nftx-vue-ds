@@ -16,7 +16,23 @@ describe('DsEmptyState', () => {
     expect(wrapper.element.tagName.toLowerCase()).toBe('section')
     expect(wrapper.attributes('role')).toBe('region')
     expect(wrapper.find('h3.ds-empty-state__title').text()).toBe('No Services Found')
-    expect(wrapper.find('p.ds-empty-state__description').text()).toBe('Try adjusting your search query or filters.')
+    expect(wrapper.find('div.ds-empty-state__description').text()).toBe('Try adjusting your search query or filters.')
+  })
+
+  it('wires aria-describedby when #description slot is used without description prop (DS-05)', () => {
+    const wrapper = mount(DsEmptyState, {
+      props: {
+        title: 'Slot Description Only'
+      },
+      slots: {
+        description: () => h('ul', [h('li', 'Step 1'), h('li', 'Step 2')])
+      }
+    })
+
+    const descEl = wrapper.find('.ds-empty-state__description')
+    expect(descEl.exists()).toBe(true)
+    expect(wrapper.attributes('aria-describedby')).toBe(descEl.attributes('id'))
+    expect(descEl.find('ul').exists()).toBe(true)
   })
 
   it('renders action CTA button and emits action event on click', async () => {

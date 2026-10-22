@@ -139,10 +139,11 @@ All components are exported directly from the package root `@nftx-dev/vue-ds`:
 
 | Category | Components | Description |
 | :--- | :--- | :--- |
-| **Layout & Primitives** | [`DsHeaderBar`](#dsheaderbar), [`DsCardGrid`](#dscardgrid), [`DsEmptyState`](#dsemptystate), [`DsSkipLink`](#dsskiplink) | Semantic header landmark, responsive CSS grid, zero-data feedback, a11y skip navigation. |
-| **Core Atoms** | [`DsButton`](#dsbutton), [`DsBadge`](#dsbadge), [`DsIcon`](#dsicon), [`DsSpinner`](#dsspinner), [`DsLink`](#dslink), [`DsVisuallyHidden`](#dsvisuallyhidden) | Buttons with loading/icons, status tags, Lucide icons, loading spinners, accessible links. |
+| **Layout & Primitives** | [`DsHeaderBar`](#dsheaderbar), [`DsFooterBar`](#dsfooterbar), [`DsCardGrid`](#dscardgrid), [`DsDivider`](#dsdivider), [`DsEmptyState`](#dsemptystate), [`DsSkipLink`](#dsskiplink) | Semantic header & footer landmarks, responsive CSS grid, structural dividers, zero-data feedback, a11y skip navigation. |
+| **Core Atoms** | [`DsButton`](#dsbutton), [`DsBadge`](#dsbadge), [`DsTag`](#dstag), [`DsCode`](#dscode), [`DsKbd`](#dskbd), [`DsIcon`](#dsicon), [`DsSpinner`](#dsspinner), [`DsLink`](#dslink), [`DsVisuallyHidden`](#dsvisuallyhidden) | Buttons with loading/icons, status badges, removable metadata tags, inline/block code with copy, keyboard shortcuts, tree-shaken Lucide icons, spinners, accessible links. |
 | **Form Controls** | [`DsField`](#dsfield), [`DsInput`](#dsinput), [`DsTextarea`](#dstextarea), [`DsSelect`](#dsselect), [`DsCheckbox`](#dscheckbox), [`DsRadioGroup`](#dsradiogroup), [`DsSwitch`](#dsswitch) | Form fields with labels, error states, ARIA descriptions, and native form elements. |
-| **Composite & Overlays** | [`DsCard`](#dscard), [`DsChipGroup`](#dschipgroup), [`DsSearchBar`](#dssearchbar), [`DsTabs`](#dstabs), [`DsMenu`](#dsmenu), [`DsModal`](#dsmodal), [`DsToast`](#dstoast) | Content cards, category filter chips, search input with shortcuts, APG tabs/menus/dialogs/toasts. |
+| **Composite & Overlays** | [`DsCard`](#dscard), [`DsAlert`](#dsalert), [`DsChipGroup`](#dschipgroup), [`DsSearchBar`](#dssearchbar), [`DsThemeToggle`](#dsthemetoggle), [`DsTabs`](#dstabs), [`DsMenu`](#dsmenu), [`DsModal`](#dsmodal), [`DsToast`](#dstoast), [`DsTooltip`](#dstooltip) | Content cards, semantic inline alerts, category filter chips, search input with shortcuts, theme switcher, APG tabs/menus/dialogs/toasts/tooltips. |
+| **Composables** | `useTheme`, `useRovingFocus`, `useTypeahead`, `useFocusReturn`, `useAnnouncer`, `useAnchorFallback` | Reactive theme persistence and WAI-ARIA APG keyboard/focus/live-region primitives. |
 
 ---
 

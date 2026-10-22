@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { computed, useSlots } from 'vue'
+import { computed, useSlots, watchEffect } from 'vue'
 import DsSpinner from '@/components/DsSpinner/DsSpinner.vue'
 
-export type DsButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger'
+export type DsButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger'
 export type DsButtonSize = 'sm' | 'md' | 'lg'
 export type DsButtonType = 'button' | 'submit' | 'reset'
 
@@ -37,6 +37,11 @@ export interface DsButtonProps {
    */
   ariaLabel?: string
   /**
+   * Explicitly marks button as icon-only (square padding, requires ariaLabel).
+   * @default false
+   */
+  iconOnly?: boolean
+  /**
    * Whether button should span 100% of container width.
    * @default false
    */
@@ -54,13 +59,22 @@ const props = withDefaults(defineProps<DsButtonProps>(), {
   disabled: false,
   loading: false,
   ariaLabel: undefined,
+  iconOnly: false,
   fullWidth: false
 })
 
 const emit = defineEmits<DsButtonEmits>()
 const slots = useSlots()
 
-const isIconOnly = computed<boolean>(() => !slots.default && (!!slots.prefix || !!slots.suffix))
+const isIconOnly = computed<boolean>(() => {
+  return Boolean(props.iconOnly) || (!slots.default && (!!slots.prefix || !!slots.suffix))
+})
+
+watchEffect(() => {
+  if (isIconOnly.value && !props.ariaLabel) {
+    console.warn('[DsButton] Icon-only buttons require an `ariaLabel` prop (A11Y-11).')
+  }
+})
 
 function handleClick(event: MouseEvent): void {
   if (props.disabled || props.loading) {

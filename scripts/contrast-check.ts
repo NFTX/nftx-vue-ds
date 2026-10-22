@@ -157,12 +157,16 @@ function checkThemeSymmetry(): boolean {
   const lightTokens = extractTokens('light-theme-tokens')
   const darkTokens = extractTokens('dark-theme-tokens')
   const colorblindTokens = extractTokens('colorblind-theme-tokens')
+  const slateLightTokens = extractTokens('slate-light-tokens')
+  const slateDarkTokens = extractTokens('slate-dark-tokens')
 
   let hasErrors = false
   const allThemes: { name: string; tokens: Set<string> }[] = [
     { name: 'light-theme-tokens', tokens: lightTokens },
     { name: 'dark-theme-tokens', tokens: darkTokens },
-    { name: 'colorblind-theme-tokens', tokens: colorblindTokens }
+    { name: 'colorblind-theme-tokens', tokens: colorblindTokens },
+    { name: 'slate-light-tokens', tokens: slateLightTokens },
+    { name: 'slate-dark-tokens', tokens: slateDarkTokens }
   ]
 
   for (let i = 0; i < allThemes.length; i++) {
@@ -235,14 +239,90 @@ function checkPerceptualSeparation(): boolean {
   return passed
 }
 
+function collectScssFiles(dir: string): string[] {
+  const results: string[] = []
+  if (!fs.existsSync(dir)) return results
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const full = path.join(dir, entry.name)
+    if (entry.isDirectory()) {
+      results.push(...collectScssFiles(full))
+    } else if (entry.name.endsWith('.scss')) {
+      results.push(full)
+    }
+  }
+  return results
+}
+
+function checkComponentTokens(): boolean {
+  console.log('\n--- Checking Component SCSS for Undefined var(--ds-*) Tokens & Hardcoded Colors (TOK-01, CSS-02) ---')
+  const semanticScssPath = path.resolve(__dirname, '../src/styles/tokens/_semantic.scss')
+  const semanticContent = fs.readFileSync(semanticScssPath, 'utf-8')
+
+  const definedTokens = new Set<string>()
+  const defRegex = /(--ds-[a-z0-9-]+):/g
+  let match: RegExpExecArray | null
+  while ((match = defRegex.exec(semanticContent)) !== null) {
+    if (match[1]) definedTokens.add(match[1])
+  }
+
+  // Allowed component-local dynamic custom properties
+  const allowedComponentVars = new Set<string>([
+    '--ds-card-grid-min-col',
+    '--ds-grid-min-width',
+    '--ds-grid-mode',
+    '--ds-menu-anchor-name',
+    '--ds-tooltip-anchor-name',
+    '--ds-header-height',
+    '--ds-card-accent'
+  ])
+
+  const componentsDir = path.resolve(__dirname, '../src/components')
+  const scssFiles = collectScssFiles(componentsDir)
+  let passed = true
+
+  for (const file of scssFiles) {
+    const relPath = path.relative(path.resolve(__dirname, '..'), file)
+    const content = fs.readFileSync(file, 'utf-8')
+
+    // 1. Check all var(--ds-*) references
+    const varRegex = /var\(\s*(--ds-[a-z0-9-]+)/g
+    let vMatch: RegExpExecArray | null
+    while ((vMatch = varRegex.exec(content)) !== null) {
+      const tokenName = vMatch[1]
+      if (tokenName && !definedTokens.has(tokenName) && !allowedComponentVars.has(tokenName)) {
+        console.error(`FAIL: Undefined token ${tokenName} referenced in ${relPath}`)
+        passed = false
+      }
+    }
+
+    // 2. Check for hardcoded hex or rgb/rgba color literals in component SCSS
+    const lines = content.split('\n')
+    lines.forEach((line, idx) => {
+      const trimmed = line.trim()
+      if (trimmed.startsWith('//') || trimmed.startsWith('/*')) return
+      const withoutComments = trimmed.replace(/\/\/.*$/, '')
+      if (/#[0-9a-fA-F]{3,8}\b/.test(withoutComments) || /\brgba?\s*\(/.test(withoutComments)) {
+        console.error(`FAIL: Hardcoded color literal in ${relPath}:${idx + 1}: ${trimmed}`)
+        passed = false
+      }
+    })
+  }
+
+  if (passed) {
+    console.log(`PASS: All var(--ds-*) references across ${scssFiles.length} component SCSS files are defined and 0 hardcoded colors found.`)
+  }
+  return passed
+}
+
 function run(): void {
   console.log('=== Design System Token & Contrast Verification ===\n')
   const symmetryPass = checkThemeSymmetry()
   const contrastPass = checkContrastPairs()
   const deltaEPass = checkPerceptualSeparation()
+  const componentTokenPass = checkComponentTokens()
 
-  if (symmetryPass && contrastPass && deltaEPass) {
-    console.log('\nAll token, contrast, and perceptual distance checks PASSED.\n')
+  if (symmetryPass && contrastPass && deltaEPass && componentTokenPass) {
+    console.log('\nAll token, contrast, perceptual distance, and component SCSS checks PASSED.\n')
     process.exit(0)
   } else {
     console.error('\nOne or more checks FAILED. See log output above.\n')

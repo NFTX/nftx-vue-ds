@@ -3,7 +3,12 @@
   :class="[
     variantClass,
     paddingClass,
-    { 'ds-card--clickable': isClickable }
+    accentClass,
+    {
+      'ds-card--clickable': isClickable,
+      'ds-card--interactive': interactive,
+      'ds-card--undivided': !divided
+    }
   ]"
   v-bind="$attrs"
 >
@@ -20,10 +25,12 @@
       v-if="href"
       :href="href"
       :target="target"
+      :rel="computedRel"
       class="ds-card__link"
       tabindex="0"
     >
       <slot />
+      <DsVisuallyHidden v-if="target === '_blank'"> (opens in a new tab)</DsVisuallyHidden>
     </a>
     <slot v-else />
   </div>

@@ -64,6 +64,13 @@ function handleClear(): void {
   inputRef.value?.focus()
 }
 
+function handleInputKeydown(event: KeyboardEvent): void {
+  if (event.key === 'Escape' && model.value) {
+    event.preventDefault()
+    handleClear()
+  }
+}
+
 function handleSubmit(event: Event): void {
   event.preventDefault()
   emit('search', model.value)

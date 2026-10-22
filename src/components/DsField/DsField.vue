@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, provide, useId } from 'vue'
+import { computed, provide, useId, useSlots } from 'vue'
 import { AlertCircle } from 'lucide-vue-next'
 import DsIcon from '@/components/DsIcon/DsIcon.vue'
 
@@ -54,14 +54,16 @@ const labelId = computed<string>(() => `ds-label-${controlId.value}`)
 const hintId = computed<string>(() => `ds-hint-${controlId.value}`)
 const errorId = computed<string>(() => `ds-error-${controlId.value}`)
 
-const hasError = computed<boolean>(() => !!props.error)
+const slots = useSlots()
+const hasHint = computed<boolean>(() => Boolean(props.hint || slots.hint))
+const hasError = computed<boolean>(() => Boolean(props.error || slots.error))
 
 const ariaDescribedby = computed<string | undefined>(() => {
   const ids: string[] = []
-  if (props.hint) {
+  if (hasHint.value) {
     ids.push(hintId.value)
   }
-  if (props.error) {
+  if (hasError.value) {
     ids.push(errorId.value)
   }
   return ids.length > 0 ? ids.join(' ') : undefined

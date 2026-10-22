@@ -22,6 +22,21 @@ describe('DsSwitch', () => {
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([true])
   })
 
+  it('forwards $attrs to inner <button role="switch"> without duplicating on wrapper (DS-06)', () => {
+    const wrapper = mount(DsSwitch, {
+      props: {
+        modelValue: false,
+        label: 'Feature Toggle'
+      },
+      attrs: {
+        'data-testid': 'inner-switch'
+      }
+    })
+
+    expect(wrapper.attributes('data-testid')).toBeUndefined()
+    expect(wrapper.find('button[role="switch"]').attributes('data-testid')).toBe('inner-switch')
+  })
+
   it('does NOT toggle when disabled (TEST-10)', async () => {
     const wrapper = mount(DsSwitch, {
       props: {

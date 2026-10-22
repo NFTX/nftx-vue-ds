@@ -65,6 +65,12 @@ describe('DsMenu', () => {
 
     await trigger.trigger('keydown', { key: ' ' })
     expect(trigger.attributes('aria-expanded')).toBe('true')
+
+    await menu.trigger('keydown', { key: 'Escape' })
+    expect(trigger.attributes('aria-expanded')).toBe('false')
+
+    await trigger.trigger('keydown', { key: 'ArrowUp' })
+    expect(trigger.attributes('aria-expanded')).toBe('true')
   })
 
   it('closes menu on Tab key press', async () => {

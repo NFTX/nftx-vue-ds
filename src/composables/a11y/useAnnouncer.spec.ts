@@ -21,6 +21,11 @@ describe('useAnnouncer', () => {
 
     vi.advanceTimersByTime(60)
     expect(announcer.politeMessage.value).toBe('Second polite')
+    const politeEl = document.getElementById('ds-announcer-polite')
+    expect(politeEl).not.toBeNull()
+    expect(politeEl?.getAttribute('aria-live')).toBe('polite')
+    expect(politeEl?.getAttribute('role')).toBe('status')
+    expect(politeEl?.textContent).toBe('Second polite')
   })
 
   it('announces assertive messages for critical alerts and handles consecutive calls', () => {
@@ -33,6 +38,11 @@ describe('useAnnouncer', () => {
 
     vi.advanceTimersByTime(60)
     expect(announcer.assertiveMessage.value).toBe('Second assertive')
+    const assertiveEl = document.getElementById('ds-announcer-assertive')
+    expect(assertiveEl).not.toBeNull()
+    expect(assertiveEl?.getAttribute('aria-live')).toBe('assertive')
+    expect(assertiveEl?.getAttribute('role')).toBe('alert')
+    expect(assertiveEl?.textContent).toBe('Second assertive')
   })
 
   it('clears polite timer when only polite is pending', () => {

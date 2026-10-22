@@ -32,8 +32,12 @@ export interface DsModalProps {
    */
   headingTag?: 'h1' | 'h2' | 'h3' | 'h4'
   /**
-   * Whether clicking the backdrop closes the modal.
-   * @default true
+   * Whether the modal can be dismissed via Escape key, backdrop click, or header close button.
+   * Defaults to true for role="dialog" and false for role="alertdialog" (A11Y-18).
+   */
+  dismissible?: boolean
+  /**
+   * Deprecated alias for dismissible. Whether clicking the backdrop closes the modal.
    */
   closeOnBackdropClick?: boolean
 }
@@ -44,7 +48,8 @@ const props = withDefaults(defineProps<DsModalProps>(), {
   size: 'md',
   role: 'dialog',
   headingTag: 'h2',
-  closeOnBackdropClick: true
+  dismissible: undefined,
+  closeOnBackdropClick: undefined
 })
 
 const open = defineModel<boolean>('open', { default: false })
@@ -56,6 +61,12 @@ const autoId = useId()
 const titleId = computed<string>(() => `ds-modal-title-${autoId}`)
 const descriptionId = computed<string>(() => `ds-modal-desc-${autoId}`)
 const sizeClass = computed<string>(() => `ds-modal--${props.size}`)
+
+const isDismissible = computed<boolean>(() => {
+  if (props.dismissible !== undefined) return props.dismissible
+  if (props.closeOnBackdropClick !== undefined) return props.closeOnBackdropClick
+  return props.role !== 'alertdialog'
+})
 
 const dialogRef = ref<HTMLDialogElement | null>(null)
 const focusReturn = useFocusReturn()
@@ -109,11 +120,13 @@ function handleClose(): void {
 
 function handleCancel(event: Event): void {
   event.preventDefault()
-  handleClose()
+  if (isDismissible.value) {
+    handleClose()
+  }
 }
 
 function handleBackdropClick(event: MouseEvent): void {
-  if (!props.closeOnBackdropClick) return
+  if (!isDismissible.value) return
   // If clicked directly on the dialog backdrop (outside the inner box)
   if (event.target === dialogRef.value) {
     handleClose()

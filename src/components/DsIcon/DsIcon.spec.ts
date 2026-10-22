@@ -1,9 +1,10 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { renderToString } from '@vue/server-renderer'
-import { createSSRApp, h } from 'vue'
+import { createSSRApp, defineComponent, h } from 'vue'
 import { Check } from 'lucide-vue-next'
 import DsIcon from './DsIcon.vue'
+import { registerDsIcons } from './iconRegistry'
 
 describe('DsIcon', () => {
   it('renders a Lucide icon component with aria-hidden="true" by default (TEST-06)', () => {
@@ -41,6 +42,30 @@ describe('DsIcon', () => {
 
     expect(wrapper.classes()).toContain('ds-icon')
     expect(wrapper.find('svg').exists()).toBe(true)
+  })
+
+  it('supports name prop, fallback prop, decorative prop, and registerDsIcons (DS-12)', () => {
+    const CustomIcon = defineComponent({
+      render: () => h('svg', { class: 'custom-registered-svg' })
+    })
+    registerDsIcons({ 'custom-brand': CustomIcon })
+
+    const wrapperCustom = mount(DsIcon, {
+      props: {
+        name: 'custom-brand',
+        decorative: true
+      }
+    })
+    expect(wrapperCustom.find('.custom-registered-svg').exists()).toBe(true)
+    expect(wrapperCustom.attributes('aria-hidden')).toBe('true')
+
+    const wrapperFallback = mount(DsIcon, {
+      props: {
+        name: 'non-existent-icon',
+        fallback: 'server'
+      }
+    })
+    expect(wrapperFallback.find('svg').exists()).toBe(true)
   })
 
   it('applies custom numeric size as inline styles (TEST-06)', () => {

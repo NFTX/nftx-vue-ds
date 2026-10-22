@@ -32,6 +32,7 @@
     "lint": "eslint .",
     "typecheck": "vue-tsc --noEmit",
     "test:tokens": "node --experimental-strip-types scripts/contrast-check.ts",
+    "test:contrast": "node --experimental-strip-types scripts/contrast-check.ts",
     "test:unit": "vitest run --project=unit --coverage",
     "test:storybook": "vitest run --project=storybook",
     "build": "vite build",

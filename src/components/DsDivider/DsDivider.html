@@ -1,0 +1,11 @@
+<div
+  :class="dividerClasses"
+  :role="decorative ? 'none' : 'separator'"
+  :aria-orientation="decorative ? undefined : orientation"
+  :aria-label="!decorative && label ? label : undefined"
+  :aria-hidden="decorative ? 'true' : undefined"
+>
+  <span v-if="hasLabel" class="ds-divider__label">
+    <slot>{{ label }}</slot>
+  </span>
+</div>

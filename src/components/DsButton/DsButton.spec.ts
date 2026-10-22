@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { renderToString } from '@vue/server-renderer'
 import { createSSRApp, h } from 'vue'
@@ -91,6 +91,24 @@ describe('DsButton', () => {
 
     expect(wrapper.attributes('aria-label')).toBe('Close modal')
     expect(wrapper.classes()).toContain('ds-button--icon-only')
+  })
+
+  it('warns in development when icon-only button omits ariaLabel (DS-13, A11Y-11)', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const wrapper = mount(DsButton, {
+      props: {
+        iconOnly: true
+      },
+      slots: {
+        default: '✕'
+      }
+    })
+
+    expect(wrapper.classes()).toContain('ds-button--icon-only')
+    expect(warnSpy).toHaveBeenCalledWith(
+      expect.stringContaining('Icon-only buttons require an `ariaLabel` prop')
+    )
+    warnSpy.mockRestore()
   })
 
   it('is SSR-safe and renders cleanly with renderToString (ARCH-05)', async () => {

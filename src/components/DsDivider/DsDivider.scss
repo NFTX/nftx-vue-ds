@@ -1,0 +1,109 @@
+@layer ds.components {
+  .ds-divider {
+    display: flex;
+    align-items: center;
+    color: var(--ds-color-text-muted);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-font-size-xs);
+    font-weight: var(--ds-font-weight-medium);
+
+    &--horizontal {
+      inline-size: 100%;
+
+      &:not(.ds-divider--with-label) {
+        border-block-start-width: 1px;
+        border-block-start-color: var(--ds-color-border-default);
+      }
+
+      &.ds-divider--solid:not(.ds-divider--with-label) {
+        border-block-start-style: solid;
+      }
+
+      &.ds-divider--dashed:not(.ds-divider--with-label) {
+        border-block-start-style: dashed;
+      }
+
+      &.ds-divider--with-label {
+        gap: var(--ds-space-3);
+
+        &::before,
+        &::after {
+          content: '';
+          flex: 1 1 0%;
+          border-block-start-width: 1px;
+          border-block-start-color: var(--ds-color-border-default);
+        }
+
+        &.ds-divider--solid::before,
+        &.ds-divider--solid::after {
+          border-block-start-style: solid;
+        }
+
+        &.ds-divider--dashed::before,
+        &.ds-divider--dashed::after {
+          border-block-start-style: dashed;
+        }
+      }
+
+      &.ds-divider--spacing-none {
+        margin-block: 0;
+      }
+
+      &.ds-divider--spacing-sm {
+        margin-block: var(--ds-space-2);
+      }
+
+      &.ds-divider--spacing-md {
+        margin-block: var(--ds-space-4);
+      }
+
+      &.ds-divider--spacing-lg {
+        margin-block: var(--ds-space-6);
+      }
+
+      &.ds-divider--spacing-xl {
+        margin-block: var(--ds-space-8);
+      }
+    }
+
+    &--vertical {
+      display: inline-flex;
+      align-self: stretch;
+      min-block-size: 1rem;
+      border-inline-start-width: 1px;
+      border-inline-start-color: var(--ds-color-border-default);
+
+      &.ds-divider--solid {
+        border-inline-start-style: solid;
+      }
+
+      &.ds-divider--dashed {
+        border-inline-start-style: dashed;
+      }
+
+      &.ds-divider--spacing-none {
+        margin-inline: 0;
+      }
+
+      &.ds-divider--spacing-sm {
+        margin-inline: var(--ds-space-2);
+      }
+
+      &.ds-divider--spacing-md {
+        margin-inline: var(--ds-space-4);
+      }
+
+      &.ds-divider--spacing-lg {
+        margin-inline: var(--ds-space-6);
+      }
+
+      &.ds-divider--spacing-xl {
+        margin-inline: var(--ds-space-8);
+      }
+    }
+
+    &__label {
+      white-space: nowrap;
+    }
+  }
+}

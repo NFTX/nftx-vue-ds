@@ -1,0 +1,31 @@
+@layer ds.components {
+  .ds-kbd {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--ds-font-mono);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-line-height-tight);
+    background-color: var(--ds-color-bg-elevated);
+    color: var(--ds-color-text-secondary);
+    border: 1px solid var(--ds-color-border-default);
+    border-block-end-width: 2px;
+    border-radius: var(--ds-radius-sm);
+    white-space: nowrap;
+    user-select: none;
+
+    &--sm {
+      font-size: var(--ds-font-size-xs);
+      padding-block: 0.125rem;
+      padding-inline: var(--ds-space-1);
+      min-inline-size: 1.25rem;
+    }
+
+    &--md {
+      font-size: var(--ds-font-size-sm);
+      padding-block: var(--ds-space-1);
+      padding-inline: var(--ds-space-2);
+      min-inline-size: 1.5rem;
+    }
+  }
+}

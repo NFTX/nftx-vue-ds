@@ -122,6 +122,28 @@ describe('DsModal', () => {
     wrapper.unmount()
   })
 
+  it('prevents Escape dismissal by default when role="alertdialog" or dismissible=false (A11Y-18, TEST-10)', async () => {
+    const wrapper = mount(DsModal, {
+      attachTo: document.body,
+      props: {
+        title: 'Critical Confirmation',
+        role: 'alertdialog',
+        open: true
+      }
+    })
+
+    expect(wrapper.find('.ds-modal__close').exists()).toBe(false)
+    const dialog = wrapper.find('dialog')
+    await dialog.trigger('cancel')
+    expect(wrapper.emitted('close')).toBeUndefined()
+
+    await wrapper.setProps({ role: 'dialog', dismissible: false })
+    await dialog.trigger('cancel')
+    expect(wrapper.emitted('close')).toBeUndefined()
+
+    wrapper.unmount()
+  })
+
   it('updates dialog state when open prop changes programmatically', async () => {
     const wrapper = mount(DsModal, {
       attachTo: document.body,

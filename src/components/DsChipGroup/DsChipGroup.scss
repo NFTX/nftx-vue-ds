@@ -8,16 +8,27 @@
     flex-wrap: wrap;
     align-items: center;
     gap: var(--ds-space-2);
+
+    &--scrollable {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      scrollbar-width: none;
+      max-inline-size: 100%;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
   }
 
   .ds-chip {
-    @include ts.target-size;
+    @include ts.target-size-pseudo;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: var(--ds-space-2);
     box-sizing: border-box;
-    padding-block: var(--ds-space-1);
+    padding-block: var(--ds-space-2);
     padding-inline: var(--ds-space-3);
     border-radius: var(--ds-radius-full);
     border: 1px solid var(--ds-color-border-default);
@@ -26,10 +37,18 @@
     font-size: var(--ds-font-size-sm);
     font-weight: 500;
     line-height: 1;
+    white-space: nowrap;
+    flex-shrink: 0;
     cursor: pointer;
     transition: background-color var(--ds-motion-duration-fast) var(--ds-motion-easing-default),
                 border-color var(--ds-motion-duration-fast) var(--ds-motion-easing-default),
                 color var(--ds-motion-duration-fast) var(--ds-motion-easing-default);
+
+    &--elevated {
+      background-color: var(--ds-color-bg-elevated);
+      border-color: var(--ds-color-border-default);
+      box-shadow: var(--ds-shadow-sm);
+    }
 
     &:hover:not(:disabled) {
       border-color: var(--ds-color-border-hover);

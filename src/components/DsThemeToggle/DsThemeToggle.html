@@ -1,0 +1,14 @@
+<DsButton
+  class="ds-theme-toggle"
+  :variant="variant"
+  :size="size"
+  :icon-only="!showLabel"
+  :aria-label="ariaLabel"
+  :title="ariaLabel"
+  @click="handleToggle"
+>
+  <template #prefix>
+    <DsIcon :icon="currentIcon" size="sm" aria-hidden="true" />
+  </template>
+  <span v-if="showLabel" class="ds-theme-toggle__label">{{ currentLabel }}</span>
+</DsButton>

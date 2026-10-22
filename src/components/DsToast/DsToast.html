@@ -1,9 +1,10 @@
-<div
+<section
   ref="toastRef"
   popover="manual"
   class="ds-toast"
   :class="[variantClass, positionClass, { 'ds-toast--open': open }]"
   :role="toastRole"
+  :aria-label="!title ? 'Notifications' : undefined"
   :aria-live="toastLive"
   :aria-atomic="true"
   :aria-labelledby="title ? titleId : undefined"
@@ -41,4 +42,4 @@
   >
     <DsIcon :icon="X" size="sm" />
   </button>
-</div>
+</section>

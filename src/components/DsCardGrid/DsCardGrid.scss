@@ -3,12 +3,16 @@
 @layer ds.components {
   .ds-card-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--ds-card-grid-min-col, 18rem)), 1fr));
+    grid-template-columns: repeat(var(--ds-grid-mode, auto-fill), minmax(min(100%, var(--ds-card-grid-min-col, 18rem)), 1fr));
     list-style: none;
     margin: 0;
     padding: 0;
     inline-size: 100%;
     box-sizing: border-box;
+
+    &--auto-fit {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--ds-card-grid-min-col, 18rem)), 1fr));
+    }
 
     &--gap-xs {
       gap: var(--ds-space-2);

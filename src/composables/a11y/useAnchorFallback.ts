@@ -15,7 +15,7 @@ export interface UseAnchorFallbackReturn {
 }
 
 export function useAnchorFallback(): UseAnchorFallbackReturn {
-  const isSupported = Boolean(CSS.supports?.('anchor-name: --a'))
+  const isSupported = Boolean(globalThis.CSS?.supports?.('anchor-name: --a'))
 
   const style = ref<CSSProperties>({})
   let activeTrigger: HTMLElement | null = null
