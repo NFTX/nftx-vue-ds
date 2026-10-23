@@ -1,6 +1,5 @@
 <dialog
   ref="dialogRef"
-  :open="open ? '' : undefined"
   class="ds-modal"
   :class="[sizeClass]"
   :role="role"
@@ -10,6 +9,7 @@
   @click="handleBackdropClick"
   v-bind="$attrs"
 >
+  <div class="ds-modal__backdrop" aria-hidden="true" @click="handleBackdropClick" />
   <div class="ds-modal__box">
     <header class="ds-modal__header">
       <slot name="header">

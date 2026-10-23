@@ -25,9 +25,20 @@
 
     &::backdrop {
       background-color: var(--ds-color-bg-backdrop);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(16px);
       transition: opacity var(--ds-motion-duration-base) var(--ds-motion-easing-default);
+    }
+
+    // Explicit backdrop element to guarantee blur across all browsers and rendering contexts
+    .ds-modal__backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background-color: var(--ds-color-bg-backdrop);
+      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(16px);
+      pointer-events: auto;
     }
 
     &:not([open]) {
