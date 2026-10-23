@@ -5,6 +5,7 @@
   :target="isLink ? target : undefined"
   :rel="isLink ? effectiveRel : undefined"
   :role="isLink ? 'button' : undefined"
+  :tabindex="isLink && (disabled || loading) ? -1 : undefined"
   class="ds-button"
   :class="[
     `ds-button--${variant}`,
@@ -21,6 +22,7 @@
   :aria-busy="loading ? 'true' : undefined"
   :aria-label="ariaLabel"
   @click="handleClick"
+  @keydown.space="handleSpaceKey"
 >
   <span v-if="loading" class="ds-button__spinner">
     <DsSpinner size="sm" variant="current" />

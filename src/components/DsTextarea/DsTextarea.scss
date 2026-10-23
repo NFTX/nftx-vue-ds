@@ -17,6 +17,10 @@
       outline: 2px solid var(--ds-color-focus-ring);
       outline-offset: 1px;
       border-color: var(--ds-color-focus-ring);
+
+      @media (forced-colors: active) {
+        outline-color: Highlight;
+      }
     }
 
     &--invalid {
@@ -24,6 +28,10 @@
 
       &:focus-within {
         outline-color: var(--ds-color-text-error);
+
+        @media (forced-colors: active) {
+          outline-color: Highlight;
+        }
       }
     }
 
