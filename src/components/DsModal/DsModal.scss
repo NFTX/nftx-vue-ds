@@ -25,7 +25,8 @@
 
     &::backdrop {
       background-color: var(--ds-color-bg-backdrop);
-      backdrop-filter: blur(4px);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       transition: opacity var(--ds-motion-duration-base) var(--ds-motion-easing-default);
     }
 
@@ -40,9 +41,9 @@
       box-sizing: border-box;
       background-color: var(--ds-color-bg-surface);
       color: var(--ds-color-text-primary);
-      border: 1px solid var(--ds-color-border-default);
+      border: 1px solid var(--ds-color-border-subtle);
       border-radius: var(--ds-radius-lg);
-      box-shadow: var(--ds-shadow-xl);
+      box-shadow: var(--ds-shadow-2xl);
       max-block-size: calc(100dvh - 1.5rem);
       inline-size: 100%;
       max-inline-size: 100%;

@@ -18,10 +18,22 @@ export interface DsButtonProps {
    */
   size?: DsButtonSize
   /**
-   * HTML button type attribute.
+   * HTML button type attribute (ignored when href is provided).
    * @default 'button'
    */
   type?: DsButtonType
+  /**
+   * Optional URL for link rendering (renders <a> element with role="button").
+   */
+  href?: string
+  /**
+   * Target attribute for link rendering (e.g. '_blank').
+   */
+  target?: string
+  /**
+   * Rel attribute for link rendering. Defaults to 'noopener noreferrer' when target='_blank'.
+   */
+  rel?: string
   /**
    * Disabled state preventing interactions.
    * @default false
@@ -56,6 +68,9 @@ const props = withDefaults(defineProps<DsButtonProps>(), {
   variant: 'primary',
   size: 'md',
   type: 'button',
+  href: undefined,
+  target: undefined,
+  rel: undefined,
   disabled: false,
   loading: false,
   ariaLabel: undefined,
@@ -65,6 +80,15 @@ const props = withDefaults(defineProps<DsButtonProps>(), {
 
 const emit = defineEmits<DsButtonEmits>()
 const slots = useSlots()
+
+const isLink = computed<boolean>(() => Boolean(props.href))
+const tag = computed<'a' | 'button'>(() => (isLink.value ? 'a' : 'button'))
+
+const effectiveRel = computed<string | undefined>(() => {
+  if (props.rel) return props.rel
+  if (props.target === '_blank') return 'noopener noreferrer'
+  return undefined
+})
 
 const isIconOnly = computed<boolean>(() => {
   return Boolean(props.iconOnly) || (!slots.default && (!!slots.prefix || !!slots.suffix))

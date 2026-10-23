@@ -182,4 +182,40 @@ describe('DsModal', () => {
     expect(html).toContain('SSR Dialog')
     expect(html).toContain('SSR Content')
   })
+
+  it('locks body scroll when open and restores it when closed', async () => {
+    const wrapper = mount(DsModal, {
+      attachTo: document.body,
+      props: {
+        title: 'Scroll Lock Test',
+        open: true
+      }
+    })
+
+    expect(document.body.style.overflow).toBe('hidden')
+
+    await wrapper.setProps({ open: false })
+    await nextTick()
+    expect(document.body.style.overflow).toBe('')
+
+    wrapper.unmount()
+  })
+
+  it('dismisses modal on backdrop click', async () => {
+    const wrapper = mount(DsModal, {
+      attachTo: document.body,
+      props: {
+        title: 'Backdrop Test',
+        open: true,
+        dismissible: true
+      }
+    })
+
+    const dialog = wrapper.find('dialog')
+    // Trigger click directly on dialog backdrop
+    await dialog.trigger('click')
+    expect(wrapper.emitted('close')).toBeTruthy()
+
+    wrapper.unmount()
+  })
 })
