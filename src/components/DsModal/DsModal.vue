@@ -163,6 +163,12 @@ function handleBackdropClick(event: MouseEvent): void {
   const dialog = dialogRef.value
   if (!dialog) return
 
+  const target = event.target as HTMLElement | null
+  if (target?.classList.contains('ds-modal__backdrop') || event.target === dialog) {
+    handleClose()
+    return
+  }
+
   // Clicked directly on the dialog backdrop or coordinates outside the modal box
   const rect = dialog.getBoundingClientRect()
   const isOutside =
@@ -171,7 +177,7 @@ function handleBackdropClick(event: MouseEvent): void {
     event.clientY < rect.top ||
     event.clientY > rect.bottom
 
-  if (isOutside || event.target === dialog) {
+  if (isOutside) {
     handleClose()
   }
 }

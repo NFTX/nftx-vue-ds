@@ -68,16 +68,16 @@
   --ds-color-text-inverse: #{p.$warm-paper};
 }
 
-// 2. Default Dark Mode: Validated Velvet Midpoint Oxblood & Pale Champagne Gold
+// 2. Default Dark Mode: Validated Velvet Midpoint Oxblood & Crimson Brand Red
 @mixin dark-theme-tokens {
-  // Brand tokens (Pale Champagne Gold illumination on Velvet Oxblood)
-  --ds-color-brand-fill: #{p.$champagne-gold};
-  --ds-color-brand-fill-hover: #{p.$champagne-gold-hover};
-  --ds-color-brand-fill-active: #{p.$champagne-gold-active};
+  // Brand tokens (Crimson Brand Red Fill with White Text, Champagne Gold for Text Links)
+  --ds-color-brand-fill: #{p.$crimson-brand};
+  --ds-color-brand-fill-hover: #{p.$crimson-brand-hover};
+  --ds-color-brand-fill-active: #{p.$crimson-brand-active};
   --ds-color-brand-text: #{p.$champagne-gold};
-  --ds-color-on-brand: #{p.$velvet-oxblood};
+  --ds-color-on-brand: #{p.$white};
   --ds-color-brand-surface: #{p.$velvet-elevated};
-  --ds-color-brand-border: #{p.$champagne-gold};
+  --ds-color-brand-border: #{p.$crimson-brand};
   --ds-color-focus-ring: #{p.$champagne-gold};
 
   // Error tokens (True Red, red-400 text, red-600 fill)

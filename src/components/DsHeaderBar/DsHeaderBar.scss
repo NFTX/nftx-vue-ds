@@ -21,6 +21,7 @@
       position: sticky;
       inset-block-start: 0;
       z-index: var(--ds-z-index-sticky);
+      -webkit-backdrop-filter: blur(12px);
       backdrop-filter: blur(12px);
     }
 
