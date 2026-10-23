@@ -36,6 +36,11 @@ export interface DsHeaderBarProps {
    */
   showThemeToggle?: boolean
   /**
+   * Whether to display the responsive mobile menu toggle button.
+   * @default true
+   */
+  showMobileToggle?: boolean
+  /**
    * Controlled open state for responsive mobile menu.
    * @default false
    */
@@ -55,6 +60,7 @@ const props = withDefaults(defineProps<DsHeaderBarProps>(), {
   theme: undefined,
   availableThemes: () => ['light', 'dark', 'colorblind'],
   showThemeToggle: true,
+  showMobileToggle: true,
   mobileMenuOpen: undefined
 })
 
