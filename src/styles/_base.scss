@@ -31,7 +31,24 @@
     margin: 0;
   }
 
-  // Anchor and button base reset
+  // Hyperlinks base styles
+  a {
+    color: var(--ds-color-brand-text);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+    transition: color var(--ds-motion-duration-fast) var(--ds-motion-easing-default);
+
+    &:hover {
+      color: var(--ds-color-brand-fill-hover);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--ds-color-focus-ring);
+      outline-offset: 2px;
+    }
+  }
+
+  // Button and form elements base reset
   button,
   input,
   optgroup,
