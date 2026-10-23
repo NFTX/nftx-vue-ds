@@ -120,4 +120,41 @@ describe('DsButton', () => {
     expect(html).toContain('class="ds-button ds-button--danger ds-button--lg"')
     expect(html).toContain('SSR Button')
   })
+
+  it('renders an anchor element with role="button" when href prop is provided', () => {
+    const wrapper = mount(DsButton, {
+      props: {
+        href: '/editions/massas-774/',
+        target: '_blank'
+      },
+      slots: {
+        default: 'Abrir Edição'
+      }
+    })
+
+    const link = wrapper.find('a')
+    expect(link.exists()).toBe(true)
+    expect(link.attributes('href')).toBe('/editions/massas-774/')
+    expect(link.attributes('target')).toBe('_blank')
+    expect(link.attributes('rel')).toBe('noopener noreferrer')
+    expect(link.attributes('role')).toBe('button')
+    expect(link.classes()).toContain('ds-button--primary')
+  })
+
+  it('suppresses link navigation when disabled or loading', async () => {
+    const wrapper = mount(DsButton, {
+      props: {
+        href: '/editions/massas-774/',
+        disabled: true
+      },
+      slots: {
+        default: 'Disabled Link'
+      }
+    })
+
+    const link = wrapper.find('a')
+    expect(link.attributes('href')).toBeUndefined()
+    expect(link.attributes('aria-disabled')).toBe('true')
+    expect(link.classes()).toContain('ds-button--disabled')
+  })
 })

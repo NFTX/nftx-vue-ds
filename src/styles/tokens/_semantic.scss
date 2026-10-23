@@ -52,7 +52,7 @@
   --ds-color-bg-surface: #{p.$warm-paper-surface};
   --ds-color-bg-elevated: #{p.$white};
   --ds-color-bg-muted: #{p.$warm-paper-muted};
-  --ds-color-bg-backdrop: rgb(15 23 42 / 0.6);
+  --ds-color-bg-backdrop: rgb(15 23 42 / 0.75);
   --ds-color-bg-glass: rgb(255 255 255 / 0.85);
   --ds-color-border-default: #{p.$warm-paper-border};
   --ds-color-border-subtle: #{p.$warm-paper-border-subtle};
@@ -117,7 +117,7 @@
   --ds-color-bg-surface: #{p.$velvet-surface};
   --ds-color-bg-elevated: #{p.$velvet-elevated};
   --ds-color-bg-muted: #{p.$velvet-muted};
-  --ds-color-bg-backdrop: rgb(0 0 0 / 0.75);
+  --ds-color-bg-backdrop: rgb(0 0 0 / 0.85);
   --ds-color-bg-glass: rgb(43 5 11 / 0.85);
   --ds-color-border-default: #{p.$velvet-border};
   --ds-color-border-subtle: #{p.$velvet-border-subtle};
@@ -182,7 +182,7 @@
   --ds-color-bg-surface: #{p.$slate-50};
   --ds-color-bg-elevated: #{p.$white};
   --ds-color-bg-muted: #{p.$slate-100};
-  --ds-color-bg-backdrop: rgb(0 0 0 / 0.75);
+  --ds-color-bg-backdrop: rgb(0 0 0 / 0.85);
   --ds-color-bg-glass: rgb(255 255 255 / 0.9);
   --ds-color-border-default: #{p.$cb-border-dark};
   --ds-color-border-subtle: #{p.$cb-border-subtle};
@@ -241,7 +241,7 @@
   --ds-color-bg-surface: #{p.$slate-50};
   --ds-color-bg-elevated: #{p.$white};
   --ds-color-bg-muted: #{p.$slate-100};
-  --ds-color-bg-backdrop: rgb(15 23 42 / 0.6);
+  --ds-color-bg-backdrop: rgb(15 23 42 / 0.75);
   --ds-color-bg-glass: rgb(255 255 255 / 0.85);
   --ds-color-border-default: #{p.$slate-200};
   --ds-color-border-subtle: #{p.$slate-100};
@@ -299,7 +299,7 @@
   --ds-color-bg-surface: #{p.$slate-950};
   --ds-color-bg-elevated: #{p.$slate-800};
   --ds-color-bg-muted: #{p.$slate-800};
-  --ds-color-bg-backdrop: rgb(0 0 0 / 0.75);
+  --ds-color-bg-backdrop: rgb(0 0 0 / 0.85);
   --ds-color-bg-glass: rgb(15 23 42 / 0.85);
   --ds-color-border-default: #{p.$slate-700};
   --ds-color-border-subtle: #{p.$slate-800};
@@ -363,6 +363,7 @@
     --ds-shadow-md: #{p.$shadow-md};
     --ds-shadow-lg: #{p.$shadow-lg};
     --ds-shadow-xl: #{p.$shadow-xl};
+    --ds-shadow-2xl: #{p.$shadow-2xl};
 
     --ds-motion-duration-fast: #{p.$motion-duration-fast};
     --ds-motion-duration-base: #{p.$motion-duration-base};

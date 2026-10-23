@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, onMounted, ref, useId, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, useId, watch } from 'vue'
 import { X } from 'lucide-vue-next'
 import DsIcon from '@/components/DsIcon/DsIcon.vue'
 import { useFocusReturn } from '@/composables/a11y/useFocusReturn'
@@ -80,11 +80,26 @@ const isDismissible = computed<boolean>(() => {
 const dialogRef = ref<HTMLDialogElement | null>(null)
 const focusReturn = useFocusReturn()
 
+let prevBodyOverflow = ''
+function lockScroll(): void {
+  if (typeof document !== 'undefined' && document.body) {
+    prevBodyOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+  }
+}
+
+function unlockScroll(): void {
+  if (typeof document !== 'undefined' && document.body) {
+    document.body.style.overflow = prevBodyOverflow || ''
+  }
+}
+
 function syncModalState(): void {
   const dialog = dialogRef.value
   if (!dialog) return
 
   if (open.value) {
+    lockScroll()
     if (!dialog.open) {
       focusReturn.saveFocus()
       if (dialog.isConnected && typeof dialog.showModal === 'function') {
@@ -96,6 +111,7 @@ function syncModalState(): void {
       }
     }
   } else {
+    unlockScroll()
     if (dialog.open) {
       if (typeof dialog.close === 'function') {
         try {
@@ -124,8 +140,13 @@ onMounted(() => {
   }
 })
 
+onBeforeUnmount(() => {
+  unlockScroll()
+})
+
 function handleClose(): void {
   open.value = false
+  unlockScroll()
   emit('close')
   focusReturn.restoreFocus()
 }
@@ -139,8 +160,18 @@ function handleCancel(event: Event): void {
 
 function handleBackdropClick(event: MouseEvent): void {
   if (!isDismissible.value) return
-  // If clicked directly on the dialog backdrop (outside the inner box)
-  if (event.target === dialogRef.value) {
+  const dialog = dialogRef.value
+  if (!dialog) return
+
+  // Clicked directly on the dialog backdrop or coordinates outside the modal box
+  const rect = dialog.getBoundingClientRect()
+  const isOutside =
+    event.clientX < rect.left ||
+    event.clientX > rect.right ||
+    event.clientY < rect.top ||
+    event.clientY > rect.bottom
+
+  if (isOutside || event.target === dialog) {
     handleClose()
   }
 }
