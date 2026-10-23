@@ -16,8 +16,10 @@
     <slot name="media" />
   </div>
 
-  <header v-if="$slots.header" class="ds-card__header">
-    <slot name="header" />
+  <header v-if="$slots.header || title" class="ds-card__header">
+    <slot name="header">
+      <h3 class="ds-card__title">{{ title }}</h3>
+    </slot>
   </header>
 
   <div class="ds-card__body">

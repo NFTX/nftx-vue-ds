@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, useId } from 'vue'
 import { DsIcon } from '@/components/DsIcon'
+import { useTheme, type DsTheme } from '@/composables/useTheme'
 
 export type DsThemeMode = 'light' | 'dark' | 'colorblind' | 'auto'
 
@@ -22,12 +23,11 @@ export interface DsHeaderBarProps {
   sticky?: boolean
   /**
    * Current color theme.
-   * @default 'light'
    */
   theme?: DsThemeMode
   /**
    * Allowed themes to cycle through when clicking the theme toggle.
-   * @default ['light', 'dark']
+   * @default ['light', 'dark', 'colorblind']
    */
   availableThemes?: DsThemeMode[]
   /**
@@ -52,13 +52,23 @@ const props = withDefaults(defineProps<DsHeaderBarProps>(), {
   title: 'Portal',
   subtitle: undefined,
   sticky: false,
-  theme: 'light',
-  availableThemes: () => ['light', 'dark'],
+  theme: undefined,
+  availableThemes: () => ['light', 'dark', 'colorblind'],
   showThemeToggle: true,
   mobileMenuOpen: undefined
 })
 
 const emit = defineEmits<DsHeaderBarEmits>()
+
+const themeState = useTheme({
+  themes: (props.availableThemes && props.availableThemes.length > 0
+    ? props.availableThemes
+    : ['light', 'dark', 'colorblind']) as unknown as readonly DsTheme[]
+})
+
+const effectiveTheme = computed<DsThemeMode>(() => {
+  return props.theme ?? (themeState.theme.value as DsThemeMode)
+})
 
 const mobileMenuId = useId()
 const internalMobileOpen = ref(false)
@@ -73,11 +83,11 @@ const isMobileOpen = computed<boolean>(() => {
 const activeThemes = computed<DsThemeMode[]>(() => {
   return props.availableThemes && props.availableThemes.length > 0
     ? props.availableThemes
-    : ['light', 'dark']
+    : ['light', 'dark', 'colorblind']
 })
 
 const nextTheme = computed<DsThemeMode>(() => {
-  const current = props.theme
+  const current = effectiveTheme.value
   const themes = activeThemes.value
   const currentIndex = themes.indexOf(current)
   if (currentIndex !== -1) {
@@ -116,7 +126,11 @@ const themeToggleIcon = computed<string>(() => {
 const currentThemeIcon = themeToggleIcon
 
 function handleThemeToggle(): void {
-  emit('update:theme', nextTheme.value)
+  const next = nextTheme.value
+  if (props.theme === undefined) {
+    themeState.setTheme(next as unknown as DsTheme)
+  }
+  emit('update:theme', next)
   emit('toggle-theme')
 }
 

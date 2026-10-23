@@ -107,7 +107,12 @@ const assertions: ContrastAssertion[] = [
   { name: 'ColorBlind: Text Primary on White (slate-900 vs white)', fgHex: '#0F172A', bgHex: '#FFFFFF', minRatio: 7.0, targetLevel: 'AAA' },
   { name: 'ColorBlind: Text Secondary on White (slate-800 vs white)', fgHex: '#1E293B', bgHex: '#FFFFFF', minRatio: 4.5, targetLevel: 'AA' },
   { name: 'ColorBlind: Text Muted on White (slate-700 vs white)', fgHex: '#334155', bgHex: '#FFFFFF', minRatio: 4.5, targetLevel: 'AA' },
-  { name: 'ColorBlind: Border Interactive on White (cb-cobalt-800 vs white)', fgHex: '#003E7E', bgHex: '#FFFFFF', minRatio: 3.0, targetLevel: 'AA Non-text' }
+  { name: 'ColorBlind: Border Interactive on White (cb-cobalt-800 vs white)', fgHex: '#003E7E', bgHex: '#FFFFFF', minRatio: 3.0, targetLevel: 'AA Non-text' },
+
+  // Nested Component Contrast Guarantees (DsBadge nested inside DsTag across 3 Themes)
+  { name: 'Nested: Badge inside Tag (Light - slate-800 text on surface white)', fgHex: '#1E293B', bgHex: '#FFFFFF', minRatio: 7.0, targetLevel: 'AAA' },
+  { name: 'Nested: Badge inside Tag (Dark - warm-ivory text on velvet-surface #2B050B)', fgHex: '#F7F4EE', bgHex: '#2B050B', minRatio: 7.0, targetLevel: 'AAA' },
+  { name: 'Nested: Badge inside Tag (ColorBlind - slate-900 text on white)', fgHex: '#0F172A', bgHex: '#FFFFFF', minRatio: 7.0, targetLevel: 'AAA' }
 ]
 
 function extractMixinBody(content: string, mixinName: string): string {

@@ -62,5 +62,17 @@
       color: var(--ds-color-text-muted);
       user-select: none;
     }
+
+    // Nested DsBadge inside DsTag: ensure distinct surface, border, and text contrast (A11Y-01, A11Y-02)
+    :deep(.ds-badge),
+    .ds-badge {
+      font-size: 0.75em;
+      padding-block: 0.1rem;
+      padding-inline: var(--ds-space-1, 0.25rem);
+      background-color: var(--ds-color-bg-surface);
+      color: var(--ds-color-text-primary);
+      border: 1px solid var(--ds-color-border-default);
+      line-height: 1;
+    }
   }
 }
