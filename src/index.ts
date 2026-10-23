@@ -40,6 +40,7 @@ export * from './components/DsEmptyState'
 
 // Composables
 export * from './composables/useTheme'
+export * from './composables/useScrollLock'
 export * from './composables/a11y/useAnnouncer'
 export * from './composables/a11y/useFocusReturn'
 export * from './composables/a11y/useRovingFocus'

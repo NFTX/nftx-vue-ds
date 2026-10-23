@@ -14,15 +14,18 @@ describe('useTheme', () => {
     expect(themes).toEqual(['light', 'dark', 'colorblind'])
     expect(theme.value).toBe('light')
     expect(document.documentElement.getAttribute('data-theme')).toBe('light')
+    expect(document.documentElement.classList.contains('dark')).toBe(false)
 
     expect(cycleTheme()).toBe('dark')
     expect(theme.value).toBe('dark')
     expect(document.documentElement.getAttribute('data-theme')).toBe('dark')
+    expect(document.documentElement.classList.contains('dark')).toBe(true)
     expect(localStorage.getItem('ds-theme')).toBe('dark')
 
     expect(cycleTheme()).toBe('colorblind')
     expect(theme.value).toBe('colorblind')
     expect(document.documentElement.getAttribute('data-theme')).toBe('colorblind')
+    expect(document.documentElement.classList.contains('dark')).toBe(false)
 
     expect(cycleTheme()).toBe('light')
     expect(theme.value).toBe('light')

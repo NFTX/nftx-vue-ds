@@ -8,12 +8,14 @@
     max-inline-size: 100%;
     overflow-wrap: break-word;
     word-break: break-word;
+    text-wrap: balance;
     vertical-align: middle;
 
     &__label {
       max-inline-size: 100%;
       overflow-wrap: break-word;
       word-break: break-word;
+      text-wrap: balance;
     }
 
     &--shape-rounded {

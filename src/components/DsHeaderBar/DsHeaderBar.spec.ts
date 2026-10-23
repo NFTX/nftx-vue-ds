@@ -143,6 +143,29 @@ describe('DsHeaderBar', () => {
     expect(wrapper.find('.ds-header-bar__mobile-menu').exists()).toBe(false)
   })
 
+  it('renders icon representing the current theme, not the next theme', async () => {
+    const wrapper = mount(DsHeaderBar, {
+      props: {
+        theme: 'light',
+        availableThemes: ['light', 'dark', 'colorblind']
+      }
+    })
+
+    const themeBtn = wrapper.find('.ds-header-bar__theme-toggle')
+    expect(themeBtn.exists()).toBe(true)
+
+    // In light theme, icon represents current theme ('sun')
+    expect(themeBtn.findComponent({ name: 'DsIcon' }).props('icon')).toBe('sun')
+
+    // In dark theme, icon represents current theme ('moon')
+    await wrapper.setProps({ theme: 'dark' })
+    expect(themeBtn.findComponent({ name: 'DsIcon' }).props('icon')).toBe('moon')
+
+    // In colorblind theme, icon represents current theme ('eye')
+    await wrapper.setProps({ theme: 'colorblind' })
+    expect(themeBtn.findComponent({ name: 'DsIcon' }).props('icon')).toBe('eye')
+  })
+
   it('is SSR-safe and renders cleanly with renderToString (ARCH-05)', async () => {
     const app = createSSRApp({
       render: () =>

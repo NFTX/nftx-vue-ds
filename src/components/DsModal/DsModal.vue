@@ -3,6 +3,7 @@ import { computed, nextTick, onBeforeUnmount, onMounted, ref, useId, watch } fro
 import { X } from 'lucide-vue-next'
 import DsIcon from '@/components/DsIcon/DsIcon.vue'
 import { useFocusReturn } from '@/composables/a11y/useFocusReturn'
+import { useScrollLock } from '@/composables/useScrollLock'
 
 export type DsModalSize = 'sm' | 'md' | 'lg' | 'fullscreen'
 export type DsModalRole = 'dialog' | 'alertdialog'
@@ -79,27 +80,14 @@ const isDismissible = computed<boolean>(() => {
 
 const dialogRef = ref<HTMLDialogElement | null>(null)
 const focusReturn = useFocusReturn()
-
-let prevBodyOverflow = ''
-function lockScroll(): void {
-  if (typeof document !== 'undefined' && document.body) {
-    prevBodyOverflow = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-  }
-}
-
-function unlockScroll(): void {
-  if (typeof document !== 'undefined' && document.body) {
-    document.body.style.overflow = prevBodyOverflow || ''
-  }
-}
+const scrollLock = useScrollLock()
 
 function syncModalState(): void {
   const dialog = dialogRef.value
   if (!dialog) return
 
   if (open.value) {
-    lockScroll()
+    scrollLock.lock()
     if (!dialog.open) {
       focusReturn.saveFocus()
       if (dialog.isConnected && typeof dialog.showModal === 'function') {
@@ -111,7 +99,7 @@ function syncModalState(): void {
       }
     }
   } else {
-    unlockScroll()
+    scrollLock.unlock()
     if (dialog.open) {
       if (typeof dialog.close === 'function') {
         try {
@@ -141,12 +129,12 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
-  unlockScroll()
+  scrollLock.unlock()
 })
 
 function handleClose(): void {
   open.value = false
-  unlockScroll()
+  scrollLock.unlock()
   emit('close')
   focusReturn.restoreFocus()
 }

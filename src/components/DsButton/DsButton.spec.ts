@@ -155,6 +155,22 @@ describe('DsButton', () => {
     const link = wrapper.find('a')
     expect(link.attributes('href')).toBeUndefined()
     expect(link.attributes('aria-disabled')).toBe('true')
+    expect(link.attributes('tabindex')).toBe('-1')
     expect(link.classes()).toContain('ds-button--disabled')
+  })
+
+  it('triggers click on Space keydown when rendered as polymorphic link button', async () => {
+    const wrapper = mount(DsButton, {
+      props: {
+        href: '/dashboard'
+      },
+      slots: {
+        default: 'Dashboard'
+      }
+    })
+
+    const link = wrapper.find('a')
+    await link.trigger('keydown.space')
+    expect(wrapper.emitted('click')).toHaveLength(1)
   })
 })

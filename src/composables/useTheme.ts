@@ -59,11 +59,13 @@ export function useTheme(options: UseThemeOptions = {}): UseThemeReturn {
   function applyTheme(next: DsTheme): void {
     theme.value = next
     globalThis.document?.documentElement?.setAttribute('data-theme', next)
+    globalThis.document?.documentElement?.classList.toggle('dark', next === 'dark')
     globalThis.localStorage?.setItem(storageKey, next)
   }
 
-  // Sync initial attribute
+  // Sync initial attribute and dark class
   globalThis.document?.documentElement?.setAttribute('data-theme', theme.value)
+  globalThis.document?.documentElement?.classList.toggle('dark', theme.value === 'dark')
 
   function setTheme(next: DsTheme): void {
     applyTheme(next)

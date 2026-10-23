@@ -108,6 +108,15 @@ function handleClick(event: MouseEvent): void {
   }
   emit('click', event)
 }
+
+function handleSpaceKey(event: KeyboardEvent): void {
+  if (isLink.value) {
+    event.preventDefault()
+    if (!props.disabled && !props.loading) {
+      emit('click', event as unknown as MouseEvent)
+    }
+  }
+}
 </script>
 
 <template src="./DsButton.html"></template>
