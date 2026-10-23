@@ -43,7 +43,8 @@
         :title="themeToggleLabel"
         @click="handleThemeToggle"
       >
-        <DsIcon :icon="themeToggleIcon" size="md" aria-hidden="true" />
+        <DsIcon v-if="isMounted" :key="effectiveTheme" :icon="themeToggleIcon" size="md" aria-hidden="true" />
+        <DsIcon v-else :icon="'sun'" size="md" aria-hidden="true" />
       </button>
 
       <!-- Responsive Mobile Menu Toggle -->

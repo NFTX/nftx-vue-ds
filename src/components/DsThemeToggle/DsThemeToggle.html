@@ -8,7 +8,8 @@
   @click="handleToggle"
 >
   <template #prefix>
-    <DsIcon :icon="currentIcon" size="sm" aria-hidden="true" />
+    <DsIcon v-if="isMounted" :key="currentTheme" :icon="currentIcon" size="sm" aria-hidden="true" />
+    <DsIcon v-else :icon="'sun'" size="sm" aria-hidden="true" />
   </template>
   <span v-if="showLabel" class="ds-theme-toggle__label">{{ currentLabel }}</span>
 </DsButton>

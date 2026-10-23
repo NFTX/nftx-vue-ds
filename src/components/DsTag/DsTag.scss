@@ -5,8 +5,16 @@
     font-family: var(--ds-font-sans);
     font-weight: var(--ds-font-weight-medium);
     line-height: var(--ds-line-height-tight);
-    white-space: nowrap;
+    max-inline-size: 100%;
+    overflow-wrap: break-word;
+    word-break: break-word;
     vertical-align: middle;
+
+    &__label {
+      max-inline-size: 100%;
+      overflow-wrap: break-word;
+      word-break: break-word;
+    }
 
     &--shape-rounded {
       border-radius: var(--ds-radius-md);

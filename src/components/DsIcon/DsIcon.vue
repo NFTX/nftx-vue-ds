@@ -74,6 +74,11 @@ const customStyle = computed<Record<string, string> | undefined>(() => {
   }
   return undefined
 })
+const iconKey = computed<string>(() => {
+  const primary = props.icon ?? props.name
+  if (typeof primary === 'string') return primary
+  return props.ariaLabel ?? 'ds-icon'
+})
 </script>
 
 <template src="./DsIcon.html"></template>

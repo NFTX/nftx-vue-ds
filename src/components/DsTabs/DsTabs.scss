@@ -14,7 +14,7 @@
       .ds-tabs__list {
         display: flex;
         align-items: center;
-        border-block-end: 2px solid var(--ds-color-border-subtle);
+        border-block-end: 2px solid var(--ds-color-border-default);
         gap: var(--ds-space-2);
         max-inline-size: 100%;
         overflow-x: auto;
@@ -51,7 +51,7 @@
       .ds-tabs__list {
         display: flex;
         flex-direction: column;
-        border-inline-end: 2px solid var(--ds-color-border-subtle);
+        border-inline-end: 2px solid var(--ds-color-border-default);
         gap: var(--ds-space-1);
         min-inline-size: 12rem;
 

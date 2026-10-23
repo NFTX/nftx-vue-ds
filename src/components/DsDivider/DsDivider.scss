@@ -11,7 +11,7 @@
       inline-size: 100%;
 
       &:not(.ds-divider--with-label) {
-        border-block-start-width: 1px;
+        border-block-start-width: 2px;
         border-block-start-color: var(--ds-color-border-default);
       }
 
@@ -30,7 +30,7 @@
         &::after {
           content: '';
           flex: 1 1 0%;
-          border-block-start-width: 1px;
+          border-block-start-width: 2px;
           border-block-start-color: var(--ds-color-border-default);
         }
 
@@ -70,7 +70,7 @@
       display: inline-flex;
       align-self: stretch;
       min-block-size: 1rem;
-      border-inline-start-width: 1px;
+      border-inline-start-width: 2px;
       border-inline-start-color: var(--ds-color-border-default);
 
       &.ds-divider--solid {
