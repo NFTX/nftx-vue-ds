@@ -7,10 +7,18 @@
     position: relative;
     box-sizing: border-box;
     font-weight: 500;
-    line-height: 1;
-    white-space: nowrap;
+    line-height: var(--ds-line-height-normal, 1.35);
+    max-inline-size: 100%;
+    overflow-wrap: break-word;
+    word-break: break-word;
     border-radius: var(--ds-radius-full);
     border: 1px solid transparent;
+
+    &__label {
+      max-inline-size: 100%;
+      overflow-wrap: break-word;
+      word-break: break-word;
+    }
 
     &__dot {
       display: inline-block;

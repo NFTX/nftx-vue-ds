@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, useId } from 'vue'
+import { computed, onMounted, ref, useId } from 'vue'
 import { DsIcon } from '@/components/DsIcon'
 import { useTheme, type DsTheme } from '@/composables/useTheme'
 
@@ -78,6 +78,11 @@ const effectiveTheme = computed<DsThemeMode>(() => {
 
 const mobileMenuId = useId()
 const internalMobileOpen = ref(false)
+const isMounted = ref(false)
+
+onMounted(() => {
+  isMounted.value = true
+})
 
 const isMobileOpen = computed<boolean>(() => {
   if (props.mobileMenuOpen !== undefined) {
@@ -117,7 +122,7 @@ const themeToggleLabel = computed<string>(() => {
 })
 
 const themeToggleIcon = computed<string>(() => {
-  switch (nextTheme.value) {
+  switch (effectiveTheme.value) {
     case 'dark':
       return 'moon'
     case 'colorblind':

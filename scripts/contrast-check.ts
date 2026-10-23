@@ -83,9 +83,9 @@ const assertions: ContrastAssertion[] = [
   { name: 'Light: Text Muted on Warm Paper (slate-600 vs warm-paper)', fgHex: '#475569', bgHex: '#FAF8F5', minRatio: 4.5, targetLevel: 'AA' },
   { name: 'Light: Border Interactive on Warm Paper (slate-500 vs warm-paper)', fgHex: '#64748B', bgHex: '#FAF8F5', minRatio: 3.0, targetLevel: 'AA Non-text' },
 
-  // Default Dark Theme (Velvet Midpoint Oxblood & Crimson Brand Red & Warm Antique Ivory)
-  { name: 'Dark: On-Brand on Fill (white vs crimson-brand)', fgHex: '#FFFFFF', bgHex: '#C53030', minRatio: 4.5, targetLevel: 'AA' },
-  { name: 'Dark: Brand Fill on Velvet (crimson-brand vs velvet-oxblood)', fgHex: '#C53030', bgHex: '#3C0911', minRatio: 3.0, targetLevel: 'AA Non-text' },
+  // Default Dark Theme (Velvet Midpoint Oxblood & Pale Champagne Gold & Warm Antique Ivory)
+  { name: 'Dark: On-Brand on Fill (velvet-oxblood vs champagne-gold)', fgHex: '#3C0911', bgHex: '#FDE68A', minRatio: 7.0, targetLevel: 'AAA' },
+  { name: 'Dark: Brand Fill on Velvet (champagne-gold vs velvet-oxblood)', fgHex: '#FDE68A', bgHex: '#3C0911', minRatio: 3.0, targetLevel: 'AA Non-text' },
   { name: 'Dark: Brand Text on Velvet (champagne-gold vs velvet-oxblood)', fgHex: '#FDE68A', bgHex: '#3C0911', minRatio: 7.0, targetLevel: 'AAA' },
   { name: 'Dark: Focus Ring on Velvet (champagne-gold vs velvet-oxblood)', fgHex: '#FDE68A', bgHex: '#3C0911', minRatio: 3.0, targetLevel: 'AA Non-text' },
   { name: 'Dark: Error Text on Velvet (red-400 vs velvet-oxblood)', fgHex: '#F87171', bgHex: '#3C0911', minRatio: 4.5, targetLevel: 'AA' },

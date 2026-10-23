@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import DsButton from '@/components/DsButton/DsButton.vue'
 import DsIcon from '@/components/DsIcon/DsIcon.vue'
 import { useTheme, type DsTheme } from '@/composables/useTheme'
@@ -73,6 +73,11 @@ const themeState = useTheme({
 })
 
 const announcer = useAnnouncer()
+const isMounted = ref(false)
+
+onMounted(() => {
+  isMounted.value = true
+})
 
 const currentTheme = computed<DsTheme>(() => model.value ?? themeState.theme.value)
 
