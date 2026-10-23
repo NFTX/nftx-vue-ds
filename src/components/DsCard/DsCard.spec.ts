@@ -79,6 +79,23 @@ describe('DsCard', () => {
     expect(wrapper.classes()).toContain('ds-card--accent-hover')
   })
 
+  it('renders title prop in header when header slot is omitted', () => {
+    const wrapper = mount(DsCard, {
+      props: {
+        title: 'Card Section Title'
+      },
+      slots: {
+        default: () => 'Card Body'
+      }
+    })
+
+    const header = wrapper.find('.ds-card__header')
+    expect(header.exists()).toBe(true)
+    const titleEl = header.find('.ds-card__title')
+    expect(titleEl.exists()).toBe(true)
+    expect(titleEl.text()).toBe('Card Section Title')
+  })
+
   it('is SSR-safe and renders cleanly with renderToString (ARCH-05)', async () => {
     const app = createSSRApp({
       render: () =>

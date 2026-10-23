@@ -46,7 +46,8 @@ describe('DsHeaderBar', () => {
   it('handles theme toggle clicks and emits update:theme and toggle-theme', async () => {
     const wrapper = mount(DsHeaderBar, {
       props: {
-        theme: 'light'
+        theme: 'light',
+        availableThemes: ['light', 'dark']
       }
     })
 

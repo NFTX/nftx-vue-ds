@@ -18,6 +18,10 @@ export interface DsCardProps {
    */
   padding?: DsCardPadding
   /**
+   * Optional primary header title text rendered when `#header` slot is not provided.
+   */
+  title?: string
+  /**
    * Optional primary destination URL.
    * When provided, renders a stretched link across the entire card.
    */
@@ -51,6 +55,7 @@ export interface DsCardProps {
 const props = withDefaults(defineProps<DsCardProps>(), {
   variant: 'default',
   padding: 'md',
+  title: undefined,
   href: undefined,
   target: '_self',
   rel: undefined,

@@ -16,11 +16,22 @@
         align-items: center;
         border-block-end: 2px solid var(--ds-color-border-subtle);
         gap: var(--ds-space-2);
+        max-inline-size: 100%;
+        overflow-x: auto;
+        overflow-y: hidden;
+        overscroll-behavior-x: contain;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+
+        &::-webkit-scrollbar {
+          display: none;
+        }
       }
 
       .ds-tab {
         border-block-end: 2px solid transparent;
         margin-block-end: -2px;
+        flex-shrink: 0;
       }
 
       .ds-tab--active {
@@ -32,12 +43,33 @@
       flex-direction: row;
       gap: var(--ds-space-6);
 
+      @media (max-width: 640px) {
+        flex-direction: column;
+        gap: var(--ds-space-3);
+      }
+
       .ds-tabs__list {
         display: flex;
         flex-direction: column;
         border-inline-end: 2px solid var(--ds-color-border-subtle);
         gap: var(--ds-space-1);
         min-inline-size: 12rem;
+
+        @media (max-width: 640px) {
+          flex-direction: row;
+          border-inline-end: none;
+          border-block-end: 2px solid var(--ds-color-border-subtle);
+          min-inline-size: 0;
+          max-inline-size: 100%;
+          overflow-x: auto;
+          overflow-y: hidden;
+          overscroll-behavior-x: contain;
+          scrollbar-width: none;
+
+          &::-webkit-scrollbar {
+            display: none;
+          }
+        }
       }
 
       .ds-tab {
@@ -45,11 +77,24 @@
         justify-content: space-between;
         border-inline-end: 2px solid transparent;
         margin-inline-end: -2px;
+        flex-shrink: 0;
+
+        @media (max-width: 640px) {
+          inline-size: auto;
+          border-inline-end: none;
+          border-block-end: 2px solid transparent;
+          margin-inline-end: 0;
+          margin-block-end: -2px;
+        }
       }
 
       .ds-tab--active {
         border-inline-end-color: var(--ds-color-brand-fill);
         background-color: var(--ds-color-brand-surface);
+
+        @media (max-width: 640px) {
+          border-block-end-color: var(--ds-color-brand-fill);
+        }
       }
     }
 

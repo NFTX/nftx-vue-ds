@@ -52,7 +52,16 @@ const props = withDefaults(defineProps<DsModalProps>(), {
   closeOnBackdropClick: undefined
 })
 
-const open = defineModel<boolean>('open', { default: false })
+const openProp = defineModel<boolean>('open', { default: false })
+const defaultModel = defineModel<boolean>({ default: false })
+
+const open = computed<boolean>({
+  get: () => Boolean(openProp.value || defaultModel.value),
+  set: (val: boolean) => {
+    openProp.value = val
+    defaultModel.value = val
+  }
+})
 const emit = defineEmits<{
   (e: 'close'): void
 }>()
@@ -100,11 +109,14 @@ function syncModalState(): void {
   }
 }
 
-watch(open, () => {
-  nextTick(() => {
-    syncModalState()
-  })
-})
+watch(
+  () => open.value,
+  () => {
+    nextTick(() => {
+      syncModalState()
+    })
+  }
+)
 
 onMounted(() => {
   if (open.value) {
