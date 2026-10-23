@@ -125,7 +125,7 @@
   --ds-color-border-hover: #{p.$champagne-gold};
   --ds-color-border-focus: #{p.$champagne-gold};
   --ds-color-border-error: #{p.$red-500};
-  --ds-color-border-glass: rgb(255 255 255 / 0.1);
+  --ds-color-border-glass: rgb(255 255 255 / 0.18);
   --ds-color-focus-ring-error: #{p.$red-500};
   --ds-color-text-primary: #{p.$warm-ivory};
   --ds-color-text-secondary: #{p.$warm-ivory-secondary};
@@ -307,7 +307,7 @@
   --ds-color-border-hover: #{p.$slate-500};
   --ds-color-border-focus: #{p.$rose-300};
   --ds-color-border-error: #{p.$red-500};
-  --ds-color-border-glass: rgb(255 255 255 / 0.1);
+  --ds-color-border-glass: rgb(255 255 255 / 0.18);
   --ds-color-focus-ring-error: #{p.$red-500};
   --ds-color-text-primary: #{p.$slate-50};
   --ds-color-text-secondary: #{p.$slate-200};
@@ -382,7 +382,9 @@
     @include light-theme-tokens;
   }
 
-  [data-theme='dark'] {
+  [data-theme='dark'],
+  html.dark,
+  .dark {
     @include dark-theme-tokens;
   }
 
