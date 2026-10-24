@@ -1,0 +1,108 @@
+@layer ds.components {
+  .ds-table-container {
+    inline-size: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: var(--ds-radius-md);
+
+    &:focus-visible {
+      outline: 2px solid var(--ds-color-focus);
+      outline-offset: 2px;
+    }
+  }
+
+  .ds-table {
+    inline-size: 100%;
+    border-collapse: collapse;
+    text-align: start;
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-font-size-sm);
+    line-height: var(--ds-line-height-normal);
+    color: var(--ds-color-text-primary);
+    background-color: var(--ds-color-bg-surface);
+
+    &__caption {
+      caption-side: top;
+      text-align: start;
+      font-weight: var(--ds-font-weight-semibold);
+      font-size: var(--ds-font-size-base);
+      color: var(--ds-color-text-primary);
+      padding-block-end: var(--ds-space-2);
+    }
+
+    &__head {
+      background-color: var(--ds-color-bg-muted);
+      border-block-end: 2px solid var(--ds-color-border-default);
+
+      th {
+        padding-block: var(--ds-space-3);
+        padding-inline: var(--ds-space-4);
+        font-weight: var(--ds-font-weight-semibold);
+        color: var(--ds-color-text-secondary);
+        white-space: nowrap;
+        user-select: none;
+      }
+    }
+
+    &__body {
+      tr {
+        border-block-end: 1px solid var(--ds-color-border-subtle);
+        transition: background-color var(--ds-duration-fast) var(--ds-ease-default);
+
+        &:last-child {
+          border-block-end: none;
+        }
+      }
+
+      td {
+        padding-block: var(--ds-space-3);
+        padding-inline: var(--ds-space-4);
+        vertical-align: middle;
+      }
+    }
+
+    &__foot {
+      background-color: var(--ds-color-bg-muted);
+      border-block-start: 2px solid var(--ds-color-border-default);
+      font-weight: var(--ds-font-weight-semibold);
+
+      td,
+      th {
+        padding-block: var(--ds-space-3);
+        padding-inline: var(--ds-space-4);
+      }
+    }
+
+    // Variants
+    &--striped {
+      .ds-table__body tr:nth-child(even) {
+        background-color: var(--ds-color-bg-muted);
+      }
+    }
+
+    &--hoverable {
+      .ds-table__body tr:hover {
+        background-color: var(--ds-color-bg-hover);
+      }
+    }
+
+    &--compact {
+      .ds-table__head th,
+      .ds-table__body td,
+      .ds-table__foot td,
+      .ds-table__foot th {
+        padding-block: var(--ds-space-2);
+        padding-inline: var(--ds-space-3);
+      }
+    }
+
+    &--bordered {
+      border: 1px solid var(--ds-color-border-default);
+
+      th,
+      td {
+        border: 1px solid var(--ds-color-border-subtle);
+      }
+    }
+  }
+}

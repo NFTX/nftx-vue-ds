@@ -1,0 +1,38 @@
+<div class="ds-tag-group" :class="[`ds-tag-group--${size}`, { 'ds-tag-group--editable': editable }]">
+  <div class="ds-tag-group__list">
+    <DsTag
+      v-for="(tag, index) in currentTags"
+      :key="`${tag}-${index}`"
+      :variant="variant"
+      :size="size"
+      :shape="shape"
+      :removable="editable"
+      :remove-label="`Remover tag ${tag}`"
+      @remove="removeTag(index)"
+    >
+      {{ tag }}
+    </DsTag>
+
+    <div v-if="editable" class="ds-tag-group__input-wrapper">
+      <input
+        v-if="isAdding"
+        ref="inputRef"
+        v-model="newTagInput"
+        type="text"
+        class="ds-tag-group__input"
+        :placeholder="placeholder"
+        @keydown="handleInputKeydown"
+        @blur="handleInputBlur"
+      />
+      <button
+        v-else
+        type="button"
+        class="ds-tag-group__add-btn"
+        @click="startAdding"
+      >
+        <DsIcon name="Plus" size="sm" aria-hidden="true" />
+        <span>{{ placeholder }}</span>
+      </button>
+    </div>
+  </div>
+</div>

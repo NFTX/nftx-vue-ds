@@ -73,6 +73,32 @@
       user-select: none;
     }
 
+    &__remove {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+      padding: 0;
+      margin-inline-start: var(--ds-space-1);
+      color: currentColor;
+      opacity: 0.7;
+      cursor: pointer;
+      border-radius: var(--ds-radius-sm);
+      line-height: 1;
+      transition: opacity var(--ds-duration-fast) var(--ds-ease-default);
+
+      &:hover,
+      &:focus-visible {
+        opacity: 1;
+      }
+
+      &:focus-visible {
+        outline: 2px solid var(--ds-color-focus);
+        outline-offset: 1px;
+      }
+    }
+
     // When tag is an anchor or contains an anchor
     a#{&},
     #{&} a {
