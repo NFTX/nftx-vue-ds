@@ -30,6 +30,16 @@ export interface DsTagProps {
    * Optional text prefix (e.g. '#').
    */
   prefix?: string
+  /**
+   * Whether the tag displays a remove button.
+   * @default false
+   */
+  removable?: boolean
+  /**
+   * Accessible aria-label for the remove button.
+   * @default 'Remover'
+   */
+  removeLabel?: string
 }
 
 const props = withDefaults(defineProps<DsTagProps>(), {
@@ -37,8 +47,14 @@ const props = withDefaults(defineProps<DsTagProps>(), {
   size: 'sm',
   shape: 'rounded',
   icon: undefined,
-  prefix: undefined
+  prefix: undefined,
+  removable: false,
+  removeLabel: 'Remover'
 })
+
+const emit = defineEmits<{
+  (e: 'remove'): void
+}>()
 
 const tagClasses = computed<Record<string, boolean>>(() => ({
   'ds-tag': true,

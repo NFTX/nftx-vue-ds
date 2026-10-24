@@ -12,4 +12,13 @@
   <span class="ds-tag__label">
     <slot />
   </span>
+  <button
+    v-if="removable"
+    type="button"
+    class="ds-tag__remove"
+    :aria-label="removeLabel"
+    @click.stop="emit('remove')"
+  >
+    <DsIcon name="X" size="sm" aria-hidden="true" />
+  </button>
 </span>

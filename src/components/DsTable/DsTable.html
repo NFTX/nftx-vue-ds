@@ -1,0 +1,22 @@
+<component
+  :is="responsive ? 'div' : 'template'"
+  v-bind="responsive ? { class: 'ds-table-container', role: 'region', 'aria-label': caption || 'Tabela de dados', tabindex: '0' } : {}"
+>
+  <table :class="tableClasses">
+    <caption v-if="caption || $slots.caption" class="ds-table__caption">
+      <slot name="caption">{{ caption }}</slot>
+    </caption>
+
+    <thead v-if="$slots.header" class="ds-table__head">
+      <slot name="header" />
+    </thead>
+
+    <tbody class="ds-table__body">
+      <slot />
+    </tbody>
+
+    <tfoot v-if="$slots.footer" class="ds-table__foot">
+      <slot name="footer" />
+    </tfoot>
+  </table>
+</component>

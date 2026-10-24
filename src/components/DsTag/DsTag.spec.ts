@@ -57,6 +57,21 @@ describe('DsTag', () => {
     expect(wrapper.find('.ds-tag__icon').exists()).toBe(true)
   })
 
+  it('renders remove button when removable and emits remove on click', async () => {
+    const wrapper = mount(DsTag, {
+      props: { removable: true, removeLabel: 'Excluir tag' },
+      slots: { default: 'removable-tag' }
+    })
+
+    const removeBtn = wrapper.find('button.ds-tag__remove')
+    expect(removeBtn.exists()).toBe(true)
+    expect(removeBtn.attributes('aria-label')).toBe('Excluir tag')
+
+    await removeBtn.trigger('click')
+    expect(wrapper.emitted('remove')).toBeTruthy()
+    expect(wrapper.emitted('remove')?.length).toBe(1)
+  })
+
   it('is SSR-safe and renders cleanly with renderToString (ARCH-05)', async () => {
     const app = createSSRApp({
       render: () => h(DsTag, { prefix: '#', variant: 'subtle' }, () => 'ssr-tag')

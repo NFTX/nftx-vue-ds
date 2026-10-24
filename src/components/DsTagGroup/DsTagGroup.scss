@@ -1,0 +1,81 @@
+@layer ds.components {
+  .ds-tag-group {
+    display: inline-flex;
+    align-items: center;
+    max-inline-size: 100%;
+
+    &__list {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--ds-space-1);
+    }
+
+    &__input-wrapper {
+      display: inline-flex;
+      align-items: center;
+    }
+
+    &__input {
+      font-family: var(--ds-font-sans);
+      font-size: var(--ds-font-size-xs);
+      line-height: var(--ds-line-height-tight);
+      padding-block: var(--ds-space-1);
+      padding-inline: var(--ds-space-2);
+      border-radius: var(--ds-radius-sm);
+      border: 1px solid var(--ds-color-border-default);
+      background-color: var(--ds-color-bg-surface);
+      color: var(--ds-color-text-primary);
+      outline: none;
+      min-inline-size: 5rem;
+      max-inline-size: 9rem;
+
+      &:focus {
+        border-color: var(--ds-color-focus);
+        box-shadow: 0 0 0 1px var(--ds-color-focus);
+      }
+    }
+
+    &__add-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--ds-space-1);
+      font-family: var(--ds-font-sans);
+      font-size: var(--ds-font-size-xs);
+      color: var(--ds-color-text-muted);
+      background: transparent;
+      border: 1px dashed var(--ds-color-border-default);
+      border-radius: var(--ds-radius-sm);
+      padding-block: var(--ds-space-1);
+      padding-inline: var(--ds-space-2);
+      cursor: pointer;
+      line-height: var(--ds-line-height-tight);
+      transition: color var(--ds-duration-fast) var(--ds-ease-default),
+                  border-color var(--ds-duration-fast) var(--ds-ease-default);
+
+      &:hover,
+      &:focus-visible {
+        color: var(--ds-color-text-primary);
+        border-color: var(--ds-color-border-strong);
+      }
+
+      &:focus-visible {
+        outline: 2px solid var(--ds-color-focus);
+        outline-offset: 1px;
+      }
+    }
+
+    &--md {
+      .ds-tag-group__input {
+        font-size: var(--ds-font-size-sm);
+        padding-block: var(--ds-space-1);
+        padding-inline: var(--ds-space-3);
+      }
+      .ds-tag-group__add-btn {
+        font-size: var(--ds-font-size-sm);
+        padding-block: var(--ds-space-1);
+        padding-inline: var(--ds-space-3);
+      }
+    }
+  }
+}
