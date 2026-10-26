@@ -5,6 +5,17 @@ All notable changes to `@nftx-dev/vue-ds` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-10-26
+
+### Added
+- **`DsTable`**: Semantic, accessible data table primitive with support for headers, footers, striped rows, hoverable rows, border styling, and compact density.
+- **`DsTagGroup`**: Interactive tag management collection supporting dynamic tag creation, keyboard input, and tag removal events.
+- **`DsTag` Removable Support**: Added accessible removable action button with keyboard focus and delete callbacks.
+
+### Fixed
+- **`DsModal`**: Centered dialog layout, removed coordinate-based click outside, and added frosted glass backdrop blur.
+- **Token Alignment**: Corrected component SCSS variables to use canonical semantic tokens (`--ds-motion-duration-fast`, `--ds-motion-easing-default`, `--ds-color-focus-ring`, `--ds-color-border-hover`).
+
 ## [1.1.0] - 2026-10-22
 
 ### Added
