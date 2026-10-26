@@ -86,7 +86,7 @@
       cursor: pointer;
       border-radius: var(--ds-radius-sm);
       line-height: 1;
-      transition: opacity var(--ds-duration-fast) var(--ds-ease-default);
+      transition: opacity var(--ds-motion-duration-fast) var(--ds-motion-easing-default);
 
       &:hover,
       &:focus-visible {
@@ -94,7 +94,7 @@
       }
 
       &:focus-visible {
-        outline: 2px solid var(--ds-color-focus);
+        outline: 2px solid var(--ds-color-focus-ring);
         outline-offset: 1px;
       }
     }
