@@ -388,3 +388,7 @@ This library is organized with a clear separation between **consumer usage** and
   - `IMPLEMENTATION_GUIDELINES.md` — Internal architecture standards (`ARCH-*`, `A11Y-*`, `TOK-*`) and verification scorecard.
   - `INITIAL_IMPLEMENTATION_HISTORY.md` — Historical implementation log across Phases 1 through 7.
   - `DESIGN_SYSTEM_PLAN.md` — Original component roadmap and phase milestones.
+
+## License
+
+[MIT](LICENSE)
