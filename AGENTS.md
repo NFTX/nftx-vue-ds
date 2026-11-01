@@ -1,71 +1,40 @@
-# Agent Instructions & Repository Guidelines (`@nftx-dev/vue-ds`)
+# @nftx-dev/vue-ds
 
-This document defines operating instructions for AI coding agents working within `@nftx-dev/vue-ds` and client applications (such as `/workspace/Projects/portal`).
+Vue 3 design system library. The reference consumer is the sibling `portal` repository.
 
----
+## Documentation boundaries
 
-## 🎯 1. Consumer-First Directive
+- When explaining how to install, use, style, or configure components, point to `README.md` and Storybook (`npm run storybook`, port 6006). Those are the public documentation.
+- `IMPLEMENTATION_GUIDELINES.md`, `INITIAL_IMPLEMENTATION_HISTORY.md`, and `DESIGN_SYSTEM_PLAN.md` are internal maintainer notes. Use them for context, but do not send consumers to them.
+- Component requests from consumer apps are tracked in `REQUESTED_COMPONENTS.md`. Promote a component to the library only when it is useful beyond the app that asked for it.
 
-> **IMPORTANT:** Users and application developers are **not** supposed to read the internal implementation history or internal design system construction guidelines.
-> 
-> - When guiding users on how to use, install, style, or configure components, **guide them exclusively to [`README.md`](./README.md) and Storybook (`http://localhost:6006`)**.
-> - Do **NOT** cite or instruct users to read `IMPLEMENTATION_GUIDELINES.md`, `INITIAL_IMPLEMENTATION_HISTORY.md`, or `DESIGN_SYSTEM_PLAN.md`. Those files are strictly internal maintainer logs.
-- New candidate component proposals from client applications (e.g. Portal) are tracked in [`REQUESTED_COMPONENTS.md`](./REQUESTED_COMPONENTS.md). Evaluate components for generic utility before promoting to library primitives.
+## Themes
 
----
+Three default themes, selected with `data-theme` on the root element: `light`, `dark`, `colorblind` (Okabe-Ito palette).
 
-## 🚀 2. Client Integration & Validation Workflow (Phase 7)
+- Every semantic token in `src/styles/tokens/_semantic.scss` must be defined in all three theme mixins (`light-theme-tokens`, `dark-theme-tokens`, `colorblind-theme-tokens`). `npm run test:tokens` enforces this and the contrast ratios.
+- Consumers override tokens through `--ds-*` CSS custom properties.
 
-The reference consumer application for this library is located at `/workspace/Projects/portal`. Whenever modifying or validating the design system, agents must follow this verification cycle:
+## Library rules
 
-### Validation Cycle:
-1. **Rebuild the Design System:**
-   ```bash
-   cd /workspace/Projects/design-system && npm run build
-   ```
-2. **Build and Validate the Client Application (`portal`):**
-   ```bash
-   cd /workspace/Projects/portal && npm run build
-   ```
-3. **Verify Client Functionality:**
-   - Confirm Portal compiles with 0 type errors (`vue-tsc --noEmit`).
-   - Confirm Vite bundle builds cleanly with zero missing CSS tokens.
-   - Test Portal locally (`npm run dev`) or via Docker (`docker compose up -d --build` on port 80).
+- Do not add headless UI or positioning libraries (`reka-ui`, `radix-vue`, `@headlessui/vue`, `@floating-ui/dom`, Popper). Use native elements and CSS (`<dialog>`, `[popover]`, anchor positioning, `:has()`) plus the composables in `src/composables/a11y/`. This keeps the library dependency-free and small.
+- Each component lives in `src/components/Ds{Name}/` with six files:
+  - `Ds{Name}.vue`: `<script setup lang="ts">`, referencing the template and styles.
+  - `Ds{Name}.html`: template.
+  - `Ds{Name}.scss`: scoped styles.
+  - `Ds{Name}.spec.ts`: Vitest tests (browser mode).
+  - `Ds{Name}.stories.ts`: Storybook CSF3 stories.
+  - `index.ts`: public export.
 
----
+## Verification
 
-## 🎨 3. The 3 Default Themes System
+A change is complete when `npm run verify` passes. It runs lint, typecheck, token and contrast checks, unit tests (100% coverage), Storybook tests (zero axe violations), the library build, and a smoke test that installs the packed tarball into a consumer.
 
-`@nftx-dev/vue-ds` provides three mathematically verified default themes:
-1. **Light Mode (`data-theme="light"`):** Warm Paper canvas (`#FAF8F5`) + Print Ink Red (`#750008`) + Deep Charcoal text (`#1E293B`).
-2. **Dark Mode (`data-theme="dark"`):** Velvet Oxblood canvas (`#3C0911`) + Pale Champagne Gold (`#FDE68A`) + Warm Antique Ivory anti-glare body text (`#F7F4EE`).
-3. **Color Blind Mode (`data-theme="colorblind"`):** Universal CVD Okabe-Ito Cobalt Navy (`#003E7E`) + Amber (`#9A3412`) + Deep Pine Teal (`#004D40`) + Brick Rust (`#880000`) on Crisp Pure White (`#FFFFFF`).
+To check a change against `portal` before publishing: `portal` installs the published package from npm, so a plain `portal` build does not see local changes. Install the local build first:
 
-### Rules for Theming:
-- **Token Symmetry:** Every semantic CSS variable (all 43 tokens) in `src/styles/tokens/_semantic.scss` must be defined in all three default theme mixins (`light-theme-tokens`, `dark-theme-tokens`, and `colorblind-theme-tokens`).
-- **Enforcement:** Enforced automatically by `node --experimental-strip-types scripts/contrast-check.ts`.
-- **Consumer Overrides:** Consumers override tokens using CSS custom properties (`--ds-color-...`).
+```bash
+npm run build
+cd ../portal && npm install --no-save ../design-system && npm run build
+```
 
----
-
-## 🛠️ 4. Internal Library Maintenance Rules
-
-If an agent is instructed to modify or extend `@nftx-dev/vue-ds` itself, the following constraints are strictly binding:
-
-1. **Zero External Headless UI Libraries:** Never install `reka-ui`, `radix-vue`, `@headlessui/vue`, `@floating-ui/dom`, or Popper. Always use native browser elements (`<dialog>`, native `[popover]`, CSS Anchor Positioning, `:has()`) plus the in-house composables under `src/composables/a11y/`.
-2. **Component File Architecture:** Every component lives in its own dedicated directory under `src/components/Ds{Name}/` with the 6-file structure:
-   - `Ds{Name}.vue` — Script coordinator (`<script setup lang="ts">`)
-   - `Ds{Name}.html` — Pure template (`<template src="./Ds{Name}.html"></template>`)
-   - `Ds{Name}.scss` — Scoped styling (`<style lang="scss" scoped src="./Ds{Name}.scss"></style>`)
-   - `Ds{Name}.spec.ts` — Vitest unit tests in real browser environment
-   - `Ds{Name}.stories.ts` — Storybook CSF3 stories
-   - `index.ts` — Public export
-3. **Quality Gate Verification:** No change is complete until `npm run verify` passes all automated steps:
-   - `npm run lint` (ESLint 9 flat config)
-   - `npm run typecheck` (`vue-tsc --noEmit`)
-   - `npm run test:tokens` (Contrast & token symmetry check)
-   - `npm run test:unit` (Vitest with 100% coverage requirement)
-   - `npm run test:storybook` (Playwright Storybook test runner, 0 axe violations)
-   - `npm run build` (Vite library rollup)
-   - `npm run test:smoke` (npm pack tarball and consumer installation smoke test)
-4. **Git Discipline:** Strictly **NEVER** run `git push`. Local commits only (`git commit`).
+Run `npm install` in `portal` afterwards to return to the published version.
