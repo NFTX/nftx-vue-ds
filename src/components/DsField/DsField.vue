@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, provide, useId, useSlots } from 'vue'
-import { AlertCircle } from 'lucide-vue-next'
+import { AlertCircle } from '@lucide/vue'
 import DsIcon from '@/components/DsIcon/DsIcon.vue'
 
 export interface DsFieldContext {

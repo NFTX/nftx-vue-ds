@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, onBeforeUnmount, ref, useId } from 'vue'
-import { Search as SearchIcon, X as XIcon } from 'lucide-vue-next'
+import { Search as SearchIcon, X as XIcon } from '@lucide/vue'
 import DsIcon from '@/components/DsIcon/DsIcon.vue'
 import DsVisuallyHidden from '@/components/DsVisuallyHidden/DsVisuallyHidden.vue'
 

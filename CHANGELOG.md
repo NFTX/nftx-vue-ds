@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- **No runtime dependencies**: icons now come from `@lucide/vue` (the successor of the deprecated `lucide-vue-next`) as a build-time dependency. They were already bundled into `dist`, so consumers no longer install an unused, deprecated package. Apps that register extra icons with `registerDsIcons` should import them from `@lucide/vue`.
+
 ### Fixed
 - **`DsTable`**: `responsive=false` rendered the table inside a `<template>` element, so nothing was visible.
 - **`DsCode`**: the copy button reported success when nothing was copied (no `navigator.clipboard` on plain-http origins, or a rejected write). It now shows and announces "Copy failed".

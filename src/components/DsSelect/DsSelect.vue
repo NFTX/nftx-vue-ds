@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, inject, useId, type ComputedRef } from 'vue'
-import { ChevronDown } from 'lucide-vue-next'
+import { ChevronDown } from '@lucide/vue'
 import DsIcon from '@/components/DsIcon/DsIcon.vue'
 import type { DsFieldContext } from '@/components/DsField/DsField.vue'
 

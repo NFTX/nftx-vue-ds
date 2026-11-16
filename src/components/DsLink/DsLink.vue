@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { ExternalLink } from 'lucide-vue-next'
+import { ExternalLink } from '@lucide/vue'
 import DsIcon from '@/components/DsIcon/DsIcon.vue'
 import DsVisuallyHidden from '@/components/DsVisuallyHidden/DsVisuallyHidden.vue'
 

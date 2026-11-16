@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import { expect } from 'storybook/test'
 import DsIcon from './DsIcon.vue'
-import { Check, AlertCircle, Info } from 'lucide-vue-next'
+import { Check, AlertCircle, Info } from '@lucide/vue'
 
 const meta = {
   title: 'Atoms/DsIcon',

@@ -266,6 +266,15 @@ import { DsIcon } from '@nftx-dev/vue-ds'
 </template>
 ```
 
+String names resolve against a curated set of icons bundled with the library, so the package has no runtime dependencies. To use other Lucide icons by name, install `@lucide/vue` in your app and register them once, or pass the component directly to `icon`:
+
+```ts
+import { registerDsIcons } from '@nftx-dev/vue-ds'
+import { Rocket } from '@lucide/vue'
+
+registerDsIcons({ Rocket })
+```
+
 ---
 
 ## 🔍 Validating with Portal (Reference Client)

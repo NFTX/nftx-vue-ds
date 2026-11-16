@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, useId, watch } from 'vue'
-import { Check, Minus } from 'lucide-vue-next'
+import { Check, Minus } from '@lucide/vue'
 import DsIcon from '@/components/DsIcon/DsIcon.vue'
 
 defineOptions({

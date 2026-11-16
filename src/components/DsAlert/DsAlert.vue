@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, useSlots, type Component } from 'vue'
-import { AlertCircle, AlertTriangle, CheckCircle2, Info, X } from 'lucide-vue-next'
+import { AlertCircle, AlertTriangle, CheckCircle2, Info, X } from '@lucide/vue'
 import DsIcon from '@/components/DsIcon/DsIcon.vue'
 
 export type DsAlertVariant = 'info' | 'success' | 'warning' | 'error'

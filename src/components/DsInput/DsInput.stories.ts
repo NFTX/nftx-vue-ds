@@ -4,7 +4,7 @@ import { ref } from 'vue'
 import DsInput from './DsInput.vue'
 import DsField from '@/components/DsField/DsField.vue'
 import DsIcon from '@/components/DsIcon/DsIcon.vue'
-import { Search, Mail } from 'lucide-vue-next'
+import { Search, Mail } from '@lucide/vue'
 
 const meta = {
   title: 'Atoms/DsInput',

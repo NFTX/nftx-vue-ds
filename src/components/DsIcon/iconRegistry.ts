@@ -85,7 +85,7 @@ import {
   Wifi,
   X,
   Zap
-} from 'lucide-vue-next'
+} from '@lucide/vue'
 
 const iconMap: Record<string, Component> = {
   Activity,

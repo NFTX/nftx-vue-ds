@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { renderToString } from '@vue/server-renderer'
 import { createSSRApp, h } from 'vue'
-import { Tag } from 'lucide-vue-next'
+import { Tag } from '@lucide/vue'
 import DsTag from './DsTag.vue'
 
 describe('DsTag', () => {

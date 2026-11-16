@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { renderToString } from '@vue/server-renderer'
 import { createSSRApp, h } from 'vue'
-import { Terminal } from 'lucide-vue-next'
+import { Terminal } from '@lucide/vue'
 import DsAlert from './DsAlert.vue'
 
 describe('DsAlert', () => {

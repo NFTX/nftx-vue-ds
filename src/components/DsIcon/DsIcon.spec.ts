@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { renderToString } from '@vue/server-renderer'
 import { createSSRApp, defineComponent, h } from 'vue'
-import { Check } from 'lucide-vue-next'
+import { Check } from '@lucide/vue'
 import DsIcon from './DsIcon.vue'
 import { registerDsIcons } from './iconRegistry'
 

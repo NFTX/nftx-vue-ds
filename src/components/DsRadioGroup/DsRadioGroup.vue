@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, useId } from 'vue'
-import { AlertCircle } from 'lucide-vue-next'
+import { AlertCircle } from '@lucide/vue'
 import DsIcon from '@/components/DsIcon/DsIcon.vue'
 
 export type DsRadioGroupOrientation = 'vertical' | 'horizontal'

@@ -60,11 +60,9 @@
     "url": "https://github.com/NFTX/nftx-vue-ds/issues"
   },
   "homepage": "https://github.com/NFTX/nftx-vue-ds#readme",
-  "dependencies": {
-    "lucide-vue-next": "^1.0.0"
-  },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@lucide/vue": "1.73.0",
     "@storybook/addon-a11y": "^10.6.2",
     "@storybook/addon-docs": "^10.6.2",
     "@storybook/addon-themes": "^10.6.2",

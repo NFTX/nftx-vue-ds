@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, inject, ref, useId, type ComputedRef } from 'vue'
-import { X } from 'lucide-vue-next'
+import { X } from '@lucide/vue'
 import DsIcon from '@/components/DsIcon/DsIcon.vue'
 import type { DsFieldContext } from '@/components/DsField/DsField.vue'
 

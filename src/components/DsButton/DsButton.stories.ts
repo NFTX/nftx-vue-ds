@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import { expect, fn, userEvent, within } from 'storybook/test'
 import DsButton from './DsButton.vue'
 import DsIcon from '@/components/DsIcon/DsIcon.vue'
-import { ArrowRight, Trash2 } from 'lucide-vue-next'
+import { ArrowRight, Trash2 } from '@lucide/vue'
 
 /**
  * `DsButton` renders a native interactive `<button>` element adhering to WAI-ARIA APG Button pattern.

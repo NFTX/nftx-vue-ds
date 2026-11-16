@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, useId, watch } from 'vue'
-import { AlertCircle, AlertTriangle, CheckCircle2, Info, X } from 'lucide-vue-next'
+import { AlertCircle, AlertTriangle, CheckCircle2, Info, X } from '@lucide/vue'
 import DsIcon from '@/components/DsIcon/DsIcon.vue'
 import { useAnnouncer } from '@/composables/a11y/useAnnouncer'
 

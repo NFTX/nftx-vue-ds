@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, useId, watch } from 'vue'
-import { X } from 'lucide-vue-next'
+import { X } from '@lucide/vue'
 import DsIcon from '@/components/DsIcon/DsIcon.vue'
 import { useFocusReturn } from '@/composables/a11y/useFocusReturn'
 import { useScrollLock } from '@/composables/useScrollLock'
