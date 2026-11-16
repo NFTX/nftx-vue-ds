@@ -1,10 +1,16 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { renderToString } from '@vue/server-renderer'
 import { createSSRApp, h } from 'vue'
 import DsHeaderBar from './DsHeaderBar.vue'
+import DsThemeToggle from '@/components/DsThemeToggle/DsThemeToggle.vue'
 
 describe('DsHeaderBar', () => {
+  beforeEach(() => {
+    localStorage.clear()
+    document.documentElement.removeAttribute('data-theme')
+  })
+
   it('renders semantic <header> landmark with title and role="banner" (TEST-06)', () => {
     const wrapper = mount(DsHeaderBar, {
       props: {
@@ -180,5 +186,71 @@ describe('DsHeaderBar', () => {
     expect(html).toContain('class="ds-header-bar ds-header-bar--sticky"')
     expect(html).toContain('SSR Portal')
     expect(html).toContain('Gateway Dashboard')
+  })
+
+  it('leaves the document theme to the parent when the theme prop is set', async () => {
+    document.documentElement.setAttribute('data-theme', 'colorblind')
+    const wrapper = mount(DsHeaderBar, { props: { theme: 'light' } })
+
+    expect(document.documentElement.getAttribute('data-theme')).toBe('colorblind')
+    await wrapper.find('.ds-header-bar__theme-toggle').trigger('click')
+    expect(wrapper.emitted('update:theme')).toEqual([['dark']])
+    expect(document.documentElement.getAttribute('data-theme')).toBe('colorblind')
+    expect(localStorage.length).toBe(0)
+  })
+
+  it('does not touch the document theme when the toggle is hidden', () => {
+    document.documentElement.setAttribute('data-theme', 'colorblind')
+    mount(DsHeaderBar, { props: { showThemeToggle: false } })
+    expect(document.documentElement.getAttribute('data-theme')).toBe('colorblind')
+  })
+
+  it('applies and persists the theme under storageKey when uncontrolled', async () => {
+    localStorage.setItem('portal-theme', 'dark')
+    const wrapper = mount(DsHeaderBar, { props: { storageKey: 'portal-theme' } })
+    expect(document.documentElement.getAttribute('data-theme')).toBe('dark')
+
+    await wrapper.find('.ds-header-bar__theme-toggle').trigger('click')
+    expect(document.documentElement.getAttribute('data-theme')).toBe('colorblind')
+    expect(localStorage.getItem('portal-theme')).toBe('colorblind')
+    expect(wrapper.emitted('update:theme')).toEqual([['colorblind']])
+  })
+
+  it("supports an 'auto' theme that follows the system preference", async () => {
+    const wrapper = mount(DsHeaderBar, {
+      props: { availableThemes: ['light', 'dark', 'auto'], theme: 'dark' }
+    })
+    const themeBtn = wrapper.find('.ds-header-bar__theme-toggle')
+    expect(themeBtn.attributes('aria-label')).toBe('Switch to automatic theme')
+
+    await wrapper.setProps({ theme: 'auto' })
+    expect(themeBtn.findComponent({ name: 'DsIcon' }).props('icon')).toBe('sun-moon')
+    expect(themeBtn.attributes('aria-label')).toBe('Switch to light theme')
+  })
+
+  it('labels the slate themes', async () => {
+    const wrapper = mount(DsHeaderBar, {
+      props: { availableThemes: ['slate-light', 'slate-dark'], theme: 'slate-light' }
+    })
+    const themeBtn = wrapper.find('.ds-header-bar__theme-toggle')
+    expect(themeBtn.attributes('aria-label')).toBe('Switch to slate dark theme')
+
+    await wrapper.setProps({ theme: 'slate-dark' })
+    expect(themeBtn.attributes('aria-label')).toBe('Switch to slate light theme')
+    expect(themeBtn.findComponent({ name: 'DsIcon' }).props('icon')).toBe('moon')
+  })
+
+  it('stays in sync with a DsThemeToggle on the same page', async () => {
+    const header = mount(DsHeaderBar)
+    const toggle = mount(DsThemeToggle)
+
+    await toggle.find('button').trigger('click')
+    expect(document.documentElement.getAttribute('data-theme')).toBe('dark')
+    expect(
+      header.find('.ds-header-bar__theme-toggle').attributes('aria-label')
+    ).toBe('Switch to color blind theme')
+
+    header.unmount()
+    toggle.unmount()
   })
 })

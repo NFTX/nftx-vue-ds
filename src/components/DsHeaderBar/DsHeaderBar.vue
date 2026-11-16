@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, useId } from 'vue'
 import { DsIcon } from '@/components/DsIcon'
-import { useTheme, type DsTheme } from '@/composables/useTheme'
-
-export type DsThemeMode = 'light' | 'dark' | 'colorblind' | 'auto'
+import { useTheme, type DsThemeMode } from '@/composables/useTheme'
 
 export interface DsHeaderBarProps {
   /**
@@ -22,7 +20,8 @@ export interface DsHeaderBarProps {
    */
   sticky?: boolean
   /**
-   * Current color theme.
+   * Current color theme. When set, the header only emits `update:theme` and the parent applies it.
+   * When unset, the header applies and persists the theme itself (see `storageKey`).
    */
   theme?: DsThemeMode
   /**
@@ -35,6 +34,11 @@ export interface DsHeaderBarProps {
    * @default true
    */
   showThemeToggle?: boolean
+  /**
+   * LocalStorage key used when the header manages the theme itself (no `theme` prop).
+   * @default 'ds-theme'
+   */
+  storageKey?: string
   /**
    * Whether to display the responsive mobile menu toggle button.
    * @default true
@@ -60,21 +64,28 @@ const props = withDefaults(defineProps<DsHeaderBarProps>(), {
   theme: undefined,
   availableThemes: () => ['light', 'dark', 'colorblind'],
   showThemeToggle: true,
+  storageKey: 'ds-theme',
   showMobileToggle: true,
   mobileMenuOpen: undefined
 })
 
 const emit = defineEmits<DsHeaderBarEmits>()
 
-const themeState = useTheme({
-  themes: (props.availableThemes && props.availableThemes.length > 0
-    ? props.availableThemes
-    : ['light', 'dark', 'colorblind']) as unknown as readonly DsTheme[]
-})
+const DEFAULT_THEMES: DsThemeMode[] = ['light', 'dark', 'colorblind']
 
-const effectiveTheme = computed<DsThemeMode>(() => {
-  return props.theme ?? (themeState.theme.value as DsThemeMode)
-})
+const activeThemes = computed<DsThemeMode[]>(() =>
+  props.availableThemes && props.availableThemes.length > 0 ? props.availableThemes : DEFAULT_THEMES
+)
+
+// Manage the document theme only when the parent does not control it
+const themeState =
+  props.theme === undefined && props.showThemeToggle
+    ? useTheme({ storageKey: props.storageKey, themes: activeThemes.value })
+    : null
+
+const effectiveTheme = computed<DsThemeMode>(
+  () => props.theme ?? themeState?.theme.value ?? activeThemes.value[0] ?? 'light'
+)
 
 const mobileMenuId = useId()
 const internalMobileOpen = ref(false)
@@ -91,22 +102,10 @@ const isMobileOpen = computed<boolean>(() => {
   return internalMobileOpen.value
 })
 
-const activeThemes = computed<DsThemeMode[]>(() => {
-  return props.availableThemes && props.availableThemes.length > 0
-    ? props.availableThemes
-    : ['light', 'dark', 'colorblind']
-})
-
 const nextTheme = computed<DsThemeMode>(() => {
-  const current = effectiveTheme.value
   const themes = activeThemes.value
-  const currentIndex = themes.indexOf(current)
-  if (currentIndex !== -1) {
-    const candidate = themes[(currentIndex + 1) % themes.length]
-    if (candidate) return candidate
-  }
-  if (current === 'colorblind') return 'light'
-  return current === 'dark' ? 'light' : 'dark'
+  const currentIndex = themes.indexOf(effectiveTheme.value)
+  return themes[(currentIndex + 1) % themes.length] ?? 'light'
 })
 
 const themeToggleLabel = computed<string>(() => {
@@ -115,6 +114,12 @@ const themeToggleLabel = computed<string>(() => {
       return 'Switch to dark theme'
     case 'colorblind':
       return 'Switch to color blind theme'
+    case 'auto':
+      return 'Switch to automatic theme'
+    case 'slate-light':
+      return 'Switch to slate light theme'
+    case 'slate-dark':
+      return 'Switch to slate dark theme'
     case 'light':
     default:
       return 'Switch to light theme'
@@ -124,9 +129,12 @@ const themeToggleLabel = computed<string>(() => {
 const themeToggleIcon = computed<string>(() => {
   switch (effectiveTheme.value) {
     case 'dark':
+    case 'slate-dark':
       return 'moon'
     case 'colorblind':
       return 'eye'
+    case 'auto':
+      return 'sun-moon'
     case 'light':
     default:
       return 'sun'
@@ -139,7 +147,7 @@ const currentThemeIcon = themeToggleIcon
 function handleThemeToggle(): void {
   const next = nextTheme.value
   if (props.theme === undefined) {
-    themeState.setTheme(next as unknown as DsTheme)
+    themeState?.setTheme(next)
   }
   emit('update:theme', next)
   emit('toggle-theme')

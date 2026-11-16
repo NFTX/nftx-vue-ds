@@ -63,4 +63,16 @@ describe('DsThemeToggle', () => {
     expect(html).toContain('ds-theme-toggle')
     expect(html).toContain('Light')
   })
+
+  it("labels the 'auto' theme and shows the sun-moon icon", async () => {
+    const wrapper = mount(DsThemeToggle, {
+      props: { modelValue: 'auto', themes: ['auto', 'light'] },
+      attachTo: document.body
+    })
+    await wrapper.vm.$nextTick()
+
+    expect(wrapper.attributes('aria-label')).toContain('Current theme: Automatic')
+    expect(wrapper.findComponent({ name: 'DsIcon' }).props('icon')).toBe('sun-moon')
+    wrapper.unmount()
+  })
 })

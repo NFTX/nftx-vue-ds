@@ -101,9 +101,24 @@ Set the `data-theme` attribute on your `<html>` tag or on any container element:
 <html data-theme="colorblind">
 ```
 
-### Switching Themes with `DsHeaderBar`
+### Switching Themes with `DsHeaderBar` or `useTheme`
 
-`DsHeaderBar` has integrated 3-theme switching support. Pass `:available-themes="['light', 'dark', 'colorblind']"`:
+Leave the `theme` prop unset and `DsHeaderBar` applies the theme to `<html data-theme>` and persists it under `storageKey` (default `ds-theme`). `DsThemeToggle` and `useTheme()` with the same key stay in sync with it on the page. Storage that the browser blocks is ignored; the theme then lasts for the page only.
+
+```vue
+<template>
+  <DsHeaderBar
+    title="Homelab Portal"
+    subtitle="Local Service Gateway"
+    storage-key="portal-theme"
+    :available-themes="['light', 'dark', 'colorblind', 'auto']"
+  />
+</template>
+```
+
+`auto` removes `data-theme`, so the tokens follow `prefers-color-scheme`.
+
+To manage the theme yourself, pass `theme` (or `v-model:theme`). The header then only emits `update:theme` and never touches the document:
 
 ```vue
 <script setup lang="ts">
@@ -114,22 +129,11 @@ const currentTheme = ref<DsThemeMode>('light')
 </script>
 
 <template>
-  <div :data-theme="currentTheme">
-    <DsHeaderBar
-      title="Homelab Portal"
-      subtitle="Local Service Gateway"
-      v-model:theme="currentTheme"
-      :available-themes="['light', 'dark', 'colorblind']"
-    />
-  </div>
+  <DsHeaderBar v-model:theme="currentTheme" />
 </template>
 ```
 
-> **Theme Toggle Button Behavior (Target Action):**
-> The toggle button icon, tooltip, and `aria-label` reflect the **target state** that clicking will activate:
-> - In **Light mode**: displays `moon` icon (Label: *"Switch to dark theme"*) &rarr; transitions to **Dark**.
-> - In **Dark mode**: displays `eye` icon (Label: *"Switch to color blind theme"*) &rarr; transitions to **Colorblind**.
-> - In **Colorblind mode**: displays `sun` icon (Label: *"Switch to light theme"*) &rarr; transitions to **Light**.
+The toggle icon shows the **current** theme (`sun`, `moon`, `eye`, `sun-moon` for `auto`); its label names the theme a click switches to (for example *"Switch to dark theme"*).
 
 ---
 

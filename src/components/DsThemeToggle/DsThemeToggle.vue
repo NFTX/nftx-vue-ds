@@ -2,7 +2,7 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import DsButton from '@/components/DsButton/DsButton.vue'
 import DsIcon from '@/components/DsIcon/DsIcon.vue'
-import { useTheme, type DsTheme } from '@/composables/useTheme'
+import { useTheme, type DsThemeMode } from '@/composables/useTheme'
 import { useAnnouncer } from '@/composables/a11y/useAnnouncer'
 
 export type DsThemeToggleSize = 'sm' | 'md' | 'lg'
@@ -23,11 +23,11 @@ export interface DsThemeToggleProps {
    * Ordered list of themes to cycle through.
    * @default ['light', 'dark', 'colorblind']
    */
-  themes?: readonly DsTheme[]
+  themes?: readonly DsThemeMode[]
   /**
    * Alias for `themes` (from REQUESTED_COMPONENTS.md).
    */
-  availableThemes?: readonly DsTheme[]
+  availableThemes?: readonly DsThemeMode[]
   /**
    * LocalStorage key used when persisting theme.
    * @default 'ds-theme'
@@ -41,11 +41,11 @@ export interface DsThemeToggleProps {
   /**
    * Custom human-readable labels for each theme.
    */
-  labels?: Partial<Record<DsTheme, string>>
+  labels?: Partial<Record<DsThemeMode, string>>
 }
 
 export interface DsThemeToggleEmits {
-  (e: 'change', theme: DsTheme): void
+  (e: 'change', theme: DsThemeMode): void
 }
 
 const props = withDefaults(defineProps<DsThemeToggleProps>(), {
@@ -59,9 +59,9 @@ const props = withDefaults(defineProps<DsThemeToggleProps>(), {
 })
 
 const emit = defineEmits<DsThemeToggleEmits>()
-const model = defineModel<DsTheme>()
+const model = defineModel<DsThemeMode>()
 
-const resolvedThemes = computed<readonly DsTheme[]>(() => {
+const resolvedThemes = computed<readonly DsThemeMode[]>(() => {
   const list = props.themes ?? props.availableThemes
   return list && list.length > 0 ? list : ['light', 'dark', 'colorblind']
 })
@@ -79,7 +79,7 @@ onMounted(() => {
   isMounted.value = true
 })
 
-const currentTheme = computed<DsTheme>(() => model.value ?? themeState.theme.value)
+const currentTheme = computed<DsThemeMode>(() => model.value ?? themeState.theme.value)
 
 watch(
   () => model.value,
@@ -90,22 +90,23 @@ watch(
   }
 )
 
-const nextTheme = computed<DsTheme>(() => {
+const nextTheme = computed<DsThemeMode>(() => {
   const list = resolvedThemes.value
   const idx = list.indexOf(currentTheme.value)
   const nextIdx = idx >= 0 ? (idx + 1) % list.length : 0
   return list[nextIdx] ?? 'light'
 })
 
-const defaultLabels: Record<DsTheme, string> = {
+const defaultLabels: Record<DsThemeMode, string> = {
   light: 'Light',
   dark: 'Dark',
   colorblind: 'Colorblind',
   'slate-light': 'Slate Light',
-  'slate-dark': 'Slate Dark'
+  'slate-dark': 'Slate Dark',
+  auto: 'Automatic'
 }
 
-function getLabel(t: DsTheme): string {
+function getLabel(t: DsThemeMode): string {
   return props.labels?.[t] ?? defaultLabels[t] ?? t
 }
 
@@ -119,6 +120,8 @@ const currentIcon = computed<string>(() => {
       return 'moon'
     case 'colorblind':
       return 'eye'
+    case 'auto':
+      return 'sun-moon'
     case 'light':
     case 'slate-light':
     default:

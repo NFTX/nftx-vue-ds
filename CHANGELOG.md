@@ -7,10 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **`auto` theme mode** in `useTheme`, `DsHeaderBar` and `DsThemeToggle`: removes `data-theme` so tokens follow `prefers-color-scheme`.
+- **`DsHeaderBar` `storageKey`** prop.
+
 ### Changed
+- **`DsThemeMode`** (`DsTheme` plus `auto`) is now exported from `useTheme` and used by `useTheme`, `DsHeaderBar` and `DsThemeToggle`. `useTheme().theme` is typed `Ref<DsThemeMode>`.
+- **Theme instances stay in sync**: `useTheme`, `DsHeaderBar` and `DsThemeToggle` with the same storage key follow each other's changes on the page.
+- **`DsHeaderBar` only manages the document theme when uncontrolled**: with a `theme` prop, or with `showThemeToggle=false`, it no longer writes `data-theme` or storage.
 - **No runtime dependencies**: icons now come from `@lucide/vue` (the successor of the deprecated `lucide-vue-next`) as a build-time dependency. They were already bundled into `dist`, so consumers no longer install an unused, deprecated package. Apps that register extra icons with `registerDsIcons` should import them from `@lucide/vue`.
 
 ### Fixed
+- **`useTheme`**: no longer throws (and breaks `DsHeaderBar` / `DsThemeToggle`) when the browser blocks site storage.
+- **`DsHeaderBar` `auto` theme**: previously wrote `data-theme="auto"`, which matched no tokens and always showed light.
 - **`DsTable`**: `responsive=false` rendered the table inside a `<template>` element, so nothing was visible.
 - **`DsCode`**: the copy button reported success when nothing was copied (no `navigator.clipboard` on plain-http origins, or a rejected write). It now shows and announces "Copy failed".
 - **`DsButton`**: Space on a link button now follows the `href` instead of only emitting `click`. The icon-only `ariaLabel` warning only runs in development builds.

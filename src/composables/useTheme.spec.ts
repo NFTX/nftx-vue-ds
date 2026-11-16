@@ -1,11 +1,17 @@
 // src/composables/useTheme.spec.ts
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { effectScope } from 'vue'
 import { useTheme } from './useTheme'
 
 describe('useTheme', () => {
   beforeEach(() => {
     localStorage.clear()
     document.documentElement.removeAttribute('data-theme')
+    document.documentElement.classList.remove('dark')
+  })
+
+  afterEach(() => {
+    vi.restoreAllMocks()
   })
 
   it('initializes with default light theme and cycles through light -> dark -> colorblind (ENH-01)', () => {
@@ -76,5 +82,61 @@ describe('useTheme', () => {
     const { themes, theme } = useTheme({ themes: [], defaultTheme: 'colorblind' })
     expect(themes).toEqual(['light', 'dark', 'colorblind'])
     expect(theme.value).toBe('colorblind')
+  })
+
+  it('keeps working when site storage is blocked', () => {
+    vi.spyOn(Storage.prototype, 'getItem').mockImplementation(() => {
+      throw new DOMException('Access denied', 'SecurityError')
+    })
+    vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+      throw new DOMException('Access denied', 'SecurityError')
+    })
+
+    const { theme, setTheme } = useTheme()
+    expect(theme.value).toBe('light')
+
+    setTheme('dark')
+    expect(theme.value).toBe('dark')
+    expect(document.documentElement.getAttribute('data-theme')).toBe('dark')
+  })
+
+  it("applies 'auto' by removing data-theme so the system preference applies", () => {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    document.documentElement.classList.add('dark')
+    const { setTheme } = useTheme({ themes: ['light', 'dark', 'auto'] })
+
+    setTheme('auto')
+    expect(document.documentElement.hasAttribute('data-theme')).toBe(false)
+    expect(document.documentElement.classList.contains('dark')).toBe(false)
+    expect(localStorage.getItem('ds-theme')).toBe('auto')
+  })
+
+  it("starts in 'auto' when it is available and nothing is stored or set", () => {
+    const { theme } = useTheme({ themes: ['auto', 'light', 'dark'] })
+    expect(theme.value).toBe('auto')
+    expect(document.documentElement.hasAttribute('data-theme')).toBe(false)
+  })
+
+  it('ignores stored values that are not in the theme list', () => {
+    localStorage.setItem('ds-theme', 'auto')
+    const { theme } = useTheme()
+    expect(theme.value).toBe('light')
+  })
+
+  it('keeps instances with the same storage key in sync and stops listening on dispose', () => {
+    const scopeA = effectScope()
+    const scopeB = effectScope()
+    const a = scopeA.run(() => useTheme())!
+    const b = scopeB.run(() => useTheme())!
+    const other = effectScope().run(() => useTheme({ storageKey: 'other-key' }))!
+
+    a.setTheme('colorblind')
+    expect(b.theme.value).toBe('colorblind')
+    expect(other.theme.value).toBe('light')
+
+    scopeB.stop()
+    a.setTheme('dark')
+    expect(b.theme.value).toBe('colorblind')
+    scopeA.stop()
   })
 })
