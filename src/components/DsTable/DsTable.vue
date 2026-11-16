@@ -31,6 +31,11 @@ export interface DsTableProps {
    * @default true
    */
   responsive?: boolean
+  /**
+   * Accessible name of the scroll region when there is no `caption`.
+   * @default 'Data table'
+   */
+  regionLabel?: string
 }
 
 const props = withDefaults(defineProps<DsTableProps>(), {
@@ -39,7 +44,8 @@ const props = withDefaults(defineProps<DsTableProps>(), {
   hoverable: true,
   compact: false,
   bordered: false,
-  responsive: true
+  responsive: true,
+  regionLabel: 'Data table'
 })
 
 const tableClasses = computed<Record<string, boolean>>(() => ({

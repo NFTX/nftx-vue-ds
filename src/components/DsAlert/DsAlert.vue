@@ -24,13 +24,19 @@ export interface DsAlertProps {
    * @default false
    */
   dismissible?: boolean
+  /**
+   * Accessible label for the dismiss button.
+   * @default 'Dismiss alert'
+   */
+  dismissLabel?: string
 }
 
 const props = withDefaults(defineProps<DsAlertProps>(), {
   variant: 'info',
   title: undefined,
   icon: undefined,
-  dismissible: false
+  dismissible: false,
+  dismissLabel: 'Dismiss alert'
 })
 
 const emit = defineEmits<{

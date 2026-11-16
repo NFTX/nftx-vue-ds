@@ -37,7 +37,7 @@ export interface DsTagProps {
   removable?: boolean
   /**
    * Accessible aria-label for the remove button.
-   * @default 'Remover'
+   * @default 'Remove'
    */
   removeLabel?: string
 }
@@ -49,7 +49,7 @@ const props = withDefaults(defineProps<DsTagProps>(), {
   icon: undefined,
   prefix: undefined,
   removable: false,
-  removeLabel: 'Remover'
+  removeLabel: 'Remove'
 })
 
 const emit = defineEmits<{

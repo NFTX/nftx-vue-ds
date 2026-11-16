@@ -27,7 +27,7 @@
         v-if="isDismissible"
         type="button"
         class="ds-modal__close"
-        aria-label="Close dialog"
+        :aria-label="closeLabel"
         @click="handleClose"
       >
         <DsIcon :icon="X" size="sm" />

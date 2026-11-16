@@ -58,6 +58,11 @@ export interface DsInputProps {
    * ARIA invalid flag. Inherited from DsField when used.
    */
   ariaInvalid?: boolean
+  /**
+   * Accessible label for the clear button.
+   * @default 'Clear input'
+   */
+  clearLabel?: string
 }
 
 export interface DsInputEmits {
@@ -74,7 +79,8 @@ const props = withDefaults(defineProps<DsInputProps>(), {
   clearable: false,
   size: 'md',
   ariaDescribedby: undefined,
-  ariaInvalid: undefined
+  ariaInvalid: undefined,
+  clearLabel: 'Clear input'
 })
 
 const emit = defineEmits<DsInputEmits>()

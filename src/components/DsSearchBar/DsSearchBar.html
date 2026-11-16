@@ -23,7 +23,7 @@
       v-if="model"
       type="button"
       class="ds-search-bar__clear"
-      aria-label="Clear search query"
+      :aria-label="clearLabel"
       @click="handleClear"
     >
       <DsIcon :icon="XIcon" size="sm" />
@@ -34,7 +34,7 @@
     </div>
 
     <DsVisuallyHidden v-if="shortcutLabel">
-      Press {{ shortcutLabel }} to focus search
+      {{ formatLabel(shortcutHint, { key: shortcutLabel }) }}
     </DsVisuallyHidden>
   </form>
 </search>

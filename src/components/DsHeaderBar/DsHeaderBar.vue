@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { formatLabel } from '@/utils/formatLabel'
 import { computed, onMounted, ref, useId } from 'vue'
 import { DsIcon } from '@/components/DsIcon'
 import { useTheme, type DsThemeMode } from '@/composables/useTheme'
@@ -49,6 +50,36 @@ export interface DsHeaderBarProps {
    * @default false
    */
   mobileMenuOpen?: boolean
+  /**
+   * Theme names used in the toggle label, merged over the English defaults (`light`, `dark`, `color blind`, `automatic`, `slate light`, `slate dark`).
+   * @default () => ({})
+   */
+  themeLabels?: Partial<Record<DsThemeMode, string>>
+  /**
+   * Toggle button label; `{theme}` is replaced by the name of the theme a click switches to.
+   * @default 'Switch to {theme} theme'
+   */
+  switchThemeLabel?: string
+  /**
+   * Accessible name of the desktop navigation landmark.
+   * @default 'Primary navigation'
+   */
+  navLabel?: string
+  /**
+   * Accessible name of the mobile navigation landmark.
+   * @default 'Mobile navigation'
+   */
+  mobileNavLabel?: string
+  /**
+   * Mobile menu button label while the menu is closed.
+   * @default 'Open navigation menu'
+   */
+  openMenuLabel?: string
+  /**
+   * Mobile menu button label while the menu is open.
+   * @default 'Close navigation menu'
+   */
+  closeMenuLabel?: string
 }
 
 export interface DsHeaderBarEmits {
@@ -66,7 +97,13 @@ const props = withDefaults(defineProps<DsHeaderBarProps>(), {
   showThemeToggle: true,
   storageKey: 'ds-theme',
   showMobileToggle: true,
-  mobileMenuOpen: undefined
+  mobileMenuOpen: undefined,
+  themeLabels: () => ({}),
+  switchThemeLabel: 'Switch to {theme} theme',
+  navLabel: 'Primary navigation',
+  mobileNavLabel: 'Mobile navigation',
+  openMenuLabel: 'Open navigation menu',
+  closeMenuLabel: 'Close navigation menu'
 })
 
 const emit = defineEmits<DsHeaderBarEmits>()
@@ -108,22 +145,18 @@ const nextTheme = computed<DsThemeMode>(() => {
   return themes[(currentIndex + 1) % themes.length] ?? 'light'
 })
 
+const DEFAULT_THEME_NAMES: Record<DsThemeMode, string> = {
+  light: 'light',
+  dark: 'dark',
+  colorblind: 'color blind',
+  auto: 'automatic',
+  'slate-light': 'slate light',
+  'slate-dark': 'slate dark'
+}
+
 const themeToggleLabel = computed<string>(() => {
-  switch (nextTheme.value) {
-    case 'dark':
-      return 'Switch to dark theme'
-    case 'colorblind':
-      return 'Switch to color blind theme'
-    case 'auto':
-      return 'Switch to automatic theme'
-    case 'slate-light':
-      return 'Switch to slate light theme'
-    case 'slate-dark':
-      return 'Switch to slate dark theme'
-    case 'light':
-    default:
-      return 'Switch to light theme'
-  }
+  const name = props.themeLabels[nextTheme.value] ?? DEFAULT_THEME_NAMES[nextTheme.value]
+  return formatLabel(props.switchThemeLabel, { theme: name })
 })
 
 const themeToggleIcon = computed<string>(() => {

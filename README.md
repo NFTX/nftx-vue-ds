@@ -279,6 +279,16 @@ import { Rocket } from '@lucide/vue'
 registerDsIcons({ Rocket })
 ```
 
+### 5. Built-in Labels and Language
+
+Text the components render on their own (close and clear buttons, landmark names, theme toggle labels, announcements) defaults to English. Each has a prop, so an app can pass its own language. Labels that include a value use `{placeholder}` templates:
+
+```vue
+<DsModal v-model:open="open" title="Excluir serviço" close-label="Fechar" />
+<DsSearchBar shortcut-label="/" shortcut-hint="Tecle {key} para buscar" clear-label="Limpar busca" />
+<DsHeaderBar switch-theme-label="Mudar para tema {theme}" :theme-labels="{ light: 'claro', dark: 'escuro' }" />
+```
+
 ---
 
 ## 🔍 Validating with Portal (Reference Client)

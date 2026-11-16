@@ -7,7 +7,7 @@
       :size="size"
       :shape="shape"
       :removable="editable"
-      :remove-label="`Remover tag ${tag}`"
+      :remove-label="formatLabel(removeLabel, { tag })"
       @remove="removeTag(index)"
     >
       {{ tag }}
@@ -21,6 +21,7 @@
         type="text"
         class="ds-tag-group__input"
         :placeholder="placeholder"
+        :aria-label="inputLabel"
         @keydown="handleInputKeydown"
         @blur="handleInputBlur"
       />

@@ -32,7 +32,7 @@
       tabindex="0"
     >
       <slot />
-      <DsVisuallyHidden v-if="target === '_blank'"> (opens in a new tab)</DsVisuallyHidden>
+      <DsVisuallyHidden v-if="target === '_blank'"> {{ newTabLabel }}</DsVisuallyHidden>
     </a>
     <slot v-else />
   </div>

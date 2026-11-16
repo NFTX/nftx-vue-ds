@@ -29,13 +29,19 @@ export interface DsLinkProps {
    * Force external indicator icon and accessible message.
    */
   external?: boolean
+  /**
+   * Screen reader text added when `target` is `_blank`.
+   * @default '(opens in a new tab)'
+   */
+  newTabLabel?: string
 }
 
 const props = withDefaults(defineProps<DsLinkProps>(), {
   target: '_self',
   rel: undefined,
   variant: 'primary',
-  external: undefined
+  external: undefined,
+  newTabLabel: '(opens in a new tab)'
 })
 
 const isExternal = computed<boolean>(() => {

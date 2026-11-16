@@ -25,7 +25,7 @@
       <nav
         v-if="$slots.default || $slots.navigation"
         class="ds-header-bar__nav"
-        aria-label="Primary navigation"
+        :aria-label="navLabel"
       >
         <slot name="navigation">
           <slot />
@@ -54,7 +54,7 @@
         class="ds-header-bar__mobile-toggle"
         :aria-expanded="isMobileOpen"
         :aria-controls="mobileMenuId"
-        :aria-label="isMobileOpen ? 'Close navigation menu' : 'Open navigation menu'"
+        :aria-label="isMobileOpen ? closeMenuLabel : openMenuLabel"
         @click="toggleMobileMenu"
       >
         <DsIcon :icon="isMobileOpen ? 'x' : 'menu'" size="lg" aria-hidden="true" />
@@ -76,7 +76,7 @@
         <nav
           v-if="$slots.default || $slots.navigation"
           class="ds-header-bar__mobile-nav"
-          aria-label="Mobile navigation"
+          :aria-label="mobileNavLabel"
         >
           <slot name="navigation">
             <slot />

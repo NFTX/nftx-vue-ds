@@ -23,7 +23,7 @@
     v-if="dismissible"
     type="button"
     class="ds-alert__close"
-    aria-label="Dismiss alert"
+    :aria-label="dismissLabel"
     @click="handleDismiss"
   >
     <DsIcon :icon="X" size="sm" />

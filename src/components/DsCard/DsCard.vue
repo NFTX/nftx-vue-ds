@@ -50,6 +50,11 @@ export interface DsCardProps {
    * @default false
    */
   accent?: DsCardAccent
+  /**
+   * Screen reader text added to the link when `target` is `_blank`.
+   * @default '(opens in a new tab)'
+   */
+  newTabLabel?: string
 }
 
 const props = withDefaults(defineProps<DsCardProps>(), {
@@ -61,7 +66,8 @@ const props = withDefaults(defineProps<DsCardProps>(), {
   rel: undefined,
   divided: true,
   interactive: false,
-  accent: false
+  accent: false,
+  newTabLabel: '(opens in a new tab)'
 })
 
 const variantClass = computed<string>(() => `ds-card--${props.variant}`)

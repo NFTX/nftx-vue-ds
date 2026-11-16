@@ -43,6 +43,16 @@ export interface DsToastProps {
    * @default true
    */
   closable?: boolean
+  /**
+   * Accessible label for the close button.
+   * @default 'Dismiss notification'
+   */
+  closeLabel?: string
+  /**
+   * Accessible name of the toast when it has no `title`.
+   * @default 'Notification'
+   */
+  ariaLabel?: string
 }
 
 const props = withDefaults(defineProps<DsToastProps>(), {
@@ -51,7 +61,9 @@ const props = withDefaults(defineProps<DsToastProps>(), {
   variant: 'info',
   duration: undefined,
   position: 'bottom-right',
-  closable: true
+  closable: true,
+  closeLabel: 'Dismiss notification',
+  ariaLabel: 'Notification'
 })
 
 const open = defineModel<boolean>('open', { default: false })

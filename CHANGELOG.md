@@ -10,8 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - **`auto` theme mode** in `useTheme`, `DsHeaderBar` and `DsThemeToggle`: removes `data-theme` so tokens follow `prefers-color-scheme`.
 - **`DsHeaderBar` `storageKey`** prop.
+- **Label props for built-in text**, English by default: `DsAlert` `dismissLabel`; `DsInput` `clearLabel`; `DsModal` `closeLabel`; `DsToast` `closeLabel`, `ariaLabel`; `DsSearchBar` `clearLabel`, `shortcutHint`; `DsCode` `copyLabel`, `copiedLabel`, `copyFailedLabel`; `DsTable` `regionLabel`; `DsTagGroup` `removeLabel`, `inputLabel`; `DsCard` and `DsLink` `newTabLabel`; `DsHeaderBar` `themeLabels`, `switchThemeLabel`, `navLabel`, `mobileNavLabel`, `openMenuLabel`, `closeMenuLabel`; `DsThemeToggle` `toggleLabel`, `announceLabel`. Labels with values use `{placeholder}` templates.
 
 ### Changed
+- **English label defaults** where Portuguese was hard-coded: `DsTable` region name (`'Data table'`), `DsTag` `removeLabel` (`'Remove'`), `DsTagGroup` `placeholder` (`'+ Add tag'`) and remove labels (`'Remove tag {tag}'`). `DsToast` without a title is now named `'Notification'`.
 - **`DsThemeMode`** (`DsTheme` plus `auto`) is now exported from `useTheme` and used by `useTheme`, `DsHeaderBar` and `DsThemeToggle`. `useTheme().theme` is typed `Ref<DsThemeMode>`.
 - **Theme instances stay in sync**: `useTheme`, `DsHeaderBar` and `DsThemeToggle` with the same storage key follow each other's changes on the page.
 - **`DsHeaderBar` only manages the document theme when uncontrolled**: with a `theme` prop, or with `showThemeToggle=false`, it no longer writes `data-theme` or storage.

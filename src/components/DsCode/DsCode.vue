@@ -26,13 +26,31 @@ export interface DsCodeProps {
    * @default 'xs'
    */
   size?: DsCodeSize
+  /**
+   * Accessible label for the copy button.
+   * @default 'Copy code to clipboard'
+   */
+  copyLabel?: string
+  /**
+   * Label and announcement after a successful copy.
+   * @default 'Copied to clipboard'
+   */
+  copiedLabel?: string
+  /**
+   * Label and announcement when copying fails (for example on plain-http origins).
+   * @default 'Copy failed'
+   */
+  copyFailedLabel?: string
 }
 
 const props = withDefaults(defineProps<DsCodeProps>(), {
   block: false,
   copyable: false,
   copyText: undefined,
-  size: 'xs'
+  size: 'xs',
+  copyLabel: 'Copy code to clipboard',
+  copiedLabel: 'Copied to clipboard',
+  copyFailedLabel: 'Copy failed'
 })
 
 type CopyState = 'idle' | 'copied' | 'failed'
@@ -50,13 +68,13 @@ const wrapperClasses = computed<Record<string, boolean>>(() => ({
   [`ds-code--${props.size}`]: true
 }))
 
-const COPY_LABELS: Record<CopyState, string> = {
-  idle: 'Copy code to clipboard',
-  copied: 'Copied to clipboard',
-  failed: 'Copy failed'
-}
+const copyLabels = computed<Record<CopyState, string>>(() => ({
+  idle: props.copyLabel,
+  copied: props.copiedLabel,
+  failed: props.copyFailedLabel
+}))
 
-const copyAriaLabel = computed<string>(() => COPY_LABELS[copyState.value])
+const copyAriaLabel = computed<string>(() => copyLabels.value[copyState.value])
 const copyIcon = computed(() => {
   if (copyState.value === 'copied') return Check
   if (copyState.value === 'failed') return AlertCircle
@@ -79,7 +97,7 @@ async function handleCopy(): Promise<void> {
   if (!textToCopy) return
 
   copyState.value = (await writeToClipboard(textToCopy)) ? 'copied' : 'failed'
-  announce(COPY_LABELS[copyState.value], 'polite')
+  announce(copyLabels.value[copyState.value], 'polite')
 
   if (copyTimeout !== null) {
     clearTimeout(copyTimeout)

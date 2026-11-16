@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { formatLabel } from '@/utils/formatLabel'
 import { computed, onMounted, ref, watch } from 'vue'
 import DsButton from '@/components/DsButton/DsButton.vue'
 import DsIcon from '@/components/DsIcon/DsIcon.vue'
@@ -42,6 +43,16 @@ export interface DsThemeToggleProps {
    * Custom human-readable labels for each theme.
    */
   labels?: Partial<Record<DsThemeMode, string>>
+  /**
+   * Button label; `{current}` and `{next}` are replaced by theme names from `labels`.
+   * @default 'Current theme: {current}. Activate to switch to {next} theme'
+   */
+  toggleLabel?: string
+  /**
+   * Screen reader announcement after a change; `{theme}` is replaced by the new theme name.
+   * @default 'Theme changed to {theme}'
+   */
+  announceLabel?: string
 }
 
 export interface DsThemeToggleEmits {
@@ -55,7 +66,9 @@ const props = withDefaults(defineProps<DsThemeToggleProps>(), {
   availableThemes: undefined,
   storageKey: 'ds-theme',
   showLabel: false,
-  labels: undefined
+  labels: undefined,
+  toggleLabel: 'Current theme: {current}. Activate to switch to {next} theme',
+  announceLabel: 'Theme changed to {theme}'
 })
 
 const emit = defineEmits<DsThemeToggleEmits>()
@@ -130,7 +143,7 @@ const currentIcon = computed<string>(() => {
 })
 
 const ariaLabel = computed<string>(() => {
-  return `Current theme: ${currentLabel.value}. Activate to switch to ${nextLabel.value} theme`
+  return formatLabel(props.toggleLabel, { current: currentLabel.value, next: nextLabel.value })
 })
 
 function handleToggle(): void {
@@ -138,7 +151,7 @@ function handleToggle(): void {
   themeState.setTheme(next)
   model.value = next
   emit('change', next)
-  announcer.announce(`Theme changed to ${getLabel(next)}`, 'polite')
+  announcer.announce(formatLabel(props.announceLabel, { theme: getLabel(next) }), 'polite')
 }
 </script>
 

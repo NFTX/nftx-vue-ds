@@ -41,6 +41,11 @@ export interface DsModalProps {
    * Deprecated alias for dismissible. Whether clicking the backdrop closes the modal.
    */
   closeOnBackdropClick?: boolean
+  /**
+   * Accessible label for the header close button.
+   * @default 'Close dialog'
+   */
+  closeLabel?: string
 }
 
 const props = withDefaults(defineProps<DsModalProps>(), {
@@ -50,7 +55,8 @@ const props = withDefaults(defineProps<DsModalProps>(), {
   role: 'dialog',
   headingTag: 'h2',
   dismissible: undefined,
-  closeOnBackdropClick: undefined
+  closeOnBackdropClick: undefined,
+  closeLabel: 'Close dialog'
 })
 
 const openProp = defineModel<boolean>('open', { default: false })

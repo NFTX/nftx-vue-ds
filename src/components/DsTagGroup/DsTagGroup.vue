@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { formatLabel } from '@/utils/formatLabel'
 import { ref, computed } from 'vue'
 import DsTag, { type DsTagVariant, type DsTagSize, type DsTagShape } from '@/components/DsTag/DsTag.vue'
 import DsIcon from '@/components/DsIcon/DsIcon.vue'
@@ -15,7 +16,7 @@ export interface DsTagGroupProps {
   editable?: boolean
   /**
    * Placeholder when tag input is empty.
-   * @default '+ Adicionar...'
+   * @default '+ Add tag'
    */
   placeholder?: string
   /**
@@ -38,16 +39,28 @@ export interface DsTagGroupProps {
    * @default false
    */
   allowDuplicates?: boolean
+  /**
+   * Accessible label for each remove button; `{tag}` is replaced by the tag text.
+   * @default 'Remove tag {tag}'
+   */
+  removeLabel?: string
+  /**
+   * Accessible label for the new-tag input.
+   * @default 'New tag'
+   */
+  inputLabel?: string
 }
 
 const props = withDefaults(defineProps<DsTagGroupProps>(), {
   tags: undefined,
   editable: false,
-  placeholder: '+ Adicionar...',
+  placeholder: '+ Add tag',
   variant: 'subtle',
   size: 'sm',
   shape: 'rounded',
-  allowDuplicates: false
+  allowDuplicates: false,
+  removeLabel: 'Remove tag {tag}',
+  inputLabel: 'New tag'
 })
 
 const model = defineModel<string[]>({ default: () => [] })

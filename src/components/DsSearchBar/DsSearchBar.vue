@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { formatLabel } from '@/utils/formatLabel'
 import { computed, onMounted, onBeforeUnmount, ref, useId } from 'vue'
 import { Search as SearchIcon, X as XIcon } from '@lucide/vue'
 import DsIcon from '@/components/DsIcon/DsIcon.vue'
@@ -32,6 +33,16 @@ export interface DsSearchBarProps {
    * @default false
    */
   disabled?: boolean
+  /**
+   * Accessible label for the clear button.
+   * @default 'Clear search query'
+   */
+  clearLabel?: string
+  /**
+   * Screen reader hint when `shortcutLabel` is set; `{key}` is replaced by `shortcutLabel`.
+   * @default 'Press {key} to focus search'
+   */
+  shortcutHint?: string
 }
 
 const props = withDefaults(defineProps<DsSearchBarProps>(), {
@@ -40,7 +51,9 @@ const props = withDefaults(defineProps<DsSearchBarProps>(), {
   hotkey: undefined,
   shortcutLabel: undefined,
   ariaLabel: 'Site search',
-  disabled: false
+  disabled: false,
+  clearLabel: 'Clear search query',
+  shortcutHint: 'Press {key} to focus search'
 })
 
 const emit = defineEmits<{
