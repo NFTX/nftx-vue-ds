@@ -13,8 +13,8 @@
 
   <div class="ds-radio-group__options">
     <label
-      v-for="option in options"
-      :key="String(option.value)"
+      v-for="(option, index) in options"
+      :key="index"
       class="ds-radio-item"
       :class="{
         'ds-radio-item--checked': model === option.value,

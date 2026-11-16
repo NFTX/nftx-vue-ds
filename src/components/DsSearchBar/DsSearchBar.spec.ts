@@ -133,4 +133,34 @@ describe('DsSearchBar', () => {
     expect(html).toContain('placeholder="SSR Search"')
     expect(html).toContain('⌘K')
   })
+
+  it('is a single search landmark with a labelled input', () => {
+    const wrapper = mount(DsSearchBar, { props: { ariaLabel: 'Find services' } })
+    expect(wrapper.element.tagName).toBe('SEARCH')
+    expect(wrapper.find('form').attributes('role')).toBeUndefined()
+    expect(wrapper.find('input').attributes('aria-label')).toBe('Find services')
+  })
+
+  it('ignores the hotkey while a select or contenteditable element has focus', () => {
+    const wrapper = mount(DsSearchBar, { props: { hotkey: '/' }, attachTo: document.body })
+    const input = wrapper.find('input').element
+
+    const select = document.createElement('select')
+    const editable = document.createElement('div')
+    editable.contentEditable = 'true'
+    const nested = document.createElement('span')
+    nested.tabIndex = 0
+    editable.appendChild(nested)
+    document.body.append(select, editable)
+
+    for (const el of [select, nested]) {
+      el.focus()
+      window.dispatchEvent(new KeyboardEvent('keydown', { key: '/' }))
+      expect(document.activeElement).not.toBe(input)
+    }
+
+    select.remove()
+    editable.remove()
+    wrapper.unmount()
+  })
 })

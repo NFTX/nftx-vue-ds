@@ -253,4 +253,23 @@ describe('DsHeaderBar', () => {
     header.unmount()
     toggle.unmount()
   })
+
+  it('renders the default title with titleTag', () => {
+    const wrapper = mount(DsHeaderBar, { props: { title: 'Portal', titleTag: 'p', theme: 'light' } })
+    expect(wrapper.find('.ds-header-bar__title').element.tagName).toBe('P')
+    expect(wrapper.find('h1').exists()).toBe(false)
+  })
+
+  it('renders the search slot once, moving it into the open mobile menu', async () => {
+    const wrapper = mount(DsHeaderBar, {
+      props: { theme: 'light' },
+      slots: { search: '<input class="probe-search" />' }
+    })
+    expect(wrapper.findAll('.probe-search')).toHaveLength(1)
+    expect(wrapper.find('.ds-header-bar__center .probe-search').exists()).toBe(true)
+
+    await wrapper.find('.ds-header-bar__mobile-toggle').trigger('click')
+    expect(wrapper.findAll('.probe-search')).toHaveLength(1)
+    expect(wrapper.find('.ds-header-bar__mobile-search .probe-search').exists()).toBe(true)
+  })
 })

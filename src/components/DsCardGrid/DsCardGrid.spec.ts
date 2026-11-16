@@ -110,4 +110,16 @@ describe('DsCardGrid', () => {
     expect(html).toContain('role="list"')
     expect(html).toContain('SSR Grid Card')
   })
+
+  it('renders div items when the container is not a list element', () => {
+    const wrapper = mount(DsCardGrid, {
+      props: { tag: 'div', items: ['a', 'b'] },
+      slots: { item: '<span>card</span>' }
+    })
+    expect(wrapper.findAll('li')).toHaveLength(0)
+    const items = wrapper.findAll('.ds-card-grid__item')
+    expect(items).toHaveLength(2)
+    expect(items[0]?.element.tagName).toBe('DIV')
+    expect(items[0]?.attributes('role')).toBe('listitem')
+  })
 })

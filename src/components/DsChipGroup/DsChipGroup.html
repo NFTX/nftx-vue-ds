@@ -25,7 +25,8 @@
     ]"
     :aria-pressed="isSelected(option.value)"
     :disabled="option.disabled"
-    :tabindex="roving.getTabIndex(index)"
+    :tabindex="index === tabStop ? 0 : -1"
+    @focus="roving.currentIndex.value = index"
     @click="handleChipClick(option, index)"
   >
     <span class="ds-chip__label">{{ option.label }}</span>

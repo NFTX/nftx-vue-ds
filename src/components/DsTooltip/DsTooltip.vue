@@ -92,8 +92,11 @@ function syncTriggerAriaDescribedby(): void {
   const wrapper = triggerRef.value
   if (!wrapper) return
   const child = wrapper.firstElementChild as HTMLElement | null
-  if (child) {
-    child.setAttribute('aria-describedby', tooltipId)
+  if (!child) return
+  // Keep ids already there, for example from DsField hint and error text
+  const ids = (child.getAttribute('aria-describedby') ?? '').split(/\s+/).filter(Boolean)
+  if (!ids.includes(tooltipId)) {
+    child.setAttribute('aria-describedby', [...ids, tooltipId].join(' '))
   }
 }
 

@@ -101,6 +101,15 @@ function handleChipClick(option: DsChipOption, index: number): void {
   }
 }
 
+// The single Tab stop must be an enabled chip, or the group cannot be reached with Tab
+const tabStop = computed<number>(() => {
+  const options = resolvedOptions.value
+  const current = options[roving.currentIndex.value]
+  return current && !current.disabled
+    ? roving.currentIndex.value
+    : options.findIndex((option) => !option.disabled)
+})
+
 function onKeydown(event: KeyboardEvent): void {
   roving.handleKeydown(event, chipRefs.value)
 }

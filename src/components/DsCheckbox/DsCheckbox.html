@@ -18,6 +18,7 @@
       :required="required"
       class="ds-checkbox__input"
       v-bind="$attrs"
+      @change="syncIndeterminate"
     />
     <span class="ds-checkbox__box" aria-hidden="true">
       <DsIcon v-if="indeterminate" :icon="Minus" size="sm" class="ds-checkbox__icon" />

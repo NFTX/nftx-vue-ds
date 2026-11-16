@@ -101,4 +101,21 @@ describe('DsSelect', () => {
     expect(html).toContain('Option 1')
     expect(html).toContain('Option 2')
   })
+
+  it('treats 0 as a selected value, not as the placeholder', () => {
+    const wrapper = mount(DsSelect, {
+      props: {
+        placeholder: 'Pick one',
+        modelValue: 0,
+        options: [
+          { label: 'Zero', value: 0 },
+          { label: 'One', value: 1 }
+        ]
+      },
+      attachTo: document.body
+    })
+    expect((wrapper.find('select').element as HTMLSelectElement).value).toBe('0')
+    expect((wrapper.find('option[value=""]').element as HTMLOptionElement).selected).toBe(false)
+    wrapper.unmount()
+  })
 })

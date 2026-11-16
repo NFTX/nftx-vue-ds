@@ -109,4 +109,17 @@ describe('DsTooltip', () => {
     expect(html).toContain('role="tooltip"')
     expect(html).toContain('SSR Tooltip')
   })
+
+  it('adds its id to an existing aria-describedby instead of replacing it', () => {
+    const wrapper = mount(DsTooltip, {
+      props: { content: 'Tip' },
+      slots: { default: '<input aria-describedby="hint-1 error-1" />' },
+      attachTo: document.body
+    })
+    const ids = wrapper.find('input').attributes('aria-describedby')?.split(' ') ?? []
+    expect(ids.slice(0, 2)).toEqual(['hint-1', 'error-1'])
+    expect(ids).toHaveLength(3)
+    expect(ids[2]).toBe(wrapper.find('[role="tooltip"]').attributes('id'))
+    wrapper.unmount()
+  })
 })

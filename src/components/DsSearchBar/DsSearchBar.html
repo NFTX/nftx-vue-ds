@@ -1,5 +1,5 @@
 <search class="ds-search-bar" :aria-label="ariaLabel" v-bind="$attrs">
-  <form class="ds-search-bar__form" role="search" @submit="handleSubmit">
+  <form class="ds-search-bar__form" @submit="handleSubmit">
     <span class="ds-search-bar__icon" aria-hidden="true">
       <DsIcon :icon="SearchIcon" size="sm" />
     </span>
@@ -12,6 +12,7 @@
       :value="model"
       :placeholder="placeholder"
       :disabled="disabled"
+      :aria-label="ariaLabel"
       :aria-keyshortcuts="hotkey"
       autocomplete="off"
       spellcheck="false"

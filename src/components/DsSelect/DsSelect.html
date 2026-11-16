@@ -19,7 +19,7 @@
     @change="handleChange"
     v-bind="$attrs"
   >
-    <option v-if="placeholder" value="" disabled :selected="!model">
+    <option v-if="placeholder" value="" disabled :selected="!hasValue">
       {{ placeholder }}
     </option>
 

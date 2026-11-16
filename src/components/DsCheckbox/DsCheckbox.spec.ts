@@ -60,4 +60,20 @@ describe('DsCheckbox', () => {
     expect(html).toContain('class="ds-checkbox ds-checkbox--checked"')
     expect(html).toContain('SSR Checkbox')
   })
+
+  it('keeps the DOM indeterminate state in sync with the prop after a click', async () => {
+    const wrapper = mount(DsCheckbox, {
+      props: { label: 'All', indeterminate: true },
+      attachTo: document.body
+    })
+    const input = wrapper.find('input').element as HTMLInputElement
+    expect(input.indeterminate).toBe(true)
+
+    input.click()
+    expect(input.indeterminate).toBe(true)
+
+    await wrapper.setProps({ indeterminate: false })
+    expect(input.indeterminate).toBe(false)
+    wrapper.unmount()
+  })
 })

@@ -41,9 +41,10 @@ const autoId = useId()
 const tabRefs = ref<(HTMLButtonElement | null)[]>([])
 
 // Determine initial index
+const firstEnabledIdx = (): number => Math.max(0, props.tabs.findIndex((t) => !t.disabled))
 const initialIdx = computed<number>(() => {
   const found = props.tabs.findIndex((t) => t.id === model.value)
-  return found >= 0 ? found : 0
+  return found >= 0 ? found : firstEnabledIdx()
 })
 
 const roving = useRovingFocus({
@@ -62,7 +63,7 @@ const roving = useRovingFocus({
 
 // Keep model initialized if empty
 if (!model.value && props.tabs.length > 0) {
-  model.value = props.tabs[0]?.id ?? ''
+  model.value = props.tabs[firstEnabledIdx()]?.id ?? ''
 }
 
 watch(

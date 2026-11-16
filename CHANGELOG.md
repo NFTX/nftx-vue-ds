@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - **`auto` theme mode** in `useTheme`, `DsHeaderBar` and `DsThemeToggle`: removes `data-theme` so tokens follow `prefers-color-scheme`.
-- **`DsHeaderBar` `storageKey`** prop.
+- **`DsHeaderBar` `storageKey`** prop, and **`titleTag`** for pages that have their own `<h1>`.
 - **Label props for built-in text**, English by default: `DsAlert` `dismissLabel`; `DsInput` `clearLabel`; `DsModal` `closeLabel`; `DsToast` `closeLabel`, `ariaLabel`; `DsSearchBar` `clearLabel`, `shortcutHint`; `DsCode` `copyLabel`, `copiedLabel`, `copyFailedLabel`; `DsTable` `regionLabel`; `DsTagGroup` `removeLabel`, `inputLabel`; `DsCard` and `DsLink` `newTabLabel`; `DsHeaderBar` `themeLabels`, `switchThemeLabel`, `navLabel`, `mobileNavLabel`, `openMenuLabel`, `closeMenuLabel`; `DsThemeToggle` `toggleLabel`, `announceLabel`. Labels with values use `{placeholder}` templates.
 
 ### Changed
@@ -30,6 +30,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **`DsButton`**: Space on a link button now follows the `href` instead of only emitting `click`. The icon-only `ariaLabel` warning only runs in development builds.
 - **`DsModal`**: closing the dialog natively (for example with a `<form method="dialog">` in the slot) now updates `v-model:open`, emits `close` and releases the scroll lock.
 - **Storybook container**: security headers were dropped on `/iframe.html` and static files, and unhashed Storybook files were cached as immutable for a year. Images pinned to `node:26-slim` and `nginx:1.30-alpine`.
+- **`DsSearchBar`**: one search landmark instead of two nested ones; the input is labelled with `ariaLabel`; the hotkey no longer fires while a `<select>` or contenteditable element has focus.
+- **`DsHeaderBar`**: the `search` slot rendered twice while the mobile menu was open.
+- **`DsTooltip`**: keeps existing `aria-describedby` ids on the trigger (for example `DsField` hint and error) instead of replacing them.
+- **`DsTextarea`**: the character counter no longer announces every keystroke; it is still read through `aria-describedby`.
+- **`DsChipGroup` / `DsTabs`**: a disabled first item no longer makes the group unreachable with Tab; `DsTabs` with an empty model selects the first enabled tab.
+- **`DsCardGrid`**: items render as `<div role="listitem">` when `tag` is not `ul` or `ol`.
+- **`DsRadioGroup`** with object values, **`DsSelect`** with value `0`, and **`DsCheckbox`** `indeterminate` after a click.
 - **`DsSkipLink`**: no longer cancels navigation when the href is not a same-page hash or the target is missing; targets whose id is not a valid CSS selector now work.
 
 ## [1.2.0] - 2026-10-26

@@ -105,4 +105,26 @@ describe('DsChipGroup', () => {
     expect(html).toContain('Option A')
     expect(html).toContain('Option B')
   })
+
+  it('puts the Tab stop on the first enabled chip when the first chip is disabled', async () => {
+    const wrapper = mount(DsChipGroup, {
+      props: {
+        options: [
+          { label: 'Off', value: 'off', disabled: true },
+          { label: 'A', value: 'a' },
+          { label: 'B', value: 'b' }
+        ]
+      },
+      attachTo: document.body
+    })
+    const chips = wrapper.findAll('button')
+    expect(chips.map((chip) => chip.attributes('tabindex'))).toEqual(['-1', '0', '-1'])
+
+    // Arrow keys continue from the chip that received focus
+    ;(chips[1]?.element as HTMLButtonElement).focus()
+    await chips[1]?.trigger('focus')
+    await wrapper.trigger('keydown', { key: 'ArrowRight' })
+    expect(document.activeElement).toBe(chips[2]?.element)
+    wrapper.unmount()
+  })
 })

@@ -80,6 +80,11 @@ export interface DsHeaderBarProps {
    * @default 'Close navigation menu'
    */
   closeMenuLabel?: string
+  /**
+   * Element for the default title. Use a non-heading when the page has its own `<h1>`.
+   * @default 'h1'
+   */
+  titleTag?: 'h1' | 'p' | 'span' | 'div'
 }
 
 export interface DsHeaderBarEmits {
@@ -103,7 +108,8 @@ const props = withDefaults(defineProps<DsHeaderBarProps>(), {
   navLabel: 'Primary navigation',
   mobileNavLabel: 'Mobile navigation',
   openMenuLabel: 'Open navigation menu',
-  closeMenuLabel: 'Close navigation menu'
+  closeMenuLabel: 'Close navigation menu',
+  titleTag: 'h1'
 })
 
 const emit = defineEmits<DsHeaderBarEmits>()

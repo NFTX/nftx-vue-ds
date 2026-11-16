@@ -8,16 +8,15 @@
     <!-- Brand area -->
     <div class="ds-header-bar__brand">
       <slot name="brand">
-        <h1 class="ds-header-bar__title">{{ title }}</h1>
+        <component :is="titleTag" class="ds-header-bar__title">{{ title }}</component>
         <p v-if="subtitle" class="ds-header-bar__subtitle">{{ subtitle }}</p>
       </slot>
     </div>
 
-    <!-- Center / Search slot -->
-    <div v-if="$slots.search || $slots.center" class="ds-header-bar__center">
-      <slot name="search">
-        <slot name="center" />
-      </slot>
+    <!-- Center / Search slot (the search moves into the mobile menu while it is open) -->
+    <div v-if="($slots.search && !isMobileOpen) || $slots.center" class="ds-header-bar__center">
+      <slot v-if="$slots.search && !isMobileOpen" name="search" />
+      <slot v-else name="center" />
     </div>
 
     <!-- Desktop Navigation & Actions -->

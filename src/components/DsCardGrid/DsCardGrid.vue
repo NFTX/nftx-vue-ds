@@ -54,6 +54,7 @@ const props = withDefaults(defineProps<DsCardGridProps>(), {
 })
 
 const gapClass = computed<string>(() => `ds-card-grid--gap-${props.gap}`)
+const itemTag = computed<string>(() => (props.tag === 'ul' || props.tag === 'ol' ? 'li' : 'div'))
 const resolvedMinCol = computed<string>(() => props.minCardWidth || props.minColWidth || '18rem')
 
 const gridStyle = computed<Record<string, string>>(() => ({

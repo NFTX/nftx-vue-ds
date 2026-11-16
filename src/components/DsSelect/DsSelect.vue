@@ -96,6 +96,7 @@ const computedAriaInvalid = computed<'true' | 'false' | undefined>(() => {
 })
 
 const sizeClass = computed<string>(() => `ds-select-wrapper--${props.size}`)
+const hasValue = computed<boolean>(() => model.value !== '' && model.value !== undefined && model.value !== null)
 
 function handleChange(event: Event): void {
   const target = event.target as HTMLSelectElement

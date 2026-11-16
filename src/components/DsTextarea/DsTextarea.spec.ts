@@ -44,4 +44,11 @@ describe('DsTextarea', () => {
     expect(html).toContain('class="ds-textarea-wrapper"')
     expect(html).toContain('SSR Text')
   })
+
+  it('exposes the counter through aria-describedby without a live region', () => {
+    const wrapper = mount(DsTextarea, { props: { maxlength: 10, modelValue: 'abc' } })
+    const count = wrapper.find('.ds-textarea__count')
+    expect(count.attributes('aria-live')).toBeUndefined()
+    expect(wrapper.find('textarea').attributes('aria-describedby')).toContain(count.attributes('id'))
+  })
 })

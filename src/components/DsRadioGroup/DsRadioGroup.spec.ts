@@ -54,4 +54,17 @@ describe('DsRadioGroup', () => {
     expect(html).toContain('SSR Radios')
     expect(html).toContain('Option 1')
   })
+
+  it('renders every option when values are objects', () => {
+    const wrapper = mount(DsRadioGroup, {
+      props: {
+        legend: 'Plan',
+        options: [
+          { label: 'Small', value: { id: 1 } },
+          { label: 'Large', value: { id: 2 } }
+        ]
+      }
+    })
+    expect(wrapper.findAll('input[type="radio"]')).toHaveLength(2)
+  })
 })

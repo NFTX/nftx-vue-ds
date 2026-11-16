@@ -24,7 +24,7 @@ export interface DsSearchBarProps {
    */
   shortcutLabel?: string
   /**
-   * Accessible landmark label.
+   * Accessible name of the search landmark and its input.
    * @default 'Site search'
    */
   ariaLabel?: string
@@ -97,7 +97,8 @@ function handleGlobalKeydown(event: KeyboardEvent): void {
   const isInputActive =
     activeEl instanceof HTMLInputElement ||
     activeEl instanceof HTMLTextAreaElement ||
-    activeEl?.getAttribute('contenteditable') === 'true'
+    activeEl instanceof HTMLSelectElement ||
+    (activeEl instanceof HTMLElement && activeEl.isContentEditable)
 
   if (isInputActive && activeEl !== inputRef.value) return
 

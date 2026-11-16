@@ -13,14 +13,15 @@
   v-bind="$attrs"
 >
   <template v-if="items && items.length">
-    <li
+    <component
+      :is="itemTag"
       v-for="(item, index) in items"
       :key="index"
       class="ds-card-grid__item"
       role="listitem"
     >
       <slot name="item" :item="item" :index="index" />
-    </li>
+    </component>
   </template>
   <slot v-else />
 </component>

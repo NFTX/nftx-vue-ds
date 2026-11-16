@@ -108,4 +108,19 @@ describe('DsTabs', () => {
     expect(html).toContain('Tab One')
     expect(html).toContain('SSR Panel 1')
   })
+
+  it('selects the first enabled tab when the model is empty', () => {
+    const wrapper = mount(DsTabs, {
+      props: {
+        tabs: [
+          { id: 'locked', label: 'Locked', disabled: true },
+          { id: 'open', label: 'Open' }
+        ]
+      }
+    })
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['open'])
+    const tabs = wrapper.findAll('[role="tab"]')
+    expect(tabs[1]?.attributes('tabindex')).toBe('0')
+    expect(tabs[0]?.attributes('tabindex')).toBe('-1')
+  })
 })
