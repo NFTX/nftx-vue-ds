@@ -1,8 +1,14 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { renderToString } from '@vue/server-renderer'
-import { createSSRApp, h } from 'vue'
+import { createSSRApp, h, nextTick } from 'vue'
 import DsCode from './DsCode.vue'
+
+// Fake timers are active, so flush microtasks without setTimeout
+async function settle(): Promise<void> {
+  for (let i = 0; i < 5; i++) await Promise.resolve()
+  await nextTick()
+}
 
 describe('DsCode', () => {
   beforeEach(() => {
@@ -82,6 +88,50 @@ describe('DsCode', () => {
     await copyBtn.trigger('click')
     expect(writeTextSpy).not.toHaveBeenCalled()
 
+    wrapper.unmount()
+  })
+
+  it('reports failure instead of success when the clipboard API is missing', async () => {
+    Object.defineProperty(navigator, 'clipboard', { value: undefined, configurable: true })
+
+    const wrapper = mount(DsCode, {
+      props: { copyable: true },
+      slots: { default: 'docker ps' }
+    })
+
+    const copyBtn = wrapper.find('button.ds-code__copy-btn')
+    await copyBtn.trigger('click')
+    await settle()
+
+    expect(copyBtn.attributes('aria-label')).toBe('Copy failed')
+    expect(copyBtn.classes()).toContain('ds-code__copy-btn--failed')
+    vi.advanceTimersByTime(60)
+    expect(document.getElementById('ds-announcer-polite')?.textContent).toBe('Copy failed')
+
+    vi.advanceTimersByTime(2000)
+    await wrapper.vm.$nextTick()
+    expect(copyBtn.attributes('aria-label')).toBe('Copy code to clipboard')
+    wrapper.unmount()
+  })
+
+  it('reports failure when the clipboard write is rejected', async () => {
+    const writeTextSpy = vi.fn().mockRejectedValue(new Error('denied'))
+    Object.defineProperty(navigator, 'clipboard', {
+      value: { writeText: writeTextSpy },
+      configurable: true
+    })
+
+    const wrapper = mount(DsCode, {
+      props: { copyable: true, block: true },
+      slots: { default: 'npm ci' }
+    })
+
+    const copyBtn = wrapper.find('button.ds-code__copy-btn')
+    await copyBtn.trigger('click')
+    await settle()
+
+    expect(writeTextSpy).toHaveBeenCalledWith('npm ci')
+    expect(copyBtn.attributes('aria-label')).toBe('Copy failed')
     wrapper.unmount()
   })
 

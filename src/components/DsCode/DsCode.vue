@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref } from 'vue'
-import { Check, Copy } from 'lucide-vue-next'
+import { AlertCircle, Check, Copy } from 'lucide-vue-next'
 import DsIcon from '@/components/DsIcon/DsIcon.vue'
 import { useAnnouncer } from '@/composables/a11y/useAnnouncer'
 
@@ -35,9 +35,11 @@ const props = withDefaults(defineProps<DsCodeProps>(), {
   size: 'xs'
 })
 
+type CopyState = 'idle' | 'copied' | 'failed'
+
 const { announce } = useAnnouncer()
 const codeRef = ref<HTMLElement | null>(null)
-const copied = ref(false)
+const copyState = ref<CopyState>('idle')
 let copyTimeout: ReturnType<typeof setTimeout> | null = null
 
 const wrapperClasses = computed<Record<string, boolean>>(() => ({
@@ -48,26 +50,42 @@ const wrapperClasses = computed<Record<string, boolean>>(() => ({
   [`ds-code--${props.size}`]: true
 }))
 
-const copyAriaLabel = computed<string>(() =>
-  copied.value ? 'Copied to clipboard' : 'Copy code to clipboard'
-)
+const COPY_LABELS: Record<CopyState, string> = {
+  idle: 'Copy code to clipboard',
+  copied: 'Copied to clipboard',
+  failed: 'Copy failed'
+}
+
+const copyAriaLabel = computed<string>(() => COPY_LABELS[copyState.value])
+const copyIcon = computed(() => {
+  if (copyState.value === 'copied') return Check
+  if (copyState.value === 'failed') return AlertCircle
+  return Copy
+})
+
+// navigator.clipboard only exists in secure contexts (https or localhost)
+async function writeToClipboard(text: string): Promise<boolean> {
+  if (typeof navigator === 'undefined' || !navigator.clipboard?.writeText) return false
+  try {
+    await navigator.clipboard.writeText(text)
+    return true
+  } catch {
+    return false
+  }
+}
 
 async function handleCopy(): Promise<void> {
   const textToCopy = (props.copyText ?? codeRef.value?.textContent ?? '').trim()
   if (!textToCopy) return
 
-  if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
-    await navigator.clipboard.writeText(textToCopy)
-  }
-
-  copied.value = true
-  announce('Copied to clipboard', 'polite')
+  copyState.value = (await writeToClipboard(textToCopy)) ? 'copied' : 'failed'
+  announce(COPY_LABELS[copyState.value], 'polite')
 
   if (copyTimeout !== null) {
     clearTimeout(copyTimeout)
   }
   copyTimeout = setTimeout(() => {
-    copied.value = false
+    copyState.value = 'idle'
     copyTimeout = null
   }, 2000)
 }

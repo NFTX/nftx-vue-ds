@@ -5,6 +5,14 @@ All notable changes to `@nftx-dev/vue-ds` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+- **`DsTable`**: `responsive=false` rendered the table inside a `<template>` element, so nothing was visible.
+- **`DsCode`**: the copy button reported success when nothing was copied (no `navigator.clipboard` on plain-http origins, or a rejected write). It now shows and announces "Copy failed".
+- **`DsButton`**: Space on a link button now follows the `href` instead of only emitting `click`. The icon-only `ariaLabel` warning only runs in development builds.
+- **`DsSkipLink`**: no longer cancels navigation when the href is not a same-page hash or the target is missing; targets whose id is not a valid CSS selector now work.
+
 ## [1.2.0] - 2026-10-26
 
 ### Added

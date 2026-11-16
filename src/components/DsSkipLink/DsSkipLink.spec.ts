@@ -112,14 +112,36 @@ describe('DsSkipLink', () => {
     target.remove()
   })
 
-  it('handles non-hash or missing target gracefully', async () => {
+  it('keeps default navigation for non-hash hrefs and missing targets', () => {
+    for (const href of ['https://example.com', '#does-not-exist', '#1-starts-with-digit']) {
+      const wrapper = mount(DsSkipLink, { props: { href } })
+      const event = new MouseEvent('click', { bubbles: true, cancelable: true })
+      // Stop real navigation only after the component handler has run
+      wrapper.element.addEventListener('click', (e: Event) => {
+        expect(e.defaultPrevented).toBe(false)
+        e.preventDefault()
+      })
+      wrapper.element.dispatchEvent(event)
+      wrapper.unmount()
+    }
+  })
+
+  it('focuses targets whose id is not a valid CSS selector', async () => {
+    const target = document.createElement('main')
+    target.id = '1-starts-with-digit'
+    target.scrollIntoView = vi.fn()
+    document.body.appendChild(target)
+
     const wrapper = mount(DsSkipLink, {
-      props: { href: 'https://example.com' }
+      props: { href: '#1-starts-with-digit' },
+      attachTo: document.body
     })
 
-    // Should not throw even if href is external or target doesn't exist
     await wrapper.find('a').trigger('click')
-    expect(wrapper.attributes('href')).toBe('https://example.com')
+    expect(document.activeElement).toBe(target)
+
+    wrapper.unmount()
+    target.remove()
   })
 
   it('is SSR-safe and renders cleanly with renderToString (ARCH-05)', async () => {

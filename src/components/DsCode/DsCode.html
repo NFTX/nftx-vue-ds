@@ -5,9 +5,10 @@
     type="button"
     class="ds-code__copy-btn"
     :aria-label="copyAriaLabel"
+    :class="{ 'ds-code__copy-btn--failed': copyState === 'failed' }"
     @click="handleCopy"
   >
-    <DsIcon :icon="copied ? Check : Copy" size="sm" />
+    <DsIcon :icon="copyIcon" size="sm" />
   </button>
 </span>
 <div v-else :class="wrapperClasses">
@@ -17,8 +18,9 @@
     type="button"
     class="ds-code__copy-btn"
     :aria-label="copyAriaLabel"
+    :class="{ 'ds-code__copy-btn--failed': copyState === 'failed' }"
     @click="handleCopy"
   >
-    <DsIcon :icon="copied ? Check : Copy" size="sm" />
+    <DsIcon :icon="copyIcon" size="sm" />
   </button>
 </div>

@@ -39,6 +39,8 @@ export default tseslint.config(
     rules: {
       'vue/multi-word-component-names': 'off',
       'no-unused-vars': 'off',
+      // vue-tsc already reports undefined identifiers (typescript-eslint recommends this for TS)
+      'no-undef': 'off',
       // In Vue external template architecture (VUE-01, TS-02), setup bindings
       // are consumed by external .html files and must not be flagged by typescript-eslint
       '@typescript-eslint/no-unused-vars': 'off',

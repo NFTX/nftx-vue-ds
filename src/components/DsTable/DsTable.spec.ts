@@ -47,4 +47,23 @@ describe('DsTable', () => {
     expect(container.attributes('role')).toBe('region')
     expect(container.attributes('aria-label')).toBe('Pautas da Edição')
   })
+
+  it('renders a visible table without the scroll container when responsive is false', () => {
+    const wrapper = mount(DsTable, {
+      props: { responsive: false, caption: 'Plain' },
+      slots: {
+        default: '<tr><td>Row</td></tr>',
+        footer: '<tr><td>Total</td></tr>'
+      },
+      attachTo: document.body
+    })
+
+    expect(wrapper.find('.ds-table-container').exists()).toBe(false)
+    expect(wrapper.element.tagName).toBe('TABLE')
+    expect(wrapper.find('template').exists()).toBe(false)
+    expect((wrapper.element as HTMLElement).getBoundingClientRect().height).toBeGreaterThan(0)
+    expect(wrapper.find('tfoot.ds-table__foot').text()).toBe('Total')
+
+    wrapper.unmount()
+  })
 })

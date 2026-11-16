@@ -94,11 +94,14 @@ const isIconOnly = computed<boolean>(() => {
   return Boolean(props.iconOnly) || (!slots.default && (!!slots.prefix || !!slots.suffix))
 })
 
-watchEffect(() => {
-  if (isIconOnly.value && !props.ariaLabel) {
-    console.warn('[DsButton] Icon-only buttons require an `ariaLabel` prop (A11Y-11).')
-  }
-})
+// process.env.NODE_ENV is left for the consumer's bundler to replace, so the warning drops out of production builds
+if (process.env.NODE_ENV !== 'production') {
+  watchEffect(() => {
+    if (isIconOnly.value && !props.ariaLabel) {
+      console.warn('[DsButton] Icon-only buttons require an `ariaLabel` prop (A11Y-11).')
+    }
+  })
+}
 
 function handleClick(event: MouseEvent): void {
   if (props.disabled || props.loading) {
@@ -109,12 +112,12 @@ function handleClick(event: MouseEvent): void {
   emit('click', event)
 }
 
+// A link with role="button" must activate on Space; a native click both follows href and runs handleClick
 function handleSpaceKey(event: KeyboardEvent): void {
-  if (isLink.value) {
-    event.preventDefault()
-    if (!props.disabled && !props.loading) {
-      emit('click', event as unknown as MouseEvent)
-    }
+  if (!isLink.value) return
+  event.preventDefault()
+  if (!props.disabled && !props.loading) {
+    ;(event.currentTarget as HTMLElement).click()
   }
 }
 </script>

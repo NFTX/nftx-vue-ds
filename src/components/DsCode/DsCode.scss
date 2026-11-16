@@ -75,6 +75,11 @@
         color: var(--ds-color-text-primary);
         background-color: var(--ds-color-bg-surface);
       }
+
+      &--failed,
+      &--failed:hover {
+        color: var(--ds-color-text-error);
+      }
     }
   }
 }

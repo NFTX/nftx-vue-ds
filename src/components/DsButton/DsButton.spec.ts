@@ -170,7 +170,24 @@ describe('DsButton', () => {
     })
 
     const link = wrapper.find('a')
+    const nativeClicks: string[] = []
+    link.element.addEventListener('click', (event) => {
+      event.preventDefault() // keep the test page from navigating
+      nativeClicks.push((event.currentTarget as HTMLAnchorElement).getAttribute('href') ?? '')
+    })
+
     await link.trigger('keydown.space')
+    expect(nativeClicks).toEqual(['/dashboard'])
     expect(wrapper.emitted('click')).toHaveLength(1)
+  })
+
+  it('ignores Space on a disabled link button', async () => {
+    const wrapper = mount(DsButton, {
+      props: { href: '/dashboard', loading: true },
+      slots: { default: 'Dashboard' }
+    })
+
+    await wrapper.find('a').trigger('keydown.space')
+    expect(wrapper.emitted('click')).toBeUndefined()
   })
 })

@@ -30,13 +30,13 @@ const computedHref = computed<string>(() => {
  * even when target element lacks native tabindex (A11Y-06, A11Y-07).
  */
 function handleClick(event: MouseEvent): void {
-  event.preventDefault()
+  const href = computedHref.value
+  if (!href.startsWith('#')) return
 
-  const targetSelector = computedHref.value
-  if (!targetSelector.startsWith('#')) return
-
-  const targetEl = document.querySelector<HTMLElement>(targetSelector)
+  // Leave the default navigation alone unless the target exists on this page
+  const targetEl = document.getElementById(href.slice(1))
   if (!targetEl) return
+  event.preventDefault()
 
   // If target is not naturally focusable, set temporary tabindex for programmatic focus
   if (!targetEl.hasAttribute('tabindex')) {
