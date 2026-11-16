@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, onMounted, ref, useId, watch } from 'vue'
+import { computed, nextTick, ref, useId, watch } from 'vue'
 import { useRovingFocus } from '@/composables/a11y/useRovingFocus'
 import { useTypeahead } from '@/composables/a11y/useTypeahead'
 import { useFocusReturn } from '@/composables/a11y/useFocusReturn'

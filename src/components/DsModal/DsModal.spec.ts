@@ -62,6 +62,33 @@ describe('DsModal', () => {
     wrapper.unmount()
   })
 
+  it('syncs the model when the dialog closes natively (form method="dialog")', async () => {
+    const wrapper = mount(DsModal, {
+      attachTo: document.body,
+      props: {
+        title: 'Confirm',
+        open: true,
+        'onUpdate:open': (val: boolean) => wrapper.setProps({ open: val })
+      },
+      slots: {
+        default: '<form method="dialog"><button class="native-close">OK</button></form>'
+      }
+    })
+    await new Promise((resolve) => setTimeout(resolve, 0))
+    expect(document.body.style.overflow).toBe('hidden')
+
+    const dialog = wrapper.find('dialog').element as HTMLDialogElement
+    expect(dialog.open).toBe(true)
+    ;(wrapper.find('.native-close').element as HTMLButtonElement).click()
+    await new Promise((resolve) => setTimeout(resolve, 50))
+
+    expect(wrapper.emitted('update:open')).toEqual([[false]])
+    expect(wrapper.props('open')).toBe(false)
+    expect(wrapper.emitted('close')).toHaveLength(1)
+    expect(document.body.style.overflow).toBe('')
+    wrapper.unmount()
+  })
+
   it('handles cancel event (Escape key) on dialog', async () => {
     const wrapper = mount(DsModal, {
       attachTo: document.body,

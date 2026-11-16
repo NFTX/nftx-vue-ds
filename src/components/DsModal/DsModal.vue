@@ -139,6 +139,13 @@ function handleClose(): void {
   focusReturn.restoreFocus()
 }
 
+// The dialog can also close natively, for example through a <form method="dialog"> in the slot
+function handleNativeClose(): void {
+  if (open.value) {
+    handleClose()
+  }
+}
+
 function handleCancel(event: Event): void {
   event.preventDefault()
   if (isDismissible.value) {

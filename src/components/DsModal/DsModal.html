@@ -6,6 +6,7 @@
   :aria-labelledby="title ? titleId : undefined"
   :aria-describedby="description ? descriptionId : undefined"
   @cancel="handleCancel"
+  @close="handleNativeClose"
   @click="handleBackdropClick"
   v-bind="$attrs"
 >

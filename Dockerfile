@@ -1,7 +1,7 @@
 # ========================================
 # Stage 1: Build Storybook Static Site
 # ========================================
-FROM node:22-slim AS build
+FROM node:26-slim AS build
 
 WORKDIR /app
 
@@ -20,7 +20,7 @@ RUN npm run build && npm run build-storybook
 # ========================================
 # Stage 2: Minimal Nginx Runtime Container
 # ========================================
-FROM nginx:alpine AS final
+FROM nginx:1.30-alpine AS final
 
 # Clean default Nginx html directory
 RUN rm -rf /usr/share/nginx/html/*

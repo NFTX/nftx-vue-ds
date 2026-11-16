@@ -23,6 +23,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **`DsTable`**: `responsive=false` rendered the table inside a `<template>` element, so nothing was visible.
 - **`DsCode`**: the copy button reported success when nothing was copied (no `navigator.clipboard` on plain-http origins, or a rejected write). It now shows and announces "Copy failed".
 - **`DsButton`**: Space on a link button now follows the `href` instead of only emitting `click`. The icon-only `ariaLabel` warning only runs in development builds.
+- **`DsModal`**: closing the dialog natively (for example with a `<form method="dialog">` in the slot) now updates `v-model:open`, emits `close` and releases the scroll lock.
+- **Storybook container**: security headers were dropped on `/iframe.html` and static files, and unhashed Storybook files were cached as immutable for a year. Images pinned to `node:26-slim` and `nginx:1.30-alpine`.
 - **`DsSkipLink`**: no longer cancels navigation when the href is not a same-page hash or the target is missing; targets whose id is not a valid CSS selector now work.
 
 ## [1.2.0] - 2026-10-26
