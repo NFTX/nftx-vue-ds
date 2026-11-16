@@ -383,8 +383,7 @@
   }
 
   [data-theme='dark'],
-  html.dark,
-  .dark {
+  html.dark {
     @include dark-theme-tokens;
   }
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, provide, ref, useId, watch } from 'vue'
+import { computed, ref, useId, watch } from 'vue'
 import { useRovingFocus } from '@/composables/a11y/useRovingFocus'
 
 export interface DsTabItem {
@@ -102,7 +102,6 @@ function onKeydown(event: KeyboardEvent): void {
   }
 }
 
-provide('dsTabsActiveId', model)
 </script>
 
 <template src="./DsTabs.html"></template>

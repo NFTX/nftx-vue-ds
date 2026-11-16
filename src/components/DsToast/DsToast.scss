@@ -28,33 +28,33 @@
 
     // Positions
     &--top-right {
-      inset-block-start: var(--ds-space-4);
+      inset-block-start: calc(var(--ds-space-4) + var(--ds-toast-offset, 0px));
       inset-inline-end: var(--ds-space-4);
     }
 
     &--top-left {
-      inset-block-start: var(--ds-space-4);
+      inset-block-start: calc(var(--ds-space-4) + var(--ds-toast-offset, 0px));
       inset-inline-start: var(--ds-space-4);
     }
 
     &--top-center {
-      inset-block-start: var(--ds-space-4);
+      inset-block-start: calc(var(--ds-space-4) + var(--ds-toast-offset, 0px));
       inset-inline-start: 50%;
       transform: translateX(-50%);
     }
 
     &--bottom-right {
-      inset-block-end: var(--ds-space-4);
+      inset-block-end: calc(var(--ds-space-4) + var(--ds-toast-offset, 0px));
       inset-inline-end: var(--ds-space-4);
     }
 
     &--bottom-left {
-      inset-block-end: var(--ds-space-4);
+      inset-block-end: calc(var(--ds-space-4) + var(--ds-toast-offset, 0px));
       inset-inline-start: var(--ds-space-4);
     }
 
     &--bottom-center {
-      inset-block-end: var(--ds-space-4);
+      inset-block-end: calc(var(--ds-space-4) + var(--ds-toast-offset, 0px));
       inset-inline-start: 50%;
       transform: translateX(-50%);
     }

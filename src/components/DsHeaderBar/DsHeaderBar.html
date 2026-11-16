@@ -8,7 +8,7 @@
     <!-- Brand area -->
     <div class="ds-header-bar__brand">
       <slot name="brand">
-        <component :is="titleTag" class="ds-header-bar__title">{{ title }}</component>
+        <component :is="titleTag" v-if="title" class="ds-header-bar__title">{{ title }}</component>
         <p v-if="subtitle" class="ds-header-bar__subtitle">{{ subtitle }}</p>
       </slot>
     </div>

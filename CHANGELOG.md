@@ -10,9 +10,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - **`auto` theme mode** in `useTheme`, `DsHeaderBar` and `DsThemeToggle`: removes `data-theme` so tokens follow `prefers-color-scheme`.
 - **`DsHeaderBar` `storageKey`** prop, and **`titleTag`** for pages that have their own `<h1>`.
+- **`DsCard` `linkLabel`**: names the card link when the card has no `title`.
+- **Stacked toasts**: open `DsToast`s at the same position stack instead of overlapping.
 - **Label props for built-in text**, English by default: `DsAlert` `dismissLabel`; `DsInput` `clearLabel`; `DsModal` `closeLabel`; `DsToast` `closeLabel`, `ariaLabel`; `DsSearchBar` `clearLabel`, `shortcutHint`; `DsCode` `copyLabel`, `copiedLabel`, `copyFailedLabel`; `DsTable` `regionLabel`; `DsTagGroup` `removeLabel`, `inputLabel`; `DsCard` and `DsLink` `newTabLabel`; `DsHeaderBar` `themeLabels`, `switchThemeLabel`, `navLabel`, `mobileNavLabel`, `openMenuLabel`, `closeMenuLabel`; `DsThemeToggle` `toggleLabel`, `announceLabel`. Labels with values use `{placeholder}` templates.
 
 ### Changed
+- **`DsCard` with `href`**: the body is no longer wrapped in the link. With a `title`, the link wraps the title and stretches over the card; without one, an overlay link is named by `linkLabel` (or the body text). Buttons and links inside the card stay clickable on their own. `accent="Hover"` (capitalized) was removed; use `'hover'`.
+- **`DsToast`** is announced once, through the shared live regions; the toast element itself is no longer a live region (it was read twice). The `dismiss` event is deprecated; use `close`.
+- **`DsHeaderBar`** has no default title (was `'Portal'`); without a `title`, no title element is rendered.
+- **Dark tokens** apply to `[data-theme='dark']` and `html.dark` only; the bare `.dark` class no longer switches tokens on arbitrary elements.
+- **Base styles** no longer lock page scroll for every open `<dialog>` on the page; `DsModal` still locks it while open.
+- **`DsTabs`** no longer provides the unused `dsTabsActiveId`.
+- **Stricter gates**: lint fails on warnings, and `test:tokens` fails on physical CSS properties in component styles.
 - **English label defaults** where Portuguese was hard-coded: `DsTable` region name (`'Data table'`), `DsTag` `removeLabel` (`'Remove'`), `DsTagGroup` `placeholder` (`'+ Add tag'`) and remove labels (`'Remove tag {tag}'`). `DsToast` without a title is now named `'Notification'`.
 - **`DsThemeMode`** (`DsTheme` plus `auto`) is now exported from `useTheme` and used by `useTheme`, `DsHeaderBar` and `DsThemeToggle`. `useTheme().theme` is typed `Ref<DsThemeMode>`.
 - **Theme instances stay in sync**: `useTheme`, `DsHeaderBar` and `DsThemeToggle` with the same storage key follow each other's changes on the page.
@@ -23,6 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **No runtime dependencies**: icons now come from `@lucide/vue` (the successor of the deprecated `lucide-vue-next`) as a build-time dependency. They were already bundled into `dist`, so consumers no longer install an unused, deprecated package. Apps that register extra icons with `registerDsIcons` should import them from `@lucide/vue`.
 
 ### Fixed
+- **`useAnnouncer`**: no longer touches the DOM when there is no `<body>` (server rendering).
 - **`useTheme`**: no longer throws (and breaks `DsHeaderBar` / `DsThemeToggle`) when the browser blocks site storage.
 - **`DsHeaderBar` `auto` theme**: previously wrote `data-theme="auto"`, which matched no tokens and always showed light.
 - **`DsTable`**: `responsive=false` rendered the table inside a `<template>` element, so nothing was visible.

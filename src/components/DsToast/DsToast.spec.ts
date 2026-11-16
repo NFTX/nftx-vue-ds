@@ -17,7 +17,7 @@ describe('DsToast', () => {
     vi.useRealTimers()
   })
 
-  it('renders correctly with title, description, and status role for info variant (TEST-06)', async () => {
+  it('renders title and description and announces them once through the polite region (TEST-06)', async () => {
     const wrapper = mount(DsToast, {
       attachTo: document.body,
       props: {
@@ -30,8 +30,9 @@ describe('DsToast', () => {
 
     const toast = wrapper.find('.ds-toast')
     expect(toast.exists()).toBe(true)
-    expect(toast.attributes('role')).toBe('status')
-    expect(toast.attributes('aria-live')).toBe('polite')
+    // Not a live region itself: the announcer reads it, so screen readers hear it once
+    expect(toast.attributes('role')).toBe('group')
+    expect(toast.attributes('aria-live')).toBeUndefined()
     expect(toast.classes()).toContain('ds-toast--info')
     expect(wrapper.text()).toContain('File Uploaded')
     expect(wrapper.text()).toContain('Document ready for review')
@@ -43,7 +44,7 @@ describe('DsToast', () => {
     wrapper.unmount()
   })
 
-  it('sets alert role and assertive live region for error variant (A11Y-14)', async () => {
+  it('announces error toasts through the assertive region (A11Y-14)', async () => {
     const wrapper = mount(DsToast, {
       attachTo: document.body,
       props: {
@@ -54,8 +55,7 @@ describe('DsToast', () => {
     })
 
     const toast = wrapper.find('.ds-toast')
-    expect(toast.attributes('role')).toBe('alert')
-    expect(toast.attributes('aria-live')).toBe('assertive')
+    expect(toast.attributes('aria-live')).toBeUndefined()
     expect(toast.classes()).toContain('ds-toast--error')
 
     const announcer = useAnnouncer()
@@ -276,5 +276,27 @@ describe('DsToast', () => {
     expect(html).toContain('class="ds-toast')
     expect(html).toContain('SSR Toast')
     expect(html).toContain('Server rendered toast message')
+  })
+
+  it('stacks open toasts at the same position instead of overlapping', async () => {
+    const first = mount(DsToast, {
+      attachTo: document.body,
+      props: { title: 'First', open: true, duration: 0, position: 'top-right' }
+    })
+    const second = mount(DsToast, {
+      attachTo: document.body,
+      props: { title: 'Second', open: true, duration: 0, position: 'top-right' }
+    })
+    await second.vm.$nextTick()
+
+    const firstEl = first.find('.ds-toast').element as HTMLElement
+    const secondEl = second.find('.ds-toast').element as HTMLElement
+    expect(firstEl.style.getPropertyValue('--ds-toast-offset')).toBe('0px')
+    expect(secondEl.style.getPropertyValue('--ds-toast-offset')).toBe(`${firstEl.offsetHeight + 8}px`)
+
+    first.unmount()
+    await second.vm.$nextTick()
+    expect(secondEl.style.getPropertyValue('--ds-toast-offset')).toBe('0px')
+    second.unmount()
   })
 })

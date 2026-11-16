@@ -18,26 +18,32 @@
 
   <header v-if="$slots.header || title" class="ds-card__header">
     <slot name="header">
-      <h3 class="ds-card__title">{{ title }}</h3>
+      <h3 class="ds-card__title">
+        <a v-if="linksTitle" :href="href" :target="target" :rel="computedRel" class="ds-card__link">
+          {{ title }}<DsVisuallyHidden v-if="target === '_blank'"> {{ newTabLabel }}</DsVisuallyHidden>
+        </a>
+        <template v-else>{{ title }}</template>
+      </h3>
     </slot>
   </header>
 
-  <div class="ds-card__body">
-    <a
-      v-if="href"
-      :href="href"
-      :target="target"
-      :rel="computedRel"
-      class="ds-card__link"
-      tabindex="0"
-    >
-      <slot />
-      <DsVisuallyHidden v-if="target === '_blank'"> {{ newTabLabel }}</DsVisuallyHidden>
-    </a>
-    <slot v-else />
+  <div :id="bodyId" class="ds-card__body">
+    <slot />
   </div>
 
   <footer v-if="$slots.footer" class="ds-card__footer">
     <slot name="footer" />
   </footer>
+
+  <a
+    v-if="href && !linksTitle"
+    :href="href"
+    :target="target"
+    :rel="computedRel"
+    :aria-labelledby="overlayLabelledby"
+    class="ds-card__link ds-card__link--overlay"
+  >
+    <DsVisuallyHidden v-if="linkLabel">{{ linkLabel }}</DsVisuallyHidden>
+    <DsVisuallyHidden v-if="target === '_blank'" :id="newTabId"> {{ newTabLabel }}</DsVisuallyHidden>
+  </a>
 </article>

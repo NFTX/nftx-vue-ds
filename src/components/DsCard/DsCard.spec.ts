@@ -26,37 +26,55 @@ describe('DsCard', () => {
     expect(wrapper.find('.ds-card__footer').text()).toBe('Card Action')
   })
 
-  it('renders stretched link when href is provided', () => {
+  it('renders an overlay link named by the body when href has no title', () => {
     const wrapper = mount(DsCard, {
-      props: {
-        href: 'https://example.com/item/1'
-      },
-      slots: {
-        default: () => 'Clickable Item'
-      }
+      props: { href: 'https://example.com/item/1' },
+      slots: { default: () => 'Clickable Item' }
     })
 
     expect(wrapper.classes()).toContain('ds-card--clickable')
     const link = wrapper.find('a.ds-card__link')
-    expect(link.exists()).toBe(true)
     expect(link.attributes('href')).toBe('https://example.com/item/1')
-    expect(link.text()).toBe('Clickable Item')
+    expect(link.classes()).toContain('ds-card__link--overlay')
+    const bodyId = wrapper.find('.ds-card__body').attributes('id')
+    expect(link.attributes('aria-labelledby')).toBe(bodyId)
+    // Body content is not inside the link, so nested buttons stay valid
+    expect(wrapper.find('.ds-card__body a').exists()).toBe(false)
   })
 
-  it('adds rel="noopener noreferrer" and screen-reader new-tab announcement when target="_blank" (DS-04)', () => {
+  it('names the overlay link with linkLabel and announces a new tab', () => {
     const wrapper = mount(DsCard, {
-      props: {
-        href: 'https://example.com',
-        target: '_blank'
-      },
-      slots: {
-        default: () => 'External Service'
-      }
+      props: { href: 'https://example.com', target: '_blank', linkLabel: 'Grafana' },
+      slots: { default: () => '<button>Copy</button>' }
     })
 
     const link = wrapper.find('a.ds-card__link')
     expect(link.attributes('rel')).toBe('noopener noreferrer')
+    expect(link.attributes('aria-labelledby')).toBeUndefined()
+    expect(link.text()).toContain('Grafana')
     expect(link.text()).toContain('(opens in a new tab)')
+  })
+
+  it('names the overlay link with body text plus the new-tab hint without linkLabel', () => {
+    const wrapper = mount(DsCard, {
+      props: { href: 'https://example.com', target: '_blank' },
+      slots: { default: () => 'External Service' }
+    })
+    const ids = wrapper.find('a.ds-card__link').attributes('aria-labelledby')?.split(' ') ?? []
+    expect(ids).toHaveLength(2)
+    expect(wrapper.find(`#${ids[1]}`).text()).toBe('(opens in a new tab)')
+  })
+
+  it('wraps only the title in the link when there is a title', () => {
+    const wrapper = mount(DsCard, {
+      props: { href: '/docs', title: 'Docs', target: '_blank' },
+      slots: { default: () => 'Body text' }
+    })
+    const link = wrapper.find('.ds-card__title a.ds-card__link')
+    expect(link.exists()).toBe(true)
+    expect(link.text()).toContain('Docs')
+    expect(link.text()).toContain('(opens in a new tab)')
+    expect(wrapper.findAll('a')).toHaveLength(1)
   })
 
   it('supports divided=false, interactive=true, and accent prop variants (ENH-05)', () => {

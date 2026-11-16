@@ -286,8 +286,11 @@ function collectScssFiles(dir: string): string[] {
   return results
 }
 
+const PHYSICAL_PROPERTY =
+  /^(?:(?:margin|padding)-(?:top|bottom|left|right)|top|left|right|bottom|border-(?:top|bottom|left|right)(?:-[a-z]+)?|(?:min-|max-)?(?:width|height))\s*:|text-align:\s*(?:left|right)|float:\s*(?:left|right)/
+
 function checkComponentTokens(): boolean {
-  console.log('\n--- Checking Component SCSS for Undefined var(--ds-*) Tokens & Hardcoded Colors (TOK-01, CSS-02) ---')
+  console.log('\n--- Checking Component SCSS for Undefined var(--ds-*) Tokens, Hardcoded Colors & Physical Properties (TOK-01, CSS-02, CSS-03) ---')
   const semanticScssPath = path.resolve(__dirname, '../src/styles/tokens/_semantic.scss')
   const semanticContent = fs.readFileSync(semanticScssPath, 'utf-8')
 
@@ -306,7 +309,8 @@ function checkComponentTokens(): boolean {
     '--ds-menu-anchor-name',
     '--ds-tooltip-anchor-name',
     '--ds-header-height',
-    '--ds-card-accent'
+    '--ds-card-accent',
+    '--ds-toast-offset'
   ])
 
   const componentsDir = path.resolve(__dirname, '../src/components')
@@ -338,11 +342,16 @@ function checkComponentTokens(): boolean {
         console.error(`FAIL: Hardcoded color literal in ${relPath}:${idx + 1}: ${trimmed}`)
         passed = false
       }
+      // 3. Logical properties only, so layouts follow the writing direction
+      if (PHYSICAL_PROPERTY.test(withoutComments)) {
+        console.error(`FAIL: Physical CSS property in ${relPath}:${idx + 1} (use inset-*, *-block-*, *-inline-*, inline-size, block-size): ${trimmed}`)
+        passed = false
+      }
     })
   }
 
   if (passed) {
-    console.log(`PASS: All var(--ds-*) references across ${scssFiles.length} component SCSS files are defined and 0 hardcoded colors found.`)
+    console.log(`PASS: All var(--ds-*) references across ${scssFiles.length} component SCSS files are defined; no hardcoded colors or physical properties.`)
   }
   return passed
 }

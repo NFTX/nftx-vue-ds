@@ -17,10 +17,13 @@ let politeTimer: ReturnType<typeof setTimeout> | null = null
 let assertiveTimer: ReturnType<typeof setTimeout> | null = null
 
 function syncLiveRegion(priority: AnnouncerPriority, text: string): void {
+  // No DOM during SSR or before <body> exists; the ref still holds the message
+  const doc = globalThis.document
+  if (!doc?.body) return
   const id = `ds-announcer-${priority}`
-  let el = document.getElementById(id)
+  let el = doc.getElementById(id)
   if (!el) {
-    el = document.createElement('div')
+    el = doc.createElement('div')
     el.id = id
     el.setAttribute('aria-live', priority)
     el.setAttribute('aria-atomic', 'true')
@@ -36,7 +39,7 @@ function syncLiveRegion(priority: AnnouncerPriority, text: string): void {
       whiteSpace: 'nowrap',
       border: '0'
     })
-    document.body.appendChild(el)
+    doc.body.appendChild(el)
   }
   el.textContent = text
 }

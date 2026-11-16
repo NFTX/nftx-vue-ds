@@ -65,7 +65,7 @@ export const StretchedLink: Story = {
     template: `
       <DsCard v-bind="args">
         <h3>Clickable Card</h3>
-        <p>This whole card is clickable via an accessible pseudo-element stretched link.</p>
+        <p>This whole card is clickable through a stretched overlay link.</p>
       </DsCard>
     `
   }),

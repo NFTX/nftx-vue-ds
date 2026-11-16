@@ -3,6 +3,7 @@ import { computed, nextTick, onBeforeUnmount, onMounted, ref, useId, watch } fro
 import { AlertCircle, AlertTriangle, CheckCircle2, Info, X } from '@lucide/vue'
 import DsIcon from '@/components/DsIcon/DsIcon.vue'
 import { useAnnouncer } from '@/composables/a11y/useAnnouncer'
+import { createToastStackId, joinToastStack, leaveToastStack, toastStackOffset } from './toastStack'
 
 export type DsToastVariant = 'info' | 'success' | 'warning' | 'error'
 export type DsToastPosition =
@@ -69,6 +70,7 @@ const props = withDefaults(defineProps<DsToastProps>(), {
 const open = defineModel<boolean>('open', { default: false })
 const emit = defineEmits<{
   (e: 'close'): void
+  /** @deprecated Use `close`; `dismiss` will be removed in the next major version. */
   (e: 'dismiss'): void
 }>()
 
@@ -76,13 +78,6 @@ const autoId = useId()
 const titleId = computed<string>(() => `ds-toast-title-${autoId}`)
 const descId = computed<string>(() => `ds-toast-desc-${autoId}`)
 
-const toastRole = computed<'alert' | 'status'>(() =>
-  props.variant === 'error' ? 'alert' : 'status'
-)
-
-const toastLive = computed<'assertive' | 'polite'>(() =>
-  props.variant === 'error' ? 'assertive' : 'polite'
-)
 
 const variantIcon = computed(() => {
   switch (props.variant) {
@@ -103,6 +98,22 @@ const positionClass = computed<string>(() => `ds-toast--${props.position}`)
 
 const toastRef = ref<HTMLElement | null>(null)
 const announcer = useAnnouncer()
+const stackPosition = ref<string | null>(null)
+const stackId = createToastStackId()
+
+const stackStyle = computed<Record<string, string>>(() => ({
+  '--ds-toast-offset': `${stackPosition.value ? toastStackOffset(stackPosition.value, stackId) : 0}px`
+}))
+
+function joinStack(el: HTMLElement): void {
+  stackPosition.value = props.position
+  joinToastStack(props.position, stackId, el.offsetHeight)
+}
+
+function leaveStack(): void {
+  if (stackPosition.value) leaveToastStack(stackPosition.value, stackId)
+  stackPosition.value = null
+}
 
 let timer: ReturnType<typeof setTimeout> | null = null
 let remainingTime = 0
@@ -181,6 +192,8 @@ function handleFocusOut(event: FocusEvent): void {
   resumeTimer()
 }
 
+// Announced through the shared live regions, which exist before the toast appears;
+// the toast itself is not a live region, so it is read once
 function announceToast(): void {
   const text = [props.title, props.description].filter(Boolean).join('. ')
   if (text) {
@@ -202,10 +215,12 @@ function syncPopover(): void {
         // Fallback if already showing or unsupported
       }
     }
+    joinStack(el)
     startTimer()
     announceToast()
   } else {
     clearTimer()
+    leaveStack()
     if (el.isConnected && typeof el.hidePopover === 'function') {
       try {
         if (el.matches(':popover-open')) {
@@ -232,6 +247,7 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   clearTimer()
+  leaveStack()
 })
 </script>
 

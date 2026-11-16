@@ -6,8 +6,7 @@ import { useTheme, type DsThemeMode } from '@/composables/useTheme'
 
 export interface DsHeaderBarProps {
   /**
-   * Application title displayed in the brand area.
-   * @default 'Portal'
+   * Application title displayed in the brand area. No title element is rendered when it is empty.
    */
   title?: string
   /**
@@ -94,7 +93,7 @@ export interface DsHeaderBarEmits {
 }
 
 const props = withDefaults(defineProps<DsHeaderBarProps>(), {
-  title: 'Portal',
+  title: undefined,
   subtitle: undefined,
   sticky: false,
   theme: undefined,

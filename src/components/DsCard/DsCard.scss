@@ -76,6 +76,12 @@
       }
     }
 
+    // Interactive content inside a linked card sits above the stretched link
+    &--clickable :deep(:is(a, button, input, select, textarea, summary, [tabindex]):not(.ds-card__link)) {
+      position: relative;
+      z-index: 2;
+    }
+
     // Paddings
     &--padding-none {
       padding: 0;

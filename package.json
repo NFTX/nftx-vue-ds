@@ -29,7 +29,7 @@
     "src/styles"
   ],
   "scripts": {
-    "lint": "eslint .",
+    "lint": "eslint . --max-warnings 0",
     "typecheck": "vue-tsc --noEmit",
     "test:tokens": "node --experimental-strip-types scripts/contrast-check.ts",
     "test:unit": "vitest run --project=unit --coverage",

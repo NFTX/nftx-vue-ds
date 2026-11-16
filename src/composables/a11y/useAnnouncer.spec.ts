@@ -83,4 +83,17 @@ describe('useAnnouncer', () => {
     expect(announcer.politeMessage.value).toBe('')
     expect(announcer.assertiveMessage.value).toBe('')
   })
+
+  it('keeps the message without touching the DOM when there is no <body> (SSR-safe)', () => {
+    const body = document.body
+    document.documentElement.removeChild(body)
+    try {
+      const announcer = useAnnouncer()
+      announcer.announce('No body yet', 'polite')
+      vi.advanceTimersByTime(60)
+      expect(announcer.politeMessage.value).toBe('No body yet')
+    } finally {
+      document.documentElement.appendChild(body)
+    }
+  })
 })

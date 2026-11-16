@@ -272,4 +272,9 @@ describe('DsHeaderBar', () => {
     expect(wrapper.findAll('.probe-search')).toHaveLength(1)
     expect(wrapper.find('.ds-header-bar__mobile-search .probe-search').exists()).toBe(true)
   })
+
+  it('renders no title element without a title', () => {
+    const wrapper = mount(DsHeaderBar, { props: { theme: 'light' } })
+    expect(wrapper.find('.ds-header-bar__title').exists()).toBe(false)
+  })
 })

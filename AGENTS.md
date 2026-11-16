@@ -19,6 +19,9 @@ Three default themes, selected with `data-theme` on the root element: `light`, `
 
 - Do not add headless UI or positioning libraries (`reka-ui`, `radix-vue`, `@headlessui/vue`, `@floating-ui/dom`, Popper). Use native elements and CSS (`<dialog>`, `[popover]`, anchor positioning, `:has()`) plus the composables in `src/composables/a11y/`. This keeps the library dependency-free and small.
 - Text a component renders on its own (button labels, landmark names, announcements) gets a prop with an English default. Labels that include a value are `{placeholder}` templates filled with `formatLabel` from `src/utils/formatLabel.ts`.
+- Components must render during SSR: reach `document`, `window`, `navigator`, `CSS` and `localStorage` through `globalThis.x?.` or inside lifecycle hooks and event handlers. Each component spec has a `renderToString` test.
+- A component that binds `$attrs` to an inner element sets `defineOptions({ inheritAttrs: false })`.
+- Component SCSS uses logical properties only (`inset-*`, `*-block-*`, `*-inline-*`, `inline-size`, `block-size`); `npm run test:tokens` fails on physical ones. Compact controls get their touch target from the `target-size-pseudo` mixin.
 - Each component lives in `src/components/Ds{Name}/` with six files:
   - `Ds{Name}.vue`: `<script setup lang="ts">`, referencing the template and styles.
   - `Ds{Name}.html`: template.

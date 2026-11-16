@@ -19,11 +19,6 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     scrollbar-gutter: stable;
-
-    // Prevent body scroll when native modal dialog is open
-    &:has(dialog:modal) {
-      overflow: hidden;
-    }
   }
 
   body {
