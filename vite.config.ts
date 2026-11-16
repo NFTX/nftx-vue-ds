@@ -55,7 +55,8 @@ export default defineConfig({
     }),
     dts({
       tsconfigPath: resolve(__dirname, 'tsconfig.json'),
-      include: ['src/**/*.ts', 'src/**/*.vue']
+      include: ['src/**/*.ts', 'src/**/*.vue'],
+      exclude: ['src/**/*.spec.ts', 'src/**/*.stories.ts', 'src/docs/**']
     }),
     buildTokensCssPlugin()
   ],

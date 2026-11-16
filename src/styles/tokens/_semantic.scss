@@ -26,7 +26,7 @@
   // Success tokens (Emerald, emerald-700)
   --ds-color-text-success: #{p.$emerald-700};
   --ds-color-success-fill: #{p.$emerald-700};
-  --ds-color-success-fill-hover: #{p.$emerald-600};
+  --ds-color-success-fill-hover: #{p.$emerald-800};
   --ds-color-on-success: #{p.$white};
   --ds-color-success-surface: #{p.$emerald-50};
   --ds-color-success-border: #{p.$emerald-100};
@@ -34,7 +34,7 @@
   // Warning tokens (Amber, amber-700)
   --ds-color-text-warning: #{p.$amber-700};
   --ds-color-warning-fill: #{p.$amber-700};
-  --ds-color-warning-fill-hover: #{p.$amber-600};
+  --ds-color-warning-fill-hover: #{p.$amber-800};
   --ds-color-on-warning: #{p.$white};
   --ds-color-warning-surface: #{p.$amber-50};
   --ds-color-warning-border: #{p.$amber-100};
@@ -42,7 +42,7 @@
   // Info tokens (Sky, sky-700)
   --ds-color-text-info: #{p.$sky-700};
   --ds-color-info-fill: #{p.$sky-700};
-  --ds-color-info-fill-hover: #{p.$sky-600};
+  --ds-color-info-fill-hover: #{p.$sky-800};
   --ds-color-on-info: #{p.$white};
   --ds-color-info-surface: #{p.$sky-50};
   --ds-color-info-border: #{p.$sky-100};
@@ -88,26 +88,26 @@
   --ds-color-error-surface: #{p.$red-950};
   --ds-color-error-border: #{p.$red-800};
 
-  // Success tokens (Emerald, emerald-500 text, emerald-600 fill)
+  // Success tokens (Emerald, emerald-500 text, emerald-700 fill)
   --ds-color-text-success: #{p.$emerald-500};
-  --ds-color-success-fill: #{p.$emerald-600};
-  --ds-color-success-fill-hover: #{p.$emerald-700};
+  --ds-color-success-fill: #{p.$emerald-700};
+  --ds-color-success-fill-hover: #{p.$emerald-800};
   --ds-color-on-success: #{p.$white};
   --ds-color-success-surface: #{p.$emerald-950};
   --ds-color-success-border: #{p.$emerald-950};
 
-  // Warning tokens (Amber, amber-500 text, amber-600 fill)
+  // Warning tokens (Amber, amber-500 text, amber-700 fill)
   --ds-color-text-warning: #{p.$amber-500};
-  --ds-color-warning-fill: #{p.$amber-600};
-  --ds-color-warning-fill-hover: #{p.$amber-700};
+  --ds-color-warning-fill: #{p.$amber-700};
+  --ds-color-warning-fill-hover: #{p.$amber-800};
   --ds-color-on-warning: #{p.$white};
   --ds-color-warning-surface: #{p.$amber-950};
   --ds-color-warning-border: #{p.$amber-950};
 
-  // Info tokens (Sky, sky-500 text, sky-600 fill)
+  // Info tokens (Sky, sky-500 text, sky-700 fill)
   --ds-color-text-info: #{p.$sky-500};
-  --ds-color-info-fill: #{p.$sky-600};
-  --ds-color-info-fill-hover: #{p.$sky-700};
+  --ds-color-info-fill: #{p.$sky-700};
+  --ds-color-info-fill-hover: #{p.$sky-800};
   --ds-color-on-info: #{p.$white};
   --ds-color-info-surface: #{p.$sky-950};
   --ds-color-info-border: #{p.$sky-950};
@@ -163,8 +163,8 @@
 
   // Warning tokens (High-Luminance Amber / Orange-Honey)
   --ds-color-text-warning: #{p.$cb-amber-700};
-  --ds-color-warning-fill: #{p.$cb-amber-600};
-  --ds-color-warning-fill-hover: #{p.$cb-amber-700};
+  --ds-color-warning-fill: #{p.$cb-amber-700};
+  --ds-color-warning-fill-hover: #{p.$cb-amber-800};
   --ds-color-on-warning: #{p.$white};
   --ds-color-warning-surface: #{p.$cb-amber-surface};
   --ds-color-warning-border: #{p.$cb-amber-700};
@@ -200,16 +200,16 @@
 
 // 4. Opt-in Legacy Slate Themes (Cold Tech Aesthetic)
 @mixin slate-light-tokens {
-  --ds-color-brand-fill: #{p.$rose-800};
-  --ds-color-brand-fill-hover: #{p.$rose-900};
+  --ds-color-brand-fill: #{p.$rose-900};
+  --ds-color-brand-fill-hover: #{p.$rose-950};
   --ds-color-brand-fill-active: #{p.$rose-950};
-  --ds-color-brand-text: #{p.$rose-800};
+  --ds-color-brand-text: #{p.$rose-900};
   --ds-color-on-brand: #{p.$white};
   --ds-color-brand-surface: #{p.$rose-50};
   --ds-color-brand-border: #{p.$rose-200};
   --ds-color-focus-ring: #{p.$rose-800};
 
-  --ds-color-text-error: #{p.$red-600};
+  --ds-color-text-error: #{p.$red-700};
   --ds-color-error-fill: #{p.$red-600};
   --ds-color-error-fill-hover: #{p.$red-700};
   --ds-color-on-error: #{p.$white};
@@ -218,21 +218,21 @@
 
   --ds-color-text-success: #{p.$emerald-700};
   --ds-color-success-fill: #{p.$emerald-700};
-  --ds-color-success-fill-hover: #{p.$emerald-600};
+  --ds-color-success-fill-hover: #{p.$emerald-800};
   --ds-color-on-success: #{p.$white};
   --ds-color-success-surface: #{p.$emerald-50};
   --ds-color-success-border: #{p.$emerald-100};
 
   --ds-color-text-warning: #{p.$amber-700};
   --ds-color-warning-fill: #{p.$amber-700};
-  --ds-color-warning-fill-hover: #{p.$amber-600};
+  --ds-color-warning-fill-hover: #{p.$amber-800};
   --ds-color-on-warning: #{p.$white};
   --ds-color-warning-surface: #{p.$amber-50};
   --ds-color-warning-border: #{p.$amber-100};
 
   --ds-color-text-info: #{p.$sky-700};
   --ds-color-info-fill: #{p.$sky-700};
-  --ds-color-info-fill-hover: #{p.$sky-600};
+  --ds-color-info-fill-hover: #{p.$sky-800};
   --ds-color-on-info: #{p.$white};
   --ds-color-info-surface: #{p.$sky-50};
   --ds-color-info-border: #{p.$sky-100};
@@ -275,22 +275,22 @@
   --ds-color-error-border: #{p.$red-800};
 
   --ds-color-text-success: #{p.$emerald-500};
-  --ds-color-success-fill: #{p.$emerald-600};
-  --ds-color-success-fill-hover: #{p.$emerald-700};
+  --ds-color-success-fill: #{p.$emerald-700};
+  --ds-color-success-fill-hover: #{p.$emerald-800};
   --ds-color-on-success: #{p.$white};
   --ds-color-success-surface: #{p.$emerald-950};
   --ds-color-success-border: #{p.$emerald-950};
 
   --ds-color-text-warning: #{p.$amber-500};
-  --ds-color-warning-fill: #{p.$amber-600};
-  --ds-color-warning-fill-hover: #{p.$amber-700};
+  --ds-color-warning-fill: #{p.$amber-700};
+  --ds-color-warning-fill-hover: #{p.$amber-800};
   --ds-color-on-warning: #{p.$white};
   --ds-color-warning-surface: #{p.$amber-950};
   --ds-color-warning-border: #{p.$amber-950};
 
   --ds-color-text-info: #{p.$sky-500};
-  --ds-color-info-fill: #{p.$sky-600};
-  --ds-color-info-fill-hover: #{p.$sky-700};
+  --ds-color-info-fill: #{p.$sky-700};
+  --ds-color-info-fill-hover: #{p.$sky-800};
   --ds-color-on-info: #{p.$white};
   --ds-color-info-surface: #{p.$sky-950};
   --ds-color-info-border: #{p.$sky-950};

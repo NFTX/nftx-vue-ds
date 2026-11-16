@@ -102,7 +102,7 @@ This document tracks the phased implementation, quality gates, and verification 
 1. **Local Version Tagging:**
    - Tagged `v0.1.0` locally on `@nftx/vue-ds`.
 2. **Real Consumer App Integration (`portal`):**
-   - Installed `@nftx/vue-ds` into `/workspace/Projects/portal`.
+   - Installed `@nftx/vue-ds` into `portal`.
    - Imported `@nftx/vue-ds/styles.css` into `portal/src/main.ts`.
    - Migrated `FallbackError` screen (`FallbackError.vue`, `FallbackError.html`) to replace custom icon and button markup with design system components `DsButton` and `DsIcon`.
 3. **API Friction & Verification Review:**
@@ -219,7 +219,7 @@ This document tracks the phased implementation, quality gates, and verification 
    - Verified `.d.ts` declaration generation with zero unresolved `@/*` alias leakage.
    - Verified clean tarball creation (`nftx-vue-ds-1.0.0.tgz`) and consumer installation via `npm run test:smoke`.
 
-2. **Full Consumer Application Migration (`/workspace/Projects/portal`):**
+2. **Full Consumer Application Migration (`portal`):**
    - **`App.vue` & `App.html`:**
      - Integrated `DsSkipLink` for keyboard landmark bypass navigation to `#main-content`.
      - Integrated `DsSpinner` for accessible loading state with live region announcement.
@@ -275,7 +275,7 @@ This document tracks the phased implementation, quality gates, and verification 
    - **Consumer Package Smoke Test (`test:smoke`):** `npm pack` produced `nftx-vue-ds-1.0.0.tgz`; clean install in isolated fixture completed with 0 unresolved `@/*` aliases in `.d.ts` declarations and successful consumer production build.
 
 3. **Consumer App Verification (`portal`):**
-   - Clean compilation in `/workspace/Projects/portal` via `vue-tsc && vite build` with 0 type errors or runtime asset defects.
+   - Clean compilation in `portal` via `vue-tsc && vite build` with 0 type errors or runtime asset defects.
 
 ### Verification Scorecard (`npm run verify`)
 

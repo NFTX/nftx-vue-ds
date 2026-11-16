@@ -17,6 +17,15 @@ const config: StorybookConfig = {
   },
   features: {
     experimentalDocgenServer: true
+  },
+  // vite.config.ts is the library build: its declaration and tokens plugins
+  // would write .d.ts files into storybook-static and rewrite dist/
+  viteFinal(viteConfig) {
+    const libraryOnly = new Set(['unplugin-dts', 'build-tokens-css'])
+    viteConfig.plugins = (viteConfig.plugins ?? [])
+      .flat()
+      .filter((plugin) => !(plugin && 'name' in plugin && libraryOnly.has(plugin.name)))
+    return viteConfig
   }
 }
 

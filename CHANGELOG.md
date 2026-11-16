@@ -17,6 +17,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **`DsThemeMode`** (`DsTheme` plus `auto`) is now exported from `useTheme` and used by `useTheme`, `DsHeaderBar` and `DsThemeToggle`. `useTheme().theme` is typed `Ref<DsThemeMode>`.
 - **Theme instances stay in sync**: `useTheme`, `DsHeaderBar` and `DsThemeToggle` with the same storage key follow each other's changes on the page.
 - **`DsHeaderBar` only manages the document theme when uncontrolled**: with a `theme` prop, or with `showThemeToggle=false`, it no longer writes `data-theme` or storage.
+- **Status fill colors darkened so white text passes WCAG AA (4.5:1)**: success, warning and info fills in the dark and slate-dark themes (600 → 700, hover 800), their hover fills in the light and slate-light themes (600 → 800), and the colorblind warning fill (`#C26700` → `#9A3412`, hover `#7C2D12`). Slate-light error text is `red-700` (AA on its error surface), with the brand moved from `rose-800` to `rose-900` to stay distinct from error.
+- **Contrast gate reads the tokens**: `test:tokens` compiles every theme mixin and checks 166 token pairs, including all `on-*` fills, instead of hard-coded hex pairs. The duplicate `test:contrast` script is gone.
+- **Package contents**: spec, story and docs type declarations are no longer published; the Storybook build no longer writes library declarations or touches `dist/`.
 - **No runtime dependencies**: icons now come from `@lucide/vue` (the successor of the deprecated `lucide-vue-next`) as a build-time dependency. They were already bundled into `dist`, so consumers no longer install an unused, deprecated package. Apps that register extra icons with `registerDsIcons` should import them from `@lucide/vue`.
 
 ### Fixed
@@ -113,7 +116,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `DsModal`: APG Dialog / Alert Dialog on native `<dialog>` and `showModal()`, focus trapping, escape key cancellation, and backdrop blur.
   - `DsToast`: Live notification toasts using Popover API (`popover="manual"`) with live region announcements via `useAnnouncer`, 4 semantic variants, auto-dismiss, and hover/focus pause.
 - **Consumer Application Integration (Phase 5):**
-  - Full migration of `/workspace/Projects/portal` homelab dashboard to `@nftx/vue-ds`.
+  - Full migration of the `portal` homelab dashboard to `@nftx/vue-ds`.
   - Replaced legacy headers, filters, cards, and automation sections with `DsHeaderBar`, `DsSearchBar`, `DsChipGroup`, `DsCardGrid`, `DsCard`, `DsBadge`, `DsEmptyState`, and `DsSpinner`.
   - Mapped portal CSS variables directly to design system semantic tokens (`--ds-color-*`).
 - **Production Readiness & Static Distribution (Phase 6):**

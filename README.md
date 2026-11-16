@@ -80,6 +80,8 @@ createApp(App).mount('#app')
 
 The library delivers three default themes that are active out of the box unless overwritten.
 
+Two opt-in themes, `slate-light` and `slate-dark`, use a cooler slate palette. All five pass the same contrast checks (`npm run test:tokens`).
+
 | Theme | HTML Attribute | Canvas Base | Primary Brand / Action | Primary Body Text | Best Used For |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **Light Mode** *(Default)* | `data-theme="light"` | `#FAF8F5` *(Warm Paper)* | `#750008` *(Print Ink Red)* | `#1E293B` *(Charcoal)* | High-readability editorial content, articles, portals |
@@ -293,29 +295,31 @@ Text the components render on their own (close and clear buttons, landmark names
 
 ## 🔍 Validating with Portal (Reference Client)
 
-The `/workspace/Projects/portal` project serves as the real-world reference consumer for `@nftx-dev/vue-ds`. Use it to validate component integration, responsive behavior, and theme switching.
+The `portal` project, checked out next to this repository, serves as the real-world reference consumer for `@nftx-dev/vue-ds`. Use it to validate component integration, responsive behavior, and theme switching.
 
 ### Step 1: Build the Design System
 Ensure latest library artifacts and stylesheets are compiled:
 
 ```bash
-cd /workspace/Projects/design-system
 npm run build
 ```
 
 ### Step 2: Validate the Portal Application Build
-Run `vue-tsc` and `vite build` inside the Portal:
+Portal installs the published package from npm, so install the local build first, then run `vue-tsc` and `vite build`:
 
 ```bash
-cd /workspace/Projects/portal
+cd ../portal
+npm install --no-save ../design-system
 npm run build
 ```
+
+Run `npm install` in `portal` afterwards to return to the published version.
 
 ### Step 3: Run Portal in Development Mode
 Launch the local Vite development server:
 
 ```bash
-cd /workspace/Projects/portal
+cd ../portal
 npm run dev
 ```
 
@@ -323,7 +327,7 @@ npm run dev
 To test Portal inside its isolated multi-stage Docker container:
 
 ```bash
-cd /workspace/Projects/portal
+cd ../portal
 docker compose up -d --build
 ```
 
@@ -348,7 +352,6 @@ Storybook allows you to inspect every component variant, test interactive props,
 ### Running Storybook Locally
 
 ```bash
-cd /workspace/Projects/design-system
 npm run storybook
 ```
 
@@ -357,7 +360,6 @@ npm run storybook
 An isolated Nginx container runs the production Storybook build on port 6006:
 
 ```bash
-cd /workspace/Projects/design-system
 docker compose up -d --build
 ```
 

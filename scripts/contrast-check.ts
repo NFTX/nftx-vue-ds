@@ -3,6 +3,7 @@
 import * as fs from 'node:fs'
 import * as path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import * as sass from 'sass'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -61,60 +62,94 @@ function deltaEOklab(hex1: string, hex2: string): number {
   return Math.sqrt(dl * dl + da * da + db * db) * 100
 }
 
-interface ContrastAssertion {
-  name: string
-  fgHex: string
-  bgHex: string
-  minRatio: number
-  targetLevel: string
+const THEME_MIXINS = {
+  light: 'light-theme-tokens',
+  dark: 'dark-theme-tokens',
+  colorblind: 'colorblind-theme-tokens',
+  'slate-light': 'slate-light-tokens',
+  'slate-dark': 'slate-dark-tokens'
+} as const
+
+type ThemeName = keyof typeof THEME_MIXINS
+type ThemeTokens = Map<string, string>
+
+// Compile each theme mixin with Sass, so the checks use the real token values
+function resolveThemeTokens(): Record<ThemeName, ThemeTokens> {
+  const tokensDir = path.resolve(__dirname, '../src/styles/tokens')
+  const source = ["@use 'semantic' as s;"]
+  for (const [theme, mixin] of Object.entries(THEME_MIXINS)) {
+    source.push(`.check-${theme} { @include s.${mixin}; }`)
+  }
+  const css = sass.compileString(source.join('\n'), { loadPaths: [tokensDir], style: 'expanded' }).css
+
+  const result = {} as Record<ThemeName, ThemeTokens>
+  for (const theme of Object.keys(THEME_MIXINS) as ThemeName[]) {
+    const block = new RegExp(`\\.check-${theme} \\{([^}]*)\\}`).exec(css)?.[1]
+    if (!block) throw new Error(`Could not compile tokens for theme "${theme}"`)
+    const tokens: ThemeTokens = new Map()
+    for (const m of block.matchAll(/(--ds-[a-z0-9-]+):\s*([^;]+);/g)) {
+      if (m[1] && m[2]) tokens.set(m[1], m[2].trim())
+    }
+    result[theme] = tokens
+  }
+  return result
 }
 
-const assertions: ContrastAssertion[] = [
-  // Default Light Theme (Warm Paper & Print Ink Red)
-  { name: 'Light: Brand Fill on Warm Paper (print-red vs warm-paper)', fgHex: '#750008', bgHex: '#FAF8F5', minRatio: 7.0, targetLevel: 'AAA' },
-  { name: 'Light: Brand Fill on White (print-red vs white)', fgHex: '#750008', bgHex: '#FFFFFF', minRatio: 7.0, targetLevel: 'AAA' },
-  { name: 'Light: Focus Ring on Warm Paper (print-red vs warm-paper)', fgHex: '#750008', bgHex: '#FAF8F5', minRatio: 3.0, targetLevel: 'AA Non-text' },
-  { name: 'Light: Error Text on Warm Paper (red-700 vs warm-paper)', fgHex: '#B91C1C', bgHex: '#FAF8F5', minRatio: 4.5, targetLevel: 'AA' },
-  { name: 'Light: Success Text on Warm Paper (emerald-700 vs warm-paper)', fgHex: '#047857', bgHex: '#FAF8F5', minRatio: 4.5, targetLevel: 'AA' },
-  { name: 'Light: Warning Text on Warm Paper (amber-700 vs warm-paper)', fgHex: '#B45309', bgHex: '#FAF8F5', minRatio: 4.5, targetLevel: 'AA' },
-  { name: 'Light: Info Text on Warm Paper (sky-700 vs warm-paper)', fgHex: '#0369A1', bgHex: '#FAF8F5', minRatio: 4.5, targetLevel: 'AA' },
-  { name: 'Light: Text Primary on Warm Paper (slate-800 vs warm-paper)', fgHex: '#1E293B', bgHex: '#FAF8F5', minRatio: 7.0, targetLevel: 'AAA' },
-  { name: 'Light: Text Secondary on Warm Paper (slate-700 vs warm-paper)', fgHex: '#334155', bgHex: '#FAF8F5', minRatio: 4.5, targetLevel: 'AA' },
-  { name: 'Light: Text Muted on Warm Paper (slate-600 vs warm-paper)', fgHex: '#475569', bgHex: '#FAF8F5', minRatio: 4.5, targetLevel: 'AA' },
-  { name: 'Light: Border Interactive on Warm Paper (slate-500 vs warm-paper)', fgHex: '#64748B', bgHex: '#FAF8F5', minRatio: 3.0, targetLevel: 'AA Non-text' },
+function hexOf(tokens: ThemeTokens, token: string, theme: ThemeName): string {
+  const value = tokens.get(`--ds-color-${token}`)
+  if (!value || !/^#[0-9a-f]{6}$/i.test(value)) {
+    throw new Error(`Token --ds-color-${token} in ${theme} is not a 6-digit hex color: ${value}`)
+  }
+  return value
+}
 
-  // Default Dark Theme (Velvet Midpoint Oxblood & Pale Champagne Gold & Warm Antique Ivory)
-  { name: 'Dark: On-Brand on Fill (velvet-oxblood vs champagne-gold)', fgHex: '#3C0911', bgHex: '#FDE68A', minRatio: 7.0, targetLevel: 'AAA' },
-  { name: 'Dark: Brand Fill on Velvet (champagne-gold vs velvet-oxblood)', fgHex: '#FDE68A', bgHex: '#3C0911', minRatio: 3.0, targetLevel: 'AA Non-text' },
-  { name: 'Dark: Brand Text on Velvet (champagne-gold vs velvet-oxblood)', fgHex: '#FDE68A', bgHex: '#3C0911', minRatio: 7.0, targetLevel: 'AAA' },
-  { name: 'Dark: Focus Ring on Velvet (champagne-gold vs velvet-oxblood)', fgHex: '#FDE68A', bgHex: '#3C0911', minRatio: 3.0, targetLevel: 'AA Non-text' },
-  { name: 'Dark: Error Text on Velvet (red-400 vs velvet-oxblood)', fgHex: '#F87171', bgHex: '#3C0911', minRatio: 4.5, targetLevel: 'AA' },
-  { name: 'Dark: Success Text on Velvet (emerald-500 vs velvet-oxblood)', fgHex: '#10B981', bgHex: '#3C0911', minRatio: 4.5, targetLevel: 'AA' },
-  { name: 'Dark: Warning Text on Velvet (amber-500 vs velvet-oxblood)', fgHex: '#F59E0B', bgHex: '#3C0911', minRatio: 4.5, targetLevel: 'AA' },
-  { name: 'Dark: Info Text on Velvet (sky-500 vs velvet-oxblood)', fgHex: '#0EA5E9', bgHex: '#3C0911', minRatio: 4.5, targetLevel: 'AA' },
-  { name: 'Dark: Text Primary on Velvet (warm-ivory vs velvet-oxblood)', fgHex: '#F7F4EE', bgHex: '#3C0911', minRatio: 7.0, targetLevel: 'AAA' },
-  { name: 'Dark: Text Secondary on Velvet (warm-ivory-secondary vs velvet-oxblood)', fgHex: '#E5DFD3', bgHex: '#3C0911', minRatio: 7.0, targetLevel: 'AAA' },
-  { name: 'Dark: Text Muted on Velvet (warm-ivory-muted vs velvet-oxblood)', fgHex: '#B8ADA0', bgHex: '#3C0911', minRatio: 4.5, targetLevel: 'AA' },
-  { name: 'Dark: Border Interactive on Velvet (champagne-gold vs velvet-oxblood)', fgHex: '#FDE68A', bgHex: '#3C0911', minRatio: 3.0, targetLevel: 'AA Non-text' },
+interface ContrastPair {
+  fg: string
+  bg: string
+  minRatio: number
+}
 
-  // Default Color Blind Theme (Universal CVD Okabe-Ito Cobalt Navy & Amber on White)
-  { name: 'ColorBlind: Brand Fill on White (cb-cobalt-800 vs white)', fgHex: '#003E7E', bgHex: '#FFFFFF', minRatio: 7.0, targetLevel: 'AAA' },
-  { name: 'ColorBlind: Brand Text on slate-50 (cb-cobalt-800 vs slate-50)', fgHex: '#003E7E', bgHex: '#F8FAFC', minRatio: 7.0, targetLevel: 'AAA' },
-  { name: 'ColorBlind: Focus Ring on White (cb-cobalt-800 vs white)', fgHex: '#003E7E', bgHex: '#FFFFFF', minRatio: 3.0, targetLevel: 'AA Non-text' },
-  { name: 'ColorBlind: Error Text on White (cb-rust-700 vs white)', fgHex: '#880000', bgHex: '#FFFFFF', minRatio: 4.5, targetLevel: 'AA' },
-  { name: 'ColorBlind: Success Text on White (cb-teal-700 vs white)', fgHex: '#004D40', bgHex: '#FFFFFF', minRatio: 4.5, targetLevel: 'AA' },
-  { name: 'ColorBlind: Warning Text on White (cb-amber-700 vs white)', fgHex: '#9A3412', bgHex: '#FFFFFF', minRatio: 4.5, targetLevel: 'AA' },
-  { name: 'ColorBlind: Info Text on White (cb-sky-700 vs white)', fgHex: '#005085', bgHex: '#FFFFFF', minRatio: 4.5, targetLevel: 'AA' },
-  { name: 'ColorBlind: Text Primary on White (slate-900 vs white)', fgHex: '#0F172A', bgHex: '#FFFFFF', minRatio: 7.0, targetLevel: 'AAA' },
-  { name: 'ColorBlind: Text Secondary on White (slate-800 vs white)', fgHex: '#1E293B', bgHex: '#FFFFFF', minRatio: 4.5, targetLevel: 'AA' },
-  { name: 'ColorBlind: Text Muted on White (slate-700 vs white)', fgHex: '#334155', bgHex: '#FFFFFF', minRatio: 4.5, targetLevel: 'AA' },
-  { name: 'ColorBlind: Border Interactive on White (cb-cobalt-800 vs white)', fgHex: '#003E7E', bgHex: '#FFFFFF', minRatio: 3.0, targetLevel: 'AA Non-text' },
+const AA_TEXT = 4.5
+const AAA_TEXT = 7.0
+const NON_TEXT = 3.0
+const STATUSES = ['error', 'success', 'warning', 'info'] as const
 
-  // Nested Component Contrast Guarantees (DsBadge nested inside DsTag across 3 Themes)
-  { name: 'Nested: Badge inside Tag (Light - slate-800 text on surface white)', fgHex: '#1E293B', bgHex: '#FFFFFF', minRatio: 7.0, targetLevel: 'AAA' },
-  { name: 'Nested: Badge inside Tag (Dark - warm-ivory text on velvet-surface #2B050B)', fgHex: '#F7F4EE', bgHex: '#2B050B', minRatio: 7.0, targetLevel: 'AAA' },
-  { name: 'Nested: Badge inside Tag (ColorBlind - slate-900 text on white)', fgHex: '#0F172A', bgHex: '#FFFFFF', minRatio: 7.0, targetLevel: 'AAA' }
+// Checked in every theme
+const COMMON_PAIRS: ContrastPair[] = [
+  { fg: 'text-primary', bg: 'bg-base', minRatio: AAA_TEXT },
+  { fg: 'text-primary', bg: 'bg-surface', minRatio: AAA_TEXT },
+  { fg: 'text-primary', bg: 'bg-elevated', minRatio: AAA_TEXT },
+  { fg: 'text-secondary', bg: 'bg-base', minRatio: AA_TEXT },
+  { fg: 'text-muted', bg: 'bg-base', minRatio: AA_TEXT },
+  { fg: 'text-muted', bg: 'bg-elevated', minRatio: AA_TEXT },
+  { fg: 'brand-text', bg: 'bg-base', minRatio: AA_TEXT },
+  { fg: 'brand-text', bg: 'bg-surface', minRatio: AA_TEXT },
+  { fg: 'on-brand', bg: 'brand-fill', minRatio: AA_TEXT },
+  { fg: 'on-brand', bg: 'brand-fill-hover', minRatio: AA_TEXT },
+  { fg: 'focus-ring', bg: 'bg-base', minRatio: NON_TEXT },
+  { fg: 'border-interactive', bg: 'bg-base', minRatio: NON_TEXT },
+  ...STATUSES.flatMap((status) => [
+    { fg: `text-${status}`, bg: 'bg-base', minRatio: AA_TEXT },
+    { fg: `text-${status}`, bg: 'bg-elevated', minRatio: AA_TEXT },
+    { fg: `text-${status}`, bg: `${status}-surface`, minRatio: AA_TEXT },
+    { fg: `on-${status}`, bg: `${status}-fill`, minRatio: AA_TEXT },
+    { fg: `on-${status}`, bg: `${status}-fill-hover`, minRatio: AA_TEXT }
+  ])
 ]
+
+// Stricter guarantees the default themes were designed for
+const THEME_PAIRS: Partial<Record<ThemeName, ContrastPair[]>> = {
+  light: [{ fg: 'brand-fill', bg: 'bg-base', minRatio: AAA_TEXT }],
+  dark: [
+    { fg: 'on-brand', bg: 'brand-fill', minRatio: AAA_TEXT },
+    { fg: 'brand-text', bg: 'bg-base', minRatio: AAA_TEXT },
+    { fg: 'text-secondary', bg: 'bg-base', minRatio: AAA_TEXT }
+  ],
+  colorblind: [
+    { fg: 'brand-fill', bg: 'bg-base', minRatio: AAA_TEXT },
+    { fg: 'brand-text', bg: 'bg-surface', minRatio: AAA_TEXT }
+  ]
+}
 
 function extractMixinBody(content: string, mixinName: string): string {
   const startPattern = `@mixin ${mixinName}`
@@ -145,7 +180,7 @@ function extractMixinBody(content: string, mixinName: string): string {
 }
 
 function checkThemeSymmetry(): boolean {
-  console.log('--- Checking Token Symmetry (TOK-04) Across 3 Default Themes ---')
+  console.log('--- Checking Token Symmetry (TOK-04) Across All Themes ---')
   const semanticScssPath = path.resolve(__dirname, '../src/styles/tokens/_semantic.scss')
   const content = fs.readFileSync(semanticScssPath, 'utf-8')
 
@@ -196,51 +231,43 @@ function checkThemeSymmetry(): boolean {
   }
 
   if (!hasErrors) {
-    console.log(`PASS: All ${lightTokens.size} semantic tokens are symmetrically defined across Light, Dark, and Color Blind themes.`)
+    console.log(`PASS: All ${lightTokens.size} semantic tokens are symmetrically defined across all themes.`)
   }
   return !hasErrors
 }
 
-function checkContrastPairs(): boolean {
-  console.log('\n--- Checking WCAG 2.2 Contrast Pairs (A11Y-01, A11Y-02, TEST-11) ---')
+function checkContrastPairs(themeTokens: Record<ThemeName, ThemeTokens>): boolean {
+  console.log('\n--- Checking WCAG 2.2 Contrast Pairs from compiled theme tokens (A11Y-01, A11Y-02, TEST-11) ---')
   let passed = true
+  let count = 0
 
-  for (const item of assertions) {
-    const ratio = contrastRatio(item.fgHex, item.bgHex)
-    const pass = ratio >= item.minRatio
-    const formattedRatio = ratio.toFixed(2)
-    if (pass) {
-      console.log(`PASS: ${item.name} -> ${formattedRatio}:1 (required ≥ ${item.minRatio}:1 [${item.targetLevel}])`)
-    } else {
-      console.error(`FAIL: ${item.name} -> ${formattedRatio}:1 (FAILED: required ≥ ${item.minRatio}:1 [${item.targetLevel}])`)
-      passed = false
+  for (const theme of Object.keys(THEME_MIXINS) as ThemeName[]) {
+    const tokens = themeTokens[theme]
+    for (const pair of [...COMMON_PAIRS, ...(THEME_PAIRS[theme] ?? [])]) {
+      const ratio = contrastRatio(hexOf(tokens, pair.fg, theme), hexOf(tokens, pair.bg, theme))
+      count++
+      if (ratio < pair.minRatio) {
+        console.error(`FAIL: ${theme}: ${pair.fg} on ${pair.bg} -> ${ratio.toFixed(2)}:1 (required ≥ ${pair.minRatio}:1)`)
+        passed = false
+      }
     }
   }
 
+  if (passed) console.log(`PASS: ${count} contrast pairs across ${Object.keys(THEME_MIXINS).length} themes.`)
   return passed
 }
 
-function checkPerceptualSeparation(): boolean {
+function checkPerceptualSeparation(themeTokens: Record<ThemeName, ThemeTokens>): boolean {
   console.log('\n--- Checking Brand vs Error Perceptual Separation (A11Y-03, TEST-11) ---')
   let passed = true
 
-  // Light theme: print-red (#750008) vs red-700 (#B91C1C)
-  const dELight = deltaEOklab('#750008', '#B91C1C')
-  const passLight = dELight >= 10.0
-  console.log(`${passLight ? 'PASS' : 'FAIL'}: Light theme brand vs error ΔE(OKLab) = ${dELight.toFixed(1)} (required ≥ 10.0)`)
-  if (!passLight) passed = false
-
-  // Dark theme text: champagne-gold (#FDE68A) vs red-400 (#F87171)
-  const dEDark = deltaEOklab('#FDE68A', '#F87171')
-  const passDark = dEDark >= 10.0
-  console.log(`${passDark ? 'PASS' : 'FAIL'}: Dark theme brand vs error text ΔE(OKLab) = ${dEDark.toFixed(1)} (required ≥ 10.0)`)
-  if (!passDark) passed = false
-
-  // Color Blind theme: cb-cobalt-800 (#003E7E) vs cb-rust-700 (#880000)
-  const dECb = deltaEOklab('#003E7E', '#880000')
-  const passCb = dECb >= 10.0
-  console.log(`${passCb ? 'PASS' : 'FAIL'}: Color Blind theme brand vs error ΔE(OKLab) = ${dECb.toFixed(1)} (required ≥ 10.0)`)
-  if (!passCb) passed = false
+  for (const theme of Object.keys(THEME_MIXINS) as ThemeName[]) {
+    const tokens = themeTokens[theme]
+    const dE = deltaEOklab(hexOf(tokens, 'brand-text', theme), hexOf(tokens, 'text-error', theme))
+    const pass = dE >= 10.0
+    console.log(`${pass ? 'PASS' : 'FAIL'}: ${theme}: brand-text vs text-error ΔE(OKLab) = ${dE.toFixed(1)} (required ≥ 10.0)`)
+    if (!pass) passed = false
+  }
 
   return passed
 }
@@ -323,8 +350,9 @@ function checkComponentTokens(): boolean {
 function run(): void {
   console.log('=== Design System Token & Contrast Verification ===\n')
   const symmetryPass = checkThemeSymmetry()
-  const contrastPass = checkContrastPairs()
-  const deltaEPass = checkPerceptualSeparation()
+  const themeTokens = resolveThemeTokens()
+  const contrastPass = checkContrastPairs(themeTokens)
+  const deltaEPass = checkPerceptualSeparation(themeTokens)
   const componentTokenPass = checkComponentTokens()
 
   if (symmetryPass && contrastPass && deltaEPass && componentTokenPass) {

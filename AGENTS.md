@@ -10,14 +10,15 @@ Vue 3 design system library. The reference consumer is the sibling `portal` repo
 
 ## Themes
 
-Three default themes, selected with `data-theme` on the root element: `light`, `dark`, `colorblind` (Okabe-Ito palette).
+Three default themes, selected with `data-theme` on the root element: `light`, `dark`, `colorblind` (Okabe-Ito palette). Two opt-in themes: `slate-light`, `slate-dark`. The `auto` mode in `useTheme` removes `data-theme` so the tokens follow `prefers-color-scheme`.
 
-- Every semantic token in `src/styles/tokens/_semantic.scss` must be defined in all three theme mixins (`light-theme-tokens`, `dark-theme-tokens`, `colorblind-theme-tokens`). `npm run test:tokens` enforces this and the contrast ratios.
+- Every semantic token in `src/styles/tokens/_semantic.scss` must be defined in every theme mixin. `npm run test:tokens` enforces this, compiles the mixins with Sass, and checks the contrast pairs and brand-vs-error distance in `scripts/contrast-check.ts` against the real token values. Add a pair there when a component combines two color tokens in a new way.
 - Consumers override tokens through `--ds-*` CSS custom properties.
 
 ## Library rules
 
 - Do not add headless UI or positioning libraries (`reka-ui`, `radix-vue`, `@headlessui/vue`, `@floating-ui/dom`, Popper). Use native elements and CSS (`<dialog>`, `[popover]`, anchor positioning, `:has()`) plus the composables in `src/composables/a11y/`. This keeps the library dependency-free and small.
+- Text a component renders on its own (button labels, landmark names, announcements) gets a prop with an English default. Labels that include a value are `{placeholder}` templates filled with `formatLabel` from `src/utils/formatLabel.ts`.
 - Each component lives in `src/components/Ds{Name}/` with six files:
   - `Ds{Name}.vue`: `<script setup lang="ts">`, referencing the template and styles.
   - `Ds{Name}.html`: template.
@@ -28,7 +29,7 @@ Three default themes, selected with `data-theme` on the root element: `light`, `
 
 ## Verification
 
-A change is complete when `npm run verify` passes. It runs lint, typecheck, token and contrast checks, unit tests (100% coverage), Storybook tests (zero axe violations), the library build, and a smoke test that installs the packed tarball into a consumer.
+A change is complete when `npm run verify` passes. It runs lint, typecheck, token and contrast checks, unit tests (coverage thresholds in `vitest.config.ts`: 90% lines, 85% branches; 100% lines for composables), Storybook tests (zero axe violations), the library build, and a smoke test that installs the packed tarball into a consumer.
 
 To check a change against `portal` before publishing: `portal` installs the published package from npm, so a plain `portal` build does not see local changes. Install the local build first:
 

@@ -1,6 +1,6 @@
 # `@nftx-dev/vue-ds` — Design System Implementation & Missing Components Review Report
 
-- **Package:** `@nftx-dev/vue-ds` (`/workspace/Projects/design-system`)
+- **Package:** `@nftx-dev/vue-ds`
 - **Version Reviewed:** `1.0.1`
 - **Normative References:** [`IMPLEMENTATION_GUIDELINES.md`](./IMPLEMENTATION_GUIDELINES.md), [`DESIGN_SYSTEM_PLAN.md`](./DESIGN_SYSTEM_PLAN.md), [`REQUESTED_COMPONENTS.md`](./REQUESTED_COMPONENTS.md)
 - **Review Date:** 2026-10-21
