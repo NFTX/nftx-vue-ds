@@ -5,6 +5,11 @@ All notable changes to `@nftx-dev/vue-ds` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+- **`DsTabs`**: an `aria-label` attribute now names the tablist. It was applied to the wrapper `<div>`, so the tablist kept the default `'Navigation tabs'`. `label` still works; `aria-label` takes precedence.
+
 ## [1.3.0] - 2026-11-22
 
 ### Added

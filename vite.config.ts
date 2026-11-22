@@ -56,7 +56,9 @@ export default defineConfig({
     dts({
       tsconfigPath: resolve(__dirname, 'tsconfig.json'),
       include: ['src/**/*.ts', 'src/**/*.vue'],
-      exclude: ['src/**/*.spec.ts', 'src/**/*.stories.ts', 'src/docs/**']
+      exclude: ['src/**/*.spec.ts', 'src/**/*.stories.ts', 'src/docs/**'],
+      // DsButton reads process.env.NODE_ENV; only src/ is included here, so load the Node types explicitly.
+      compilerOptions: { types: ['node'] }
     }),
     buildTokensCssPlugin()
   ],

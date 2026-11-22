@@ -65,6 +65,20 @@ describe('DsTabs', () => {
     expect(wrapper.find('.ds-tabs').classes()).toContain('ds-tabs--vertical')
   })
 
+  it('names the tablist from label, or from an aria-label attribute, and keeps other attrs on the wrapper', () => {
+    const byProp = mount(DsTabs, { props: { tabs, label: 'Sections' } })
+    expect(byProp.find('[role="tablist"]').attributes('aria-label')).toBe('Sections')
+
+    const byAttr = mount(DsTabs, {
+      props: { tabs, label: 'Sections' },
+      attrs: { 'aria-label': 'Main navigation', 'data-testid': 'tabs' }
+    })
+    const root = byAttr.find('.ds-tabs')
+    expect(byAttr.find('[role="tablist"]').attributes('aria-label')).toBe('Main navigation')
+    expect(root.attributes('aria-label')).toBeUndefined()
+    expect(root.attributes('data-testid')).toBe('tabs')
+  })
+
   it('automatically selects tab on arrow key focus in automatic mode', async () => {
     const wrapper = mount(DsTabs, {
       props: {

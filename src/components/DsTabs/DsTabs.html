@@ -1,12 +1,12 @@
 <div
   class="ds-tabs"
   :class="[`ds-tabs--${orientation}`]"
-  v-bind="$attrs"
+  v-bind="wrapperAttrs"
 >
   <div
     class="ds-tabs__list"
     role="tablist"
-    :aria-label="label"
+    :aria-label="tablistLabel"
     :aria-orientation="orientation"
     @keydown="onKeydown"
   >

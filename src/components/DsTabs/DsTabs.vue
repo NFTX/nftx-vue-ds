@@ -1,6 +1,10 @@
 <script setup lang="ts">
-import { computed, ref, useId, watch } from 'vue'
+import { computed, ref, useAttrs, useId, watch } from 'vue'
 import { useRovingFocus } from '@/composables/a11y/useRovingFocus'
+
+defineOptions({
+  inheritAttrs: false
+})
 
 export interface DsTabItem {
   id: string
@@ -11,7 +15,8 @@ export interface DsTabItem {
 
 export interface DsTabsProps {
   /**
-   * Accessible label for the tablist landmark.
+   * Accessible label for the tablist. An `aria-label` attribute on the component takes precedence.
+   * @default 'Navigation tabs'
    */
   label?: string
   /**
@@ -38,6 +43,14 @@ const props = withDefaults(defineProps<DsTabsProps>(), {
 
 const model = defineModel<string>({ default: '' })
 const autoId = useId()
+
+// `aria-label` names the tablist; every other attribute stays on the wrapper.
+const attrs = useAttrs()
+const wrapperAttrs = computed(() => {
+  const { 'aria-label': _ariaLabel, ...rest } = attrs
+  return rest
+})
+const tablistLabel = computed<string>(() => (attrs['aria-label'] as string | undefined) || props.label)
 const tabRefs = ref<(HTMLButtonElement | null)[]>([])
 
 // Determine initial index
