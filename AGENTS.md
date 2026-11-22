@@ -42,3 +42,7 @@ cd ../portal && npm install --no-save ../design-system && npm run build
 ```
 
 Run `npm install` in `portal` afterwards to return to the published version.
+
+## Releasing
+
+Releases use npm staged publishing (`npm run stage:publish`) and are approved with 2FA on npmjs.com. The full procedure is in `.agents/skills/release/SKILL.md`.
