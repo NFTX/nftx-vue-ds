@@ -30,6 +30,9 @@ export default defineConfig({
     include: ['vue', 'storybook/test', '@storybook/vue3', '@storybook/vue3-vite']
   },
   test: {
+    // The module cache keys a .vue file by its own content, so an edited
+    // <template src> file runs against stale compiled code.
+    fsModuleCache: false,
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
